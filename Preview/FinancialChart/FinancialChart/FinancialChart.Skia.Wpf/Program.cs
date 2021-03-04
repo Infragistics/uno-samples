@@ -1,0 +1,4 @@
+﻿
+namespace FinancialChart.Skia.Gtk
+{
+}

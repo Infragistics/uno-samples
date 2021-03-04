@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="ColorExplorer.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ColorExplorer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:ig="using:Infragistics.Controls.Charts"
+    Loaded="Page_Loaded">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition>
+                
+            </RowDefinition>
+            <RowDefinition>
+                
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid PointerMoved="Grid_PointerMoved">
+        <local:PictureExplorer VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PictureUri="ms-appx:///Assets/Images/japan.jpg"
+                               PixelHovered="PixelHovered"
+               ></local:PictureExplorer>
+        </Grid>
+
+
+        <ig:XamDataChart x:Name="chart" Grid.Row="1" IsHorizontalZoomEnabled="True" IsVerticalZoomEnabled="True" AutoMarginWidth="30">
+            <ig:XamDataChart.Axes>
+                <ig:OrdinalTimeXAxis x:Name="xAxis" DateTimeMemberPath="Date" ItemsSource="{Binding HoveredColors}">
+                    
+                </ig:OrdinalTimeXAxis>
+                <ig:NumericYAxis x:Name="yAxis" MinimumValue="0" MaximumValue="255" LabelLocation="OutsideRight"></ig:NumericYAxis>
+            </ig:XamDataChart.Axes>
+            <ig:XamDataChart.Series>
+                <ig:LineSeries x:Name="red" ItemsSource="{Binding HoveredColors}"
+                               Thickness="1"
+                               XAxis="{Binding ElementName=xAxis}"
+                               YAxis="{Binding ElementName=yAxis}"
+                               ValueMemberPath="Red"
+                               Brush="Red"
+                               Outline="Red"></ig:LineSeries>
+                <ig:LineSeries x:Name="green" ItemsSource="{Binding HoveredColors}"
+                               Thickness="1"
+                               XAxis="{Binding ElementName=xAxis}"
+                               YAxis="{Binding ElementName=yAxis}"
+                               ValueMemberPath="Green"
+                               Brush="Green"
+                               Outline="Green"></ig:LineSeries>
+                <ig:LineSeries x:Name="blue" ItemsSource="{Binding HoveredColors}"
+                               Thickness="1"
+                               XAxis="{Binding ElementName=xAxis}"
+                               YAxis="{Binding ElementName=yAxis}"
+                               ValueMemberPath="Blue"
+                               Brush="Blue"
+                               Outline="Blue"></ig:LineSeries>
+                <ig:CrosshairLayer
+                    UseInterpolation="True"
+                    IsAxisAnnotationEnabled="True">
+                    
+                </ig:CrosshairLayer>
+                <!--<ig:CategoryItemHighlightLayer
+                    UseInterpolation="True">
+                    
+                </ig:CategoryItemHighlightLayer>-->
+                <!--<ig:FinalValueLayer FinalValueSelectionMode="Final"></ig:FinalValueLayer>-->
+                <!--<ig:LineSeries x:Name="alpha" ItemsSource="{Binding HoveredColors}"
+                               XAxis="{Binding ElementName=xAxis}"
+                               YAxis="{Binding ElementName=yAxis}"
+                               ValueMemberPath="Alpha"
+                               Brush="Black"
+                               Outline="Black"></ig:LineSeries>-->
+            </ig:XamDataChart.Series>
+        </ig:XamDataChart>
+    </Grid>
+</Page>
