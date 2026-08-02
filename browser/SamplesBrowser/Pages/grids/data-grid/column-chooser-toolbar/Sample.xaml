@@ -1,0 +1,175 @@
+﻿<UserControl
+    x:Class="SamplesBrowser.Pages.Grids.DataGrid.ColumnChooserToolbar.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ig="using:Infragistics.Controls"
+                xmlns:igDataGrids="using:Infragistics.Controls.Grids"
+                        mc:Ignorable="d">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+                                <Grid>
+          <!--<ig:DataGridToolbar
+          Name="toolbar"
+          TargetGrid="{Binding ElementName=grid}"
+          ToolbarTitle="Global Sales"
+          ColumnChooser="true">
+          </ig:DataGridToolbar>-->
+        </Grid>
+                      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+          <igDataGrids:XamDataGrid
+          Name="grid"
+          ItemsSource="{Binding ProductOrders}"
+          AutoGenerateColumns="false"
+          
+          >
+              <igDataGrids:XamDataGrid.Columns>
+                  <igDataGrids:TextColumn
+                  Field="ProductID"
+                  HeaderText="ID"
+                  IsHidden="true"
+                  HorizontalAlignment="Center">
+                      <igDataGrids:TextColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="false"
+                          Value="90">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:TextColumn.Width>
+                  </igDataGrids:TextColumn>
+                  <igDataGrids:TextColumn
+                  Field="ProductName"
+                  HeaderText="Product"
+                  IsHidden="true">
+                      <igDataGrids:TextColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="120">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:TextColumn.Width>
+                  </igDataGrids:TextColumn>
+                  <igDataGrids:ImageColumn
+                  Field="CountryFlag"
+                  HeaderText="Country"
+                  IsEditable="false"
+                  PaddingTop="5"
+                  PaddingBottom="5"
+                  ContentOpacity="1"
+                  HorizontalAlignment="Center">
+                      <igDataGrids:ImageColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="120">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:ImageColumn.Width>
+                  </igDataGrids:ImageColumn>
+                  <igDataGrids:NumericColumn
+                  Field="ProductPrice"
+                  HeaderText="Price"
+                  IsHidden="true"
+                  PositivePrefix="$"
+                  ShowGroupingSeparator="true"
+                  MinFractionDigits="2">
+                      <igDataGrids:NumericColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="110">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:NumericColumn.Width>
+                  </igDataGrids:NumericColumn>
+                  <igDataGrids:NumericColumn
+                  Field="OrderItems"
+                  HeaderText="Orders">
+                      <igDataGrids:NumericColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="110">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:NumericColumn.Width>
+                  </igDataGrids:NumericColumn>
+                  <igDataGrids:NumericColumn
+                  Field="OrderValue"
+                  HeaderText="Order Value"
+                  PositivePrefix="$"
+                  ShowGroupingSeparator="true">
+                      <igDataGrids:NumericColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="150">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:NumericColumn.Width>
+                  </igDataGrids:NumericColumn>
+                  <igDataGrids:DateTimeColumn
+                  Field="OrderDate"
+                  HeaderText="Order Date"
+                  HorizontalAlignment="Right"
+                  DateTimeFormat="DateShort">
+                      <igDataGrids:DateTimeColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="150">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:DateTimeColumn.Width>
+                  </igDataGrids:DateTimeColumn>
+                  <igDataGrids:NumericColumn
+                  Field="Margin"
+                  HeaderText="Margin"
+                  PositiveSuffix="%"
+                  HorizontalAlignment="Center">
+                      <igDataGrids:NumericColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="120">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:NumericColumn.Width>
+                  </igDataGrids:NumericColumn>
+                  <igDataGrids:NumericColumn
+                  Field="Profit"
+                  HeaderText="Profit"
+                  PositivePrefix="$"
+                  ShowGroupingSeparator="true">
+                      <igDataGrids:NumericColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="120">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:NumericColumn.Width>
+                  </igDataGrids:NumericColumn>
+                  <igDataGrids:TextColumn
+                  Field="Status"
+                  HeaderText="Status"
+                  HorizontalAlignment="Center">
+                      <igDataGrids:TextColumn.Width>
+                          <igDataGrids:ColumnWidth
+                          IsStarSized="true"
+                          Value="1"
+                          MinimumWidth="110">
+                          </igDataGrids:ColumnWidth>
+                      </igDataGrids:TextColumn.Width>
+                  </igDataGrids:TextColumn>
+              </igDataGrids:XamDataGrid.Columns>
+          </igDataGrids:XamDataGrid>
+        </Grid>
+              </Grid>
+          </Grid>
+</UserControl>

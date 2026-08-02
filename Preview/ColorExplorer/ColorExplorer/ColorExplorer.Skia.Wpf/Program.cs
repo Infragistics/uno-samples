@@ -1,4 +1,0 @@
-﻿
-namespace ColorExplorer.Skia.Gtk
-{
-}

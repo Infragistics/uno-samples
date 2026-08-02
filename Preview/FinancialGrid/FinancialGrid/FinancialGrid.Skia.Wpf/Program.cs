@@ -1,4 +1,0 @@
-﻿
-namespace FinancialGrid.Skia.Gtk
-{
-}

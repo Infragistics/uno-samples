@@ -1,0 +1,117 @@
+﻿<UserControl
+    x:Class="SamplesBrowser.Pages.Charts.Sparkline.Markers.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ig="using:Infragistics.Controls"
+        xmlns:igCharts="using:Infragistics.Controls.Charts"
+                            xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+            mc:Ignorable="d">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+                <Grid>
+          <igLayouts:XamPropertyEditorPanel
+          ComponentRenderer="{Binding Renderer}"
+          Target="{Binding ElementName=chart}"
+          DescriptionType="Sparkline"
+          IsHorizontal="true"
+          IsWrappingEnabled="true"
+          Name="propertyEditorPanel1">
+              <igLayouts:XamPropertyEditorPanel.Properties>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="FirstMarkerVisibility"
+                  Name="FirstMarkerVisibilityEditor"
+                  Label="First Markers"
+                  ShouldOverrideDefaultEditor="true"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames1}"
+                  DropDownValues="{Binding dropDownValues1}"
+                  PrimitiveValue="Visible">
+                  </igLayouts:PropertyEditorPropertyDescription>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="HighMarkerVisibility"
+                  Name="HighMarkerVisibilityEditor"
+                  Label="High Markers"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames2}"
+                  DropDownValues="{Binding dropDownValues2}"
+                  PrimitiveValue="Visible">
+                  </igLayouts:PropertyEditorPropertyDescription>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="LowMarkerVisibility"
+                  Name="LowMarkerVisibilityEditor"
+                  Label="Low Markers"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames3}"
+                  DropDownValues="{Binding dropDownValues3}"
+                  PrimitiveValue="Visible">
+                  </igLayouts:PropertyEditorPropertyDescription>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="NegativeMarkerVisibility"
+                  Name="NegativeMarkerVisibilityEditor"
+                  Label="Negative Markers"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames4}"
+                  DropDownValues="{Binding dropDownValues4}"
+                  PrimitiveValue="Visible">
+                  </igLayouts:PropertyEditorPropertyDescription>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="LastMarkerVisibility"
+                  Name="LastMarkerVisibilityEditor"
+                  Label="Last Markers"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames5}"
+                  DropDownValues="{Binding dropDownValues5}"
+                  PrimitiveValue="Visible">
+                  </igLayouts:PropertyEditorPropertyDescription>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="MarkerVisibility"
+                  Name="MarkerVisibilityEditor"
+                  Label="All Markers"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames6}"
+                  DropDownValues="{Binding dropDownValues6}"
+                  PrimitiveValue="Visible">
+                  </igLayouts:PropertyEditorPropertyDescription>
+              </igLayouts:XamPropertyEditorPanel.Properties>
+          </igLayouts:XamPropertyEditorPanel>
+        </Grid>
+                                      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+          <igCharts:XamSparkline
+          Name="chart"
+          ItemsSource="{Binding SparklineProfitData}"
+          DisplayType="Line"
+          LabelMemberPath="Label"
+          ValueMemberPath="Value"
+          MarkerVisibility="Visible"
+          HighMarkerVisibility="Visible"
+          LowMarkerVisibility="Visible"
+          FirstMarkerVisibility="Visible"
+          LastMarkerVisibility="Visible"
+          NegativeMarkerVisibility="Visible"
+          MarkerSize="10"
+          FirstMarkerSize="10"
+          LastMarkerSize="10"
+          LowMarkerSize="10"
+          HighMarkerSize="10"
+          NegativeMarkerSize="10"
+          Minimum="0"
+          Maximum="60">
+          </igCharts:XamSparkline>
+        </Grid>
+              </Grid>
+          </Grid>
+</UserControl>

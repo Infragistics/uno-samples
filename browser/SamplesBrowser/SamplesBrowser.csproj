@@ -1,0 +1,210 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-android;net9.0-browserwasm;net9.0-desktop</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+    <RootNamespace>SamplesBrowser</RootNamespace>
+    <AssemblyName>SamplesBrowser</AssemblyName>
+
+    <!-- The controls expose `public dynamic Implementation`; Uno's BindableTypeProviders
+         source generator emits typeof() on it -> CS1962. Pages bind via XAML {Binding}
+         (reflection) so the compiled bindable metadata isn't needed. -->
+    <UnoDisableBindableTypeProvidersGeneration>true</UnoDisableBindableTypeProvidersGeneration>
+
+    <ApplicationTitle>IG Uno Samples</ApplicationTitle>
+    <ApplicationId>com.infragistics.unosamplesbrowser</ApplicationId>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationPublisher>Infragistics</ApplicationPublisher>
+    <Description>Infragistics Ultimate UI for Uno — Samples Browser.</Description>
+
+    <UnoFeatures>
+      SkiaRenderer;
+      Skia;
+      Svg;
+    </UnoFeatures>
+
+    <!-- The browser's Assets SVGs (hero-banner, app-icon, icon-*-line/inverted) are raw
+         ms-appx images consumed by SvgImageSource, NOT Uno.Resizetizer assets — their
+         hyphenated names are illegal for the resizetizer. Turn off the resizetizer's default
+         item scan entirely: on wasm *publish* it re-globs Assets\**\*.svg into UnoImage through
+         a target that ignores DefaultItemExcludes, so the exclude alone isn't enough. This also
+         drops auto app-icon/splash generation, which this browser doesn't use. The SVGs deploy
+         as plain Content below. -->
+    <DisableDefaultUnoResizetizerItems>true</DisableDefaultUnoResizetizerItems>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(AssetsFolder)**\*.*</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <!-- Third-party packages the OData data sources need. Versions pinned in the
+       repo-root Directory.Packages.props (central package management). -->
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Simple.OData.Client" />
+    <PackageReference Include="Microsoft.OData.Core" />
+    <PackageReference Include="Microsoft.OData.Edm" />
+    <PackageReference Include="Microsoft.Data.OData" />
+    <PackageReference Include="Microsoft.Data.Edm" />
+  </ItemGroup>
+
+  <!-- Infragistics Uno control assemblies, resolved per-TargetFramework from the dev-tools
+       UNO build output. $(InfragisticsUnoBuild) is defined in the repo-root Directory.Build.props. -->
+  <ItemGroup>
+    <Reference Include="Infragistics.Core">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Charts">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Charts.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.DataVisualization">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.DataVisualization.SkiaSharp">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.DataVisualization.SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.DataGrid">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Layouts">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Layouts.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Inputs">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Inputs.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Gauges">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Gauges.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Dashboards">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Dashboards.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.TreeMap">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.TreeMap.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Sparkline">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Sparkline.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Maps">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Core.Platform">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Charts">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Charts.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Layouts">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Layouts.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Inputs">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Inputs.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.DataGrid">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Gauges">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Gauges.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.DataVisualization">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Dashboards">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Dashboards.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.TreeMap">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.TreeMap.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Sparkline">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Sparkline.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Uno.Maps">
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Maps.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+    <ItemGroup>
+		<!-- Drop any Content items the SDK globbed from Assets before re-adding them explicitly
+		     below. The wasm head imports Microsoft.NET.Sdk.Web, whose default Content glob pulls
+		     in Assets\toc.json (ignoring DefaultItemExcludes) and collides with the explicit
+		     include → NETSDK1022. A Content Remove runs after the default globs, so it clears the
+		     duplicate on every head. -->
+		<Content Remove="Assets\**\*.*" />
+		<Content Include="Assets\icons\app.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\app-32.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Images\hero-banner.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\app-icon.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-categorychart-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-color-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-dashboard-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-datachart-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-doughnut-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-pie-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-sparkline-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-toolbar-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\line\icon-treemap-line.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-categorychart-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-color-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-dashboard-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-datachart-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-doughnut-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-pie-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-sparkline-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-toolbar-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\icons\components\inverted\icon-treemap-inverted.svg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\toc.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Fonts\DMSans.ttf">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Assets\icons\components\line\" />
+		<Folder Include="Assets\icons\components\inverted\" />
+	</ItemGroup>
+
+</Project>

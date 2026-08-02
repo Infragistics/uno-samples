@@ -1,0 +1,17 @@
+<Project ToolsVersion="15.0">
+  <!--
+    To update the version of Uno, you should instead update the Sdk version in the global.json file.
+
+    See https://aka.platform.uno/using-uno-sdk for more information.
+    See https://aka.platform.uno/using-uno-sdk#implicit-packages for more information regarding the Implicit Packages.
+  -->
+  <ItemGroup>
+    <!-- Used by the SamplesBrowser OData data sources. Versions mirror the WinUI browser. -->
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageVersion Include="Simple.OData.Client" Version="6.0.1" />
+    <PackageVersion Include="Microsoft.OData.Core" Version="7.10.0" />
+    <PackageVersion Include="Microsoft.OData.Edm" Version="7.10.0" />
+    <PackageVersion Include="Microsoft.Data.OData" Version="5.8.5" />
+    <PackageVersion Include="Microsoft.Data.Edm" Version="5.8.5" />
+  </ItemGroup>
+</Project>
