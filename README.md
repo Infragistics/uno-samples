@@ -96,12 +96,12 @@ examples in documentation, but do not execute the native Windows WinUI runtime.
 
 ## Viewing sample source
 
-Open a sample in the browser and select **Source**. File tabs show the individual
+Open a sample and turn on the **Source** toggle at the right of its title.
+Turn it off to return to the live sample. File tabs show the individual
 sample's original `Sample.xaml`, `Sample.xaml.cs`, and its data/view-model/helper
 files. Source is captured from the standalone samples before browser namespace rewriting and data deduplication.
 The viewer provides Shiki syntax highlighting, line numbers, scrolling, keyboard
-file navigation, Copy, and light/dark colors matching the application. Returning to
-**Sample** retains the live sample instance.
+file navigation, Copy, and light/dark colors matching the application. Returning to the live sample retains its instance.
 
 Open `SamplesBrowser.sln` at the repository root, build, and run. Source capture runs
 automatically using the .NET SDK already required by the sample browser. No Node.js,
@@ -126,4 +126,4 @@ dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj -- --sel
 
 Shiki is MIT licensed; its notice is in `scripts/source-viewer/LICENSE-shiki.txt`.
 
-Direct WASM sample URLs keep the Sample/Source selector hidden and render only the live sample, without browser padding.
+Direct WASM sample URLs keep the title and Source toggle hidden and render only the live sample, without browser padding.

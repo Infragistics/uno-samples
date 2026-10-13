@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -19,31 +19,49 @@ public sealed partial class SampleHostPage : Page
         ActualThemeChanged += OnActualThemeChanged;
     }
 
+    public FrameworkElement CreateHeader(string title, Style titleStyle)
+    {
+        var header = new Grid { ColumnSpacing = 16, HorizontalAlignment = HorizontalAlignment.Stretch };
+        header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        var titleText = new TextBlock
+        {
+            Text = title,
+            Style = titleStyle,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        var sourceToggle = new Microsoft.UI.Xaml.Controls.Primitives.ToggleButton
+        {
+            Content = "Source",
+            IsChecked = SourceContainer.Visibility == Visibility.Visible,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        ToolTipService.SetToolTip(sourceToggle, "Show or hide sample source");
+        sourceToggle.Click += (_, _) => SetSourceVisible(sourceToggle.IsChecked == true);
+        Grid.SetColumn(sourceToggle, 1);
+        header.Children.Add(titleText);
+        header.Children.Add(sourceToggle);
+        return header;
+    }
+
+
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
         if (e.Parameter is not SampleHostParameter sample) return;
         _sample = sample;
-        ViewSelector.Visibility = sample.IsEmbedded ? Visibility.Collapsed : Visibility.Visible;
         if (sample.IsEmbedded) SampleBorder.Padding = new Thickness(0);
         SampleContent.Content = sample.Factory();
     }
 
-    private void ShowSample_Click(object sender, RoutedEventArgs e)
+    public void SetSourceVisible(bool visible)
     {
-        SampleButton.IsChecked = true;
-        SourceButton.IsChecked = false;
-        SampleBorder.Visibility = Visibility.Visible;
-        SourceContainer.Visibility = Visibility.Collapsed;
-    }
-
-    private void ShowSource_Click(object sender, RoutedEventArgs e)
-    {
-        SampleButton.IsChecked = false;
-        SourceButton.IsChecked = true;
-        SampleBorder.Visibility = Visibility.Collapsed;
-        SourceContainer.Visibility = Visibility.Visible;
-        if (_webView != null || _sample == null) return;
+        if (_sample == null || _sample.IsEmbedded) return;
+        SampleBorder.Visibility = visible ? Visibility.Collapsed : Visibility.Visible;
+        SourceContainer.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        if (!visible || _webView != null) return;
 
         SourceStatus.Text = "Loading source…";
         SourceStatus.Visibility = Visibility.Visible;
