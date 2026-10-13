@@ -39,6 +39,8 @@ To run a sample independently:
 
 The `browser/SamplesBrowser/` project provides a tree-navigation interface that lets you browse all samples in one place. It uses Uno Platform's `NavigationView` for the sidebar and lazy-loads only the active sample's content.
 
+The browser preloads Infragistics component assemblies during startup while showing a loading indicator, then enables sample navigation. This moves DLL loading ahead of the first sample; control construction and rendering happen when a sample is opened.
+
 ### Running the Browser
 
 1. Only when adding or changing samples, run the ingest script to refresh the browser. For an existing checkout, skip this step:

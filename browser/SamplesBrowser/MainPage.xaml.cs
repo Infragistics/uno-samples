@@ -43,14 +43,26 @@ public sealed partial class MainPage : Page
     {
         if (_initialized) return;
         _initialized = true;
-        if (_launchLink.Route.Length > 0)
+        NavView.IsEnabled = false;
+        try
         {
-            OpenSample(_launchLink.Route, embed: true);
-            return;
+            if (_launchLink.Route.Length > 0)
+            {
+                await ComponentAssemblyPreloader.Ready;
+                OpenSample(_launchLink.Route, embed: true);
+                return;
+            }
+            await System.Threading.Tasks.Task.WhenAll(
+                _tocService.LoadAsync(), ComponentAssemblyPreloader.Ready);
+            BuildNavigation();
+            ShowHome();
         }
-        await _tocService.LoadAsync();
-        BuildNavigation();
-        ShowHome();
+        finally
+        {
+            StartupProgress.IsActive = false;
+            StartupOverlay.Visibility = Visibility.Collapsed;
+            NavView.IsEnabled = true;
+        }
     }
 
     private bool OpenSample(string route, bool embed = false)

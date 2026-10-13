@@ -41,6 +41,7 @@ public sealed partial class SampleHostPage : Page
             Content = "Source",
             FontSize = 12,
             Height = 28,
+            Width = 60,
             MinHeight = 28,
             MinWidth = 0,
             Padding = new Thickness(10, 3, 10, 3),

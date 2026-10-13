@@ -9,9 +9,10 @@ html[data-theme="dark"] { --bg: #0d1117; --fg: #e6edf3; --border: #30363d; --acc
 html[data-theme="light"] { color-scheme: light; }
 @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { --bg: #0d1117; --fg: #e6edf3; --border: #30363d; --accent: #58a6ff; } }
 * { box-sizing: border-box; } body { margin: 0; background: var(--bg); color: var(--fg); font: 14px system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; }
-header { display: flex; border-bottom: 1px solid var(--border); gap: 8px; align-items: center; padding: 8px; }
-[role="tablist"] { display: flex; overflow-x: auto; flex: 1; gap: 4px; }
-button { background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; white-space: nowrap; cursor: pointer; font: inherit; }
+header { display: flex; border-bottom: 1px solid var(--border); gap: 8px; align-items: center; padding: 8px 24px; }
+[role="tablist"] { display: flex; overflow-x: auto; flex: 1; min-width: 0; gap: 4px; }
+button { display: inline-flex; align-items: center; justify-content: center; background: var(--bg); color: var(--fg); border: 1px solid var(--border); border-radius: 4px; height: 28px; padding: 3px 10px; flex-shrink: 0; white-space: nowrap; cursor: pointer; font: 12px system-ui, sans-serif; }
+#copy { width: 60px; }
 button[aria-selected="true"] { border-color: var(--accent); box-shadow: inset 0 -2px var(--accent); }
 button:focus-visible, pre:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 main { flex: 1; min-height: 0; overflow: auto; } section { min-height: 100%; }
