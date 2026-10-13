@@ -64,7 +64,27 @@ public sealed partial class SampleHostPage : Page
         if (e.Parameter is not SampleHostParameter sample) return;
         _sample = sample;
         if (sample.IsEmbedded) SampleBorder.Padding = new Thickness(0);
-        SampleContent.Content = sample.Factory();
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        var content = sample.Factory();
+        LogSampleLoad(sample.Route, $"created in {timer.ElapsedMilliseconds} ms");
+        if (content is FrameworkElement element)
+        {
+            RoutedEventHandler loaded = null;
+            loaded = (_, _) =>
+            {
+                element.Loaded -= loaded;
+                LogSampleLoad(sample.Route, $"loaded in {timer.ElapsedMilliseconds} ms (including creation)");
+            };
+            element.Loaded += loaded;
+        }
+        SampleContent.Content = content;
+    }
+
+    private static void LogSampleLoad(string route, string timing)
+    {
+        var message = $"[SampleLoad] {route}: {timing}";
+        System.Diagnostics.Debug.WriteLine(message);
+        Console.WriteLine(message);
     }
 
     public void SetSourceVisible(bool visible)

@@ -39,7 +39,7 @@ To run a sample independently:
 
 The `browser/SamplesBrowser/` project provides a tree-navigation interface that lets you browse all samples in one place. It uses Uno Platform's `NavigationView` for the sidebar and lazy-loads only the active sample's content.
 
-The browser preloads Infragistics component assemblies during startup while showing a loading indicator, then enables sample navigation. This moves DLL loading ahead of the first sample; control construction and rendering happen when a sample is opened.
+The browser preloads Infragistics assemblies and warms representative controls through construction, layout and rendering behind its startup loading indicator before enabling navigation. Map/dashboard controls are excluded to avoid background/network work. Direct sample links skip the control warmup. Debug output reports component warmup and sample creation/loading times; individual sample data and specialized series can still add first-use work.
 
 ### Running the Browser
 

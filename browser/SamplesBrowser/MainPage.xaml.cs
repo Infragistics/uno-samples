@@ -54,6 +54,7 @@ public sealed partial class MainPage : Page
             }
             await System.Threading.Tasks.Task.WhenAll(
                 _tocService.LoadAsync(), ComponentAssemblyPreloader.Ready);
+            await ComponentControlWarmup.RunAsync(WarmupHost);
             BuildNavigation();
             ShowHome();
         }
