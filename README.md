@@ -6,6 +6,7 @@ Uno Platform samples browser for Infragistics Uno Platform components, targeting
 
 ```
 uno-samples/
+├── SamplesBrowser.sln       ← Open this solution to build and run
 ├── samples/                  ← Individual, independently-buildable samples
 │   ├── charts/
 │   │   └── category-chart/
@@ -40,14 +41,14 @@ The `browser/SamplesBrowser/` project provides a tree-navigation interface that 
 
 ### Running the Browser
 
-1. Run the ingest script to populate samples from `samples/`:
+1. Only when adding or changing samples, run the ingest script to refresh the browser. For an existing checkout, skip this step:
 
    ```powershell
    cd scripts
    .\ingest-samples.ps1
    ```
 
-2. Open `browser/SamplesBrowser/SamplesBrowser.csproj` in Visual Studio with Uno Platform support.
+2. Open `SamplesBrowser.sln` at the repository root in Visual Studio with Uno Platform support.
 
 3. Select the desired target and press F5 to build and run.
 
@@ -97,31 +98,32 @@ examples in documentation, but do not execute the native Windows WinUI runtime.
 
 Open a sample in the browser and select **Source**. File tabs show the individual
 sample's original `Sample.xaml`, `Sample.xaml.cs`, and its data/view-model/helper
-files. Source is captured before browser namespace rewriting and data deduplication.
+files. Source is captured from the standalone samples before browser namespace rewriting and data deduplication.
 The viewer provides Shiki syntax highlighting, line numbers, scrolling, keyboard
 file navigation, Copy, and light/dark colors matching the application. Returning to
 **Sample** retains the live sample instance.
 
-Install the build-time dependencies once with Node.js 20 or later:
+Open `SamplesBrowser.sln` at the repository root, build, and run. Source capture runs
+automatically using the .NET SDK already required by the sample browser. No Node.js,
+npm, separate installation, or generated source assets in Git are required.
+
+The WebView loads Shiki 4.5.0 from `https://esm.sh` when Source is opened and applies
+highlighting in the browser. Only the selected file is highlighted. An internet
+connection to that CDN is needed for syntax colors; if it is unavailable, the
+original source, file tabs and Copy remain usable as plain text.
+
+Generated source documents live under `browser/SamplesBrowser/Assets/Source/` and
+are excluded from Git. They contain the original source text and viewer markup,
+without a bundled copy of Shiki. Both builds and the ingest script capture source
+before browser namespace rewriting and data deduplication.
+
+For standalone regeneration and generator validation:
 
 ```powershell
-npm.cmd ci --prefix scripts/source-viewer
+dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj -- samples browser/SamplesBrowser
+dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj -- --self-test
 ```
 
-Both the ingest script and normal builds generate the source assets. Generated HTML
-lives under `browser/SamplesBrowser/Assets/Source/` and is excluded from Git; the
-build packages it as application content. The generator refreshes only changed
-samples. A standalone regeneration and its tests can be run with:
-
-```powershell
-node scripts/source-viewer/generate-source.mjs
-npm.cmd test --prefix scripts/source-viewer
-```
-
-Each source document contains its own highlighting, CSS and viewer script, so source
-viewing works offline and does not load Shiki or a CDN at runtime. The WebView is
-created only when Source is opened. Keep the generator, viewer template, tests and
-`SampleHostPage` files synchronized between `uno-samples` and `winui-samples`.
 Shiki is MIT licensed; its notice is in `scripts/source-viewer/LICENSE-shiki.txt`.
 
 Direct WASM sample URLs keep the Sample/Source selector hidden and render only the live sample, without browser padding.

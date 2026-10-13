@@ -37,4 +37,4 @@ cd scripts
 .\ingest-samples.ps1
 ```
 
-Then open and build `browser/SamplesBrowser/SamplesBrowser.csproj`.
+Then open and build `SamplesBrowser.sln` at the repository root.

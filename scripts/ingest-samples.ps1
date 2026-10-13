@@ -155,8 +155,8 @@ Write-Host "  Processed $($sampleList.Count) sample(s)." -ForegroundColor Green
 # ---- Copy sample files into browser/Pages/ ----
 
 # Capture original source before rewriting namespaces or deduplicating data classes.
-& node (Join-Path $scriptDir 'source-viewer\generate-source.mjs') $SamplesRoot $BrowserRoot
-if ($LASTEXITCODE -ne 0) { throw 'Source generation failed. Run npm ci --prefix scripts/source-viewer first.' }
+& dotnet run --project (Join-Path $scriptDir 'source-viewer\SourceViewerGenerator.csproj') --configuration Release --no-launch-profile -- $SamplesRoot $BrowserRoot
+if ($LASTEXITCODE -ne 0) { throw '.NET source generation failed.' }
 
 Write-Host ""
 Write-Host "Copying sample files ..." -ForegroundColor Yellow
@@ -342,6 +342,6 @@ Write-Host "=== Done ===" -ForegroundColor Cyan
 Write-Host "  $($sampleList.Count) sample(s) ingested into the browser."
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor White
-Write-Host "  1. Open browser\SamplesBrowser\SamplesBrowser.csproj in Visual Studio 2022"
+Write-Host "  1. Open SamplesBrowser.sln at the repository root in Visual Studio"
 Write-Host "  2. Build (Ctrl+Shift+B) and run (F5)"
 Write-Host ""

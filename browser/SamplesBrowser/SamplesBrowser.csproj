@@ -227,8 +227,7 @@
     <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Target Name="GenerateSampleSource" BeforeTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true'">
-    <Exec Command="node &quot;$(MSBuildProjectDirectory)\..\..\scripts\source-viewer\generate-source.mjs&quot;" />
-    <!-- Evaluation precedes generation on a clean checkout; add generated assets here too. -->
+    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)\..\..\scripts\source-viewer\SourceViewerGenerator.csproj&quot; --configuration Release --no-launch-profile -- &quot;$(MSBuildProjectDirectory)\..\..\samples&quot; &quot;$(MSBuildProjectDirectory)&quot;" />
     <ItemGroup>
       <Content Remove="Assets\Source\**\*.html" />
       <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
