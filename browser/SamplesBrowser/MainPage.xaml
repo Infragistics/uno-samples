@@ -36,7 +36,7 @@
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="{StaticResource NavigationViewContentBackgroundOverride}"/>
                 <SolidColorBrush x:Key="NavigationViewHeaderBackground" Color="{StaticResource NavigationViewHeaderBackgroundOverride}"/>
                 <Style x:Key="NavigationViewHeaderContentPresenterStyle" TargetType="ContentPresenter">
-                    <Setter Property="Margin" Value="36,16,36,8"/>
+                    <Setter Property="Margin" Value="0,16,0,8"/>
                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>

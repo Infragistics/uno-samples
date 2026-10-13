@@ -21,7 +21,12 @@ public sealed partial class SampleHostPage : Page
 
     public FrameworkElement CreateHeader(string title, Style titleStyle)
     {
-        var header = new Grid { ColumnSpacing = 16, HorizontalAlignment = HorizontalAlignment.Stretch };
+        var header = new Grid
+        {
+            ColumnSpacing = 16,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
+            Margin = new Thickness(24, 0, 24, 0),
+        };
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         var titleText = new TextBlock
@@ -34,6 +39,11 @@ public sealed partial class SampleHostPage : Page
         var sourceToggle = new Microsoft.UI.Xaml.Controls.Primitives.ToggleButton
         {
             Content = "Source",
+            FontSize = 12,
+            Height = 28,
+            MinHeight = 28,
+            MinWidth = 0,
+            Padding = new Thickness(10, 3, 10, 3),
             IsChecked = SourceContainer.Visibility == Visibility.Visible,
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Center,
