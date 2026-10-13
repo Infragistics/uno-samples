@@ -1,15 +1,15 @@
-# winui-samples
+# Uno Platform Samples
 
-WinUI 3 samples browser for Infragistics WinUI components.
+Uno Platform samples browser for Infragistics Uno Platform components, targeting WebAssembly, desktop and Android.
 
 ## Structure
 
 ```
-winui-samples/
+uno-samples/
 ├── samples/                  ← Individual, independently-buildable samples
 │   ├── charts/
 │   │   └── category-chart/
-│   │       ├── overview/     ← Each sample is a standalone WinUI project
+│   │       ├── overview/     ← Each sample is a standalone Uno Platform project
 │   │       └── animation/
 │   ├── gauges/
 │   │   └── radial-gauge/
@@ -27,16 +27,16 @@ winui-samples/
 
 ## Individual Samples
 
-Each folder under `samples/` is a standalone, independently-buildable WinUI 3 application.
+Each folder under `samples/` is a standalone, independently-buildable Uno Platform application.
 
 To run a sample independently:
 
-1. Open `samples/<group>/<component>/<sample>/WinUIApp.csproj` in Visual Studio 2022
-2. Press F5 to build and run
+1. Open `samples/<group>/<component>/<sample>/Sample.csproj` in Visual Studio with Uno Platform support.
+2. Select the desired target and press F5 to build and run.
 
 ## Combined Samples Browser
 
-The `browser/SamplesBrowser/` project provides a tree-navigation interface that lets you browse all samples in one place. It uses WinUI 3's `NavigationView` for the sidebar and lazy-loads only the active sample's content.
+The `browser/SamplesBrowser/` project provides a tree-navigation interface that lets you browse all samples in one place. It uses Uno Platform's `NavigationView` for the sidebar and lazy-loads only the active sample's content.
 
 ### Running the Browser
 
@@ -47,13 +47,81 @@ The `browser/SamplesBrowser/` project provides a tree-navigation interface that 
    .\ingest-samples.ps1
    ```
 
-2. Open `browser/SamplesBrowser/SamplesBrowser.csproj` in Visual Studio 2022
+2. Open `browser/SamplesBrowser/SamplesBrowser.csproj` in Visual Studio with Uno Platform support.
 
-3. Press F5 to build and run
+3. Select the desired target and press F5 to build and run.
+
+### WebAssembly sample URLs and iframes
+
+The app root shows the samples browser and its table of contents. Direct sample URLs
+show only the sample, without the table of contents, browser header/title or browser
+padding. The embedding page controls the outer margin. Routes use the
+same relative `group/component/sample` paths as the other platforms:
+
+```html
+<iframe src="https://your-host/uno-demos/samples/charts/category-chart/overview"
+        title="Uno Platform Category Chart Overview"
+        width="100%" height="500" style="border:0"></iframe>
+```
+
+`charts/category-chart/overview` also works without the optional `samples/` prefix.
+Routes resolve through the generated `SampleRegistry`; an unknown direct URL displays
+"Sample not found" rather than silently opening another sample. Each iframe runs its
+own Uno Platform WASM app instance.
+
+Publish the combined browser once; a separate WASM build per sample is unnecessary:
+
+```powershell
+dotnet publish browser/SamplesBrowser/SamplesBrowser.csproj -f net9.0-browserwasm -c Release "-p:WasmShellWebAppBasePath=/uno-demos/"
+```
+
+Set `WasmShellWebAppBasePath` to the actual deployment directory (use `/` at the host
+root), including the trailing slash. This keeps WASM assets loading from the app base
+when a deep URL is opened. Configure the host to rewrite sample routes to the app's
+`index.html` while serving assets normally. The supplied IIS `web.config` includes a
+sample-route rewrite; Azure Static Web Apps uses `staticwebapp.config.json` navigation
+fallback. For a subdirectory deployment, adjust the Azure fallback rewrite to that directory's
+`index.html`. The host must allow framing by the documentation site through its CSP
+`frame-ancestors` policy and any `X-Frame-Options` header.
+
+These are Uno Platform executions of the samples; they can illustrate shared WinUI/Uno
+examples in documentation, but do not execute the native Windows WinUI runtime.
 
 ## Requirements
 
-- Visual Studio 2022 (17.8 or later)
-- Windows App SDK 1.5 or later
-- .NET 8
-- Windows 10 version 1809 (build 17763) or later
+- Uno Platform tooling and the Uno SDK version pinned in `global.json`.
+- .NET 9 target packs and workloads for the selected target.
+- Access to the Infragistics Uno Platform trial packages declared in `Directory.Packages.props`.
+
+## Viewing sample source
+
+Open a sample in the browser and select **Source**. File tabs show the individual
+sample's original `Sample.xaml`, `Sample.xaml.cs`, and its data/view-model/helper
+files. Source is captured before browser namespace rewriting and data deduplication.
+The viewer provides Shiki syntax highlighting, line numbers, scrolling, keyboard
+file navigation, Copy, and light/dark colors matching the application. Returning to
+**Sample** retains the live sample instance.
+
+Install the build-time dependencies once with Node.js 20 or later:
+
+```powershell
+npm.cmd ci --prefix scripts/source-viewer
+```
+
+Both the ingest script and normal builds generate the source assets. Generated HTML
+lives under `browser/SamplesBrowser/Assets/Source/` and is excluded from Git; the
+build packages it as application content. The generator refreshes only changed
+samples. A standalone regeneration and its tests can be run with:
+
+```powershell
+node scripts/source-viewer/generate-source.mjs
+npm.cmd test --prefix scripts/source-viewer
+```
+
+Each source document contains its own highlighting, CSS and viewer script, so source
+viewing works offline and does not load Shiki or a CDN at runtime. The WebView is
+created only when Source is opened. Keep the generator, viewer template, tests and
+`SampleHostPage` files synchronized between `uno-samples` and `winui-samples`.
+Shiki is MIT licensed; its notice is in `scripts/source-viewer/LICENSE-shiki.txt`.
+
+Direct WASM sample URLs keep the Sample/Source selector hidden and render only the live sample, without browser padding.

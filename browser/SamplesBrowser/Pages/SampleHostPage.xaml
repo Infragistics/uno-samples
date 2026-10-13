@@ -1,24 +1,29 @@
-<Page
+﻿<Page
     x:Class="SamplesBrowser.Pages.SampleHostPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
     Background="{StaticResource SamplePageBackground}">
-
-    <!--
-        This page hosts a sample UserControl.
-        The UserControl instance is passed as a navigation parameter (Func<object>)
-        and placed into SampleContent on navigation.
-        Only the active sample is instantiated (lazy loading).
-    -->
-    <Border Padding="{StaticResource SampleContentPadding}">
-        <ContentPresenter x:Name="SampleContent"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          HorizontalContentAlignment="Stretch"
-                          VerticalContentAlignment="Stretch"/>
-    </Border>
-
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="ViewSelector" Orientation="Horizontal" Spacing="8" Margin="16,8">
+            <ToggleButton x:Name="SampleButton" Content="Sample" IsChecked="True" Click="ShowSample_Click"/>
+            <ToggleButton x:Name="SourceButton" Content="Source" Click="ShowSource_Click"/>
+        </StackPanel>
+        <Border x:Name="SampleBorder" Grid.Row="1" Padding="{StaticResource SampleContentPadding}">
+            <ContentPresenter x:Name="SampleContent"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                              HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+        </Border>
+        <Grid x:Name="SourceContainer" Grid.Row="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="SourceStatus" Margin="16" TextWrapping="Wrap" Visibility="Collapsed"/>
+            <Grid x:Name="SourceViewHost" Grid.Row="1"/>
+        </Grid>
+    </Grid>
 </Page>

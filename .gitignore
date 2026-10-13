@@ -4,6 +4,9 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # User-specific files
+scripts/source-viewer/node_modules/
+scripts/source-viewer/.preview/
+browser/SamplesBrowser/Assets/Source/
 *.rsuser
 *.suo
 *.user

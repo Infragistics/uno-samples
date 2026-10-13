@@ -12,17 +12,18 @@
          (reflection) so the compiled bindable metadata isn't needed. -->
     <UnoDisableBindableTypeProvidersGeneration>true</UnoDisableBindableTypeProvidersGeneration>
 
-    <ApplicationTitle>IG Uno Samples</ApplicationTitle>
+    <ApplicationTitle>IG Uno Platform Samples</ApplicationTitle>
     <ApplicationId>com.infragistics.unosamplesbrowser</ApplicationId>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationPublisher>Infragistics</ApplicationPublisher>
-    <Description>Infragistics Ultimate UI for Uno — Samples Browser.</Description>
+    <Description>Infragistics Ultimate UI for Uno Platform — Samples Browser.</Description>
 
     <UnoFeatures>
       SkiaRenderer;
       Skia;
       Svg;
+      WebView;
     </UnoFeatures>
 
     <!-- The browser's Assets SVGs (hero-banner, app-icon, icon-*-line/inverted) are raw
@@ -221,4 +222,16 @@
 		<Folder Include="Assets\icons\components\inverted\" />
 	</ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Assets\Source\**\*.*" />
+    <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="GenerateSampleSource" BeforeTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true'">
+    <Exec Command="node &quot;$(MSBuildProjectDirectory)\..\..\scripts\source-viewer\generate-source.mjs&quot;" />
+    <!-- Evaluation precedes generation on a clean checkout; add generated assets here too. -->
+    <ItemGroup>
+      <Content Remove="Assets\Source\**\*.html" />
+      <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
 </Project>

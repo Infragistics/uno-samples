@@ -1,0 +1,12 @@
+{
+  "name": "sample-source-viewer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "node generate-source.mjs",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": { "shiki": "4.5.0" },
+  "devDependencies": { "jsdom": "26.1.0" }
+}

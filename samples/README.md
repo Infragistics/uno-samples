@@ -1,6 +1,6 @@
-# WinUI Samples
+# Uno Platform Samples
 
-This folder contains individual WinUI samples. Each sub-folder is an independently buildable WinUI 3 application.
+This folder contains individual Uno Platform samples. Each sub-folder is an independently buildable Uno Platform application.
 
 ## Structure
 
@@ -17,16 +17,16 @@ samples/
 ```
 
 Each sample folder contains:
-- `WinUIApp.csproj` – standalone project file
+- `Sample.csproj` – standalone Uno Platform project file
 - `App.xaml` / `App.xaml.cs` – application entry point
-- `MainWindow.xaml` / `MainWindow.xaml.cs` – window that hosts the sample
+- `MainPage.xaml` / `MainPage.xaml.cs` – page that hosts the sample
 - `Sample.xaml` / `Sample.xaml.cs` – the sample UserControl (the actual content)
-- `README.md` – sample-specific documentation
+- `Platforms/` – platform-specific application assets and entry points
 
 ## Running a Sample Independently
 
-1. Open the `WinUIApp.csproj` file in Visual Studio 2022
-2. Press F5 to build and run
+1. Open the `Sample.csproj` file in Visual Studio with Uno Platform support.
+2. Select the desired target and press F5 to build and run.
 
 ## Adding Samples to the Browser
 

@@ -27,6 +27,8 @@ public sealed partial class MainPage : Page
     private readonly TocService _tocService = new();
     private readonly Dictionary<NavigationViewItem, string> _sampleRoutes = new();
     private readonly Dictionary<NavigationViewItem, Services.TocGroup> _groupItems = new();
+    private readonly SampleLink _launchLink = SampleLink.Current();
+    private bool _initialized;
 
     // Segoe MDL2 glyphs used for nav items (component header / sample leaf).
     private static readonly string ComponentGlyph = ((char)0xE9F9).ToString();
@@ -39,9 +41,50 @@ public sealed partial class MainPage : Page
 
     private async void NavView_Loaded(object sender, RoutedEventArgs e)
     {
+        if (_initialized) return;
+        _initialized = true;
+        if (_launchLink.Route.Length > 0)
+        {
+            OpenSample(_launchLink.Route, embed: true);
+            return;
+        }
         await _tocService.LoadAsync();
         BuildNavigation();
         ShowHome();
+    }
+
+    private bool OpenSample(string route, bool embed = false)
+    {
+        if (!SampleRegistry.Samples.TryGetValue(route, out var factory))
+        {
+            if (embed && route.Length > 0)
+            {
+                AppTitleBar.Visibility = Visibility.Collapsed;
+                NavView.Visibility = Visibility.Collapsed;
+                EmbedError.Text = "Sample not found: " + route;
+                EmbedError.Visibility = Visibility.Visible;
+                return true;
+            }
+            return false;
+        }
+
+        if (embed)
+        {
+            AppTitleBar.Visibility = Visibility.Collapsed;
+            NavView.Visibility = Visibility.Collapsed;
+            EmbeddedFrame.Visibility = Visibility.Visible;
+            EmbeddedFrame.Navigate(typeof(Pages.SampleHostPage), new SampleHostParameter { Route = route, Factory = factory, IsEmbedded = true });
+        }
+        else
+        {
+            SetHeader(GetSampleTitle(route));
+            HomePanel.Visibility = Visibility.Collapsed;
+            ContentFrame.Visibility = Visibility.Visible;
+            ContentFrame.Navigate(typeof(Pages.SampleHostPage), new SampleHostParameter { Route = route, Factory = factory });
+            foreach (var pair in _sampleRoutes)
+                if (pair.Value == route) NavView.SelectedItem = pair.Key;
+        }
+        return true;
     }
 
     private void BuildNavigation()
@@ -175,14 +218,7 @@ public sealed partial class MainPage : Page
                 return;
             }
 
-            if (item.Tag is string route &&
-                SampleRegistry.Samples.TryGetValue(route, out var factory))
-            {
-                SetHeader(GetSampleTitle(route));
-                HomePanel.Visibility    = Visibility.Collapsed;
-                ContentFrame.Visibility = Visibility.Visible;
-                ContentFrame.Navigate(typeof(Pages.SampleHostPage), factory);
-            }
+            if (item.Tag is string route) OpenSample(route);
         }
     }
 
@@ -198,11 +234,7 @@ public sealed partial class MainPage : Page
 
     private void OnComponentPageSampleSelected(object? sender, string route)
     {
-        if (SampleRegistry.Samples.TryGetValue(route, out var factory))
-        {
-            SetHeader(GetSampleTitle(route));
-            ContentFrame.Navigate(typeof(Pages.SampleHostPage), factory);
-        }
+        OpenSample(route);
     }
 
     private void SetHeader(string title)

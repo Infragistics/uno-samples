@@ -48,7 +48,7 @@
                         </Image.Source>
                     </Image>
                     <TextBlock
-                        Text="IG Uno Samples"
+                        Text="IG Uno Platform Samples"
                         Style="{StaticResource NavPaneAppNameTextStyle}"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                         VerticalAlignment="Center"/>
@@ -86,8 +86,8 @@
                                 HorizontalAlignment="Left" Padding="32,0,0,0" Spacing="18">
 
                                     <StackPanel VerticalAlignment="Center" Spacing="4">
-                                        <TextBlock Text="Infragistics Uno" Style="{StaticResource HeroSubtitleTextStyle}"/>
-                                        <TextBlock Text="Uno Samples Browser" Style="{StaticResource HeroTitleTextStyle}"/>
+                                        <TextBlock Text="Infragistics Uno Platform" Style="{StaticResource HeroSubtitleTextStyle}"/>
+                                        <TextBlock Text="Uno Platform Samples Browser" Style="{StaticResource HeroTitleTextStyle}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
@@ -168,6 +168,9 @@
             </Grid>
 
         </NavigationView>
+        <Frame x:Name="EmbeddedFrame" Grid.RowSpan="2" Visibility="Collapsed"/>
+        <TextBlock x:Name="EmbedError" Grid.RowSpan="2" Visibility="Collapsed"
+                   Margin="16" TextWrapping="Wrap"/>
     </Grid>
 
 </Page>
