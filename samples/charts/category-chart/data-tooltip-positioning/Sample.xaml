@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                            xmlns:igLayouts="using:Infragistics.Controls.Layouts"
-            mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,9 +16,9 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                <Grid>
+        <Grid>
           <igLayouts:XamPropertyEditorPanel
-          Name="PropertyEditor"
+          x:Name="PropertyEditor"
           ComponentRenderer="{Binding Renderer}"
           Target="{Binding ElementName=chart}"
           DescriptionType="CategoryChart"
@@ -27,34 +28,34 @@
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="DataToolTipGroupedPositionModeX"
                   PrimitiveValue="PinRight"
-                  Name="GroupedPositionXEditor"
+                  x:Name="GroupedPositionXEditor"
                   Label="Grouped X Position: ">
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="DataToolTipGroupedPositionModeY"
                   PrimitiveValue="PinTop"
-                  Name="GroupedPositionYEditor"
+                  x:Name="GroupedPositionYEditor"
                   Label="Grouped Y Position: ">
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="DataToolTipGroupingMode"
                   PrimitiveValue="Grouped"
-                  Name="GroupingModeEditor"
+                  x:Name="GroupingModeEditor"
                   Label="Grouping Mode: ">
                   </igLayouts:PropertyEditorPropertyDescription>
               </igLayouts:XamPropertyEditorPanel.Properties>
           </igLayouts:XamPropertyEditorPanel>
         </Grid>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamCategoryChart
-          Name="chart"
+          x:Name="chart"
           ChartType="Column"
           ItemsSource="{Binding HighestGrossingMovies}"
           ToolTipType="Data"
@@ -69,6 +70,6 @@
           CrosshairsDisplayMode="None">
           </igCharts:XamCategoryChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

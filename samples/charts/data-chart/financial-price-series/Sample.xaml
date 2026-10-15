@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                                mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,23 +15,23 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataChart
-          Name="chart"
+          x:Name="chart"
           ShouldAutoExpandMarginForInitialLabels="true"
           ComputedPlotAreaMarginMode="Series"
           IsVerticalZoomEnabled="true"
           IsHorizontalZoomEnabled="true">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryXAxis
-                  Name="xAxis"
+                  x:Name="xAxis"
                   ItemsSource="{Binding Stock2Years}"
                   LabelLocation="OutsideBottom"
                   Label="Month"
@@ -38,13 +39,13 @@
                   LabelExtent="30">
                   </igCharts:CategoryXAxis>
                   <igCharts:NumericYAxis
-                  Name="yAxis"
+                  x:Name="yAxis"
                   LabelLocation="OutsideRight">
                   </igCharts:NumericYAxis>
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:FinancialPriceSeries
-                  Name="series1"
+                  x:Name="series1"
                   Title="Stock Price"
                   DisplayType="Candlestick"
                   XAxis="{Binding ElementName=xAxis}"
@@ -58,11 +59,11 @@
                   ShowDefaultTooltip="true">
                   </igCharts:FinancialPriceSeries>
                   <igCharts:DataToolTipLayer
-                  Name="Tooltip">
+                  x:Name="Tooltip">
                   </igCharts:DataToolTipLayer>
               </igCharts:XamDataChart.Series>
           </igCharts:XamDataChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

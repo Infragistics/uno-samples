@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
-using System.Windows;
+using Windows.Foundation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
@@ -55,8 +55,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridSalesGaugeTemplate(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -119,7 +117,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         gaugeValue.Text = "$" + (sales / 1000) + ",000";
     }
 
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridAddressLinesTemplate(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -156,7 +153,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         line2.Text = city + ", " + country;
     }
 
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridPhoneLinkTemplate(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -194,7 +190,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -203,3 +199,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+
