@@ -1,59 +1,14 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.CategoryChart.FormatSpecifiers;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
 using Infragistics.Controls;
 
-namespace SamplesBrowser.Pages.Charts.CategoryChart.FormatSpecifiers;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
-    //private NumberFormatSpecifier[] _numberFormatSpecifier1 = null;
-    //public NumberFormatSpecifier[] numberFormatSpecifier1
-    //{
-    //    get
-    //    {
-    //        if (_numberFormatSpecifier1 == null)
-    //        {
-    //            var numberFormatSpecifier1 = new System.Collections.Generic.List<NumberFormatSpecifier>();
-
-    //            numberFormatSpecifier1.Add(numberFormatSpecifier2);
-    //            _numberFormatSpecifier1 = numberFormatSpecifier1.ToArray();
-    //        }
-    //        return _numberFormatSpecifier1;
-    //    }
-    //}
-    //private NumberFormatSpecifier[] _numberFormatSpecifier3 = null;
-    //public NumberFormatSpecifier[] numberFormatSpecifier3
-    //{
-    //    get
-    //    {
-    //        if (_numberFormatSpecifier3 == null)
-    //        {
-    //            var numberFormatSpecifier3 = new System.Collections.Generic.List<NumberFormatSpecifier>();
-
-    //            numberFormatSpecifier3.Add(numberFormatSpecifier4);
-    //            _numberFormatSpecifier3 = numberFormatSpecifier3.ToArray();
-    //        }
-    //        return _numberFormatSpecifier3;
-    //    }
-    //}
-    //private NumberFormatSpecifier[] _numberFormatSpecifier5 = null;
-    //public NumberFormatSpecifier[] numberFormatSpecifier5
-    //{
-    //    get
-    //    {
-    //        if (_numberFormatSpecifier5 == null)
-    //        {
-    //            var numberFormatSpecifier5 = new System.Collections.Generic.List<NumberFormatSpecifier>();
-
-    //            numberFormatSpecifier5.Add(numberFormatSpecifier6);
-    //            _numberFormatSpecifier5 = numberFormatSpecifier5.ToArray();
-    //        }
-    //        return _numberFormatSpecifier5;
-    //    }
-    //}
 
     public Sample()
     {
@@ -63,6 +18,20 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         DataContext = this;
 
         this.Loaded += (s, e) => {
+            var numberFormatSpecifier2 = new NumberFormatSpecifier();
+            numberFormatSpecifier2.Style = "currency";
+            numberFormatSpecifier2.MaximumFractionDigits = 2;
+            numberFormatSpecifier2.MinimumFractionDigits = 2;
+            legend.ValueFormatSpecifiers = new object[] { numberFormatSpecifier2 };
+            var numberFormatSpecifier4 = new NumberFormatSpecifier();
+            numberFormatSpecifier4.Style = "currency";
+            numberFormatSpecifier4.MaximumFractionDigits = 2;
+            numberFormatSpecifier4.MinimumFractionDigits = 2;
+            chart.DataToolTipValueFormatSpecifiers = new object[] { numberFormatSpecifier4 };
+            var numberFormatSpecifier6 = new NumberFormatSpecifier();
+            numberFormatSpecifier6.Style = "currency";
+            numberFormatSpecifier6.MinimumFractionDigits = 0;
+            chart.YAxisLabelFormatSpecifiers = new object[] { numberFormatSpecifier6 };
 
         };
     }
@@ -99,7 +68,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

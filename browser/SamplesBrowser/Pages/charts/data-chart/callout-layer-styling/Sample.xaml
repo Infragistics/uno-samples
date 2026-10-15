@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Charts.DataChart.CalloutLayerStyling"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                                mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,33 +15,33 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataChart
           ShouldAutoExpandMarginForInitialLabels="true"
           ComputedPlotAreaMarginMode="Series"
-          Name="chart">
+          x:Name="chart">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryXAxis
-                  Name="xAxis"
+                  x:Name="xAxis"
                   ItemsSource="{Binding CountryRenewableElectricity}"
                   Label="Year">
                   </igCharts:CategoryXAxis>
                   <igCharts:NumericYAxis
-                  Name="yAxis"
+                  x:Name="yAxis"
                   Title="TWh"
                   LabelLocation="OutsideRight">
                   </igCharts:NumericYAxis>
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:LineSeries
-                  Name="lineSeries1"
+                  x:Name="lineSeries1"
                   XAxis="{Binding ElementName=xAxis}"
                   YAxis="{Binding ElementName=yAxis}"
                   ItemsSource="{Binding CountryRenewableElectricity}"
@@ -50,7 +51,7 @@
                   ShouldHideAutoCallouts="false">
                   </igCharts:LineSeries>
                   <igCharts:CalloutLayer
-                  Name="CalloutLayer1"
+                  x:Name="CalloutLayer1"
                   IsAutoCalloutBehaviorEnabled="true"
                   CalloutLeaderBrush="#8961a9"
                   CalloutOutline="#8961a9"
@@ -62,6 +63,6 @@
               </igCharts:XamDataChart.Series>
           </igCharts:XamDataChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

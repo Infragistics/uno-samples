@@ -1,16 +1,16 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Gauges.RadialGauge.Animation;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
 using Microsoft.UI.Xaml.Media;
+using Windows.UI;
+using Microsoft.UI;
 using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using Infragistics.Controls.Gauges;
-using Microsoft.UI;
-using Windows.UI;
 
-namespace SamplesBrowser.Pages.Gauges.RadialGauge.Animation;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -43,7 +43,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void RadialGaugeAnimateToGauge1(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -75,15 +74,13 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
 
         gauge.LabelInterval = 5;
         gauge.LabelExtent = 0.915;
-        gauge.FontFamily = new FontFamily("Verdana");
-        gauge.FontSize = 15; 
+        gauge.FontSize = 15;
 
         gauge.Ranges.Clear();
         gauge.Ranges.Add(new RadialGaugeRange { StartValue = 0, EndValue = 5,  Brush = new SolidColorBrush(Color.FromArgb(0xFF, 0xA4, 0xBD, 0x29)), Outline = new SolidColorBrush(Color.FromArgb(0xFF, 0xA4, 0xBD, 0x29)), InnerStartExtent = 0.3, InnerEndExtent = 0.3, OuterStartExtent = 0.9, OuterEndExtent = 0.9 });
         gauge.Ranges.Add(new RadialGaugeRange { StartValue = 5, EndValue = 10, Brush = new SolidColorBrush(Color.FromArgb(0xFF, 0xF8, 0x62, 0x32)), Outline = new SolidColorBrush(Color.FromArgb(0xFF, 0xF8, 0x62, 0x32)), InnerStartExtent = 0.3, InnerEndExtent = 0.3, OuterStartExtent = 0.9, OuterEndExtent = 0.9 });
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void RadialGaugeAnimateToGauge2(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -115,15 +112,13 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
 
         gauge.LabelInterval = 50;
         gauge.LabelExtent = 0.935;
-        gauge.FontFamily = new FontFamily("Verdana");
-        gauge.FontSize = 13; 
+        gauge.FontSize = 13;
 
         gauge.Ranges.Clear();
         gauge.Ranges.Add(new RadialGaugeRange { StartValue = 100, EndValue = 150, Brush = new SolidColorBrush(Color.FromArgb(0xFF, 0x32, 0xF8, 0x45)), Outline = new SolidColorBrush(Color.FromArgb(0xFF, 0x32, 0xF8, 0x45)), InnerStartExtent = 0.3, InnerEndExtent = 0.3, OuterStartExtent = 0.9, OuterEndExtent = 0.9 });
         gauge.Ranges.Add(new RadialGaugeRange { StartValue = 150, EndValue = 200, Brush = new SolidColorBrush(Color.FromArgb(0xFF, 0xBF, 0x32, 0xF8)), Outline = new SolidColorBrush(Color.FromArgb(0xFF, 0xBF, 0x32, 0xF8)), InnerStartExtent = 0.3, InnerEndExtent = 0.3, OuterStartExtent = 0.9, OuterEndExtent = 0.9 });
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void RadialGaugeAnimateToGauge3(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -137,7 +132,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
 
         gauge.LabelExtent = 0.6;
         gauge.LabelInterval = 10;
-        gauge.FontFamily = new FontFamily("Verdana");
         gauge.FontSize = 15;
 
         gauge.ScaleStartAngle = 135;
@@ -177,7 +171,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         gauge.Ranges.Clear();
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void RadialGaugeAnimateToGauge4(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -191,7 +184,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
 
         gauge.LabelInterval = 5;
         gauge.LabelExtent = 0.71;
-        gauge.FontFamily = new FontFamily("Verdana");
         gauge.FontSize = 15;
 
         gauge.IsNeedleDraggingEnabled = true;
@@ -237,7 +229,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

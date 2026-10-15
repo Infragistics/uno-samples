@@ -1,18 +1,15 @@
 ﻿//begin data
-#if !TESTING
-using Infragistics.Controls.DataSource;
-#endif
+    using Infragistics.Controls.DataSource;
 
-    public class NorthwindOrders: ODataVirtualDataSource
+    // WinUI has no product OData data source; the samples browser supplies ODataVirtualDataSource.
+    // Samples bind ItemsSource to an instance of this type, so it is the data source itself.
+    public class NorthwindOrders : ODataVirtualDataSource
     {
-#if !TESTING
         public NorthwindOrders()
         {
-            //var vds = new ODataVirtualDataSource();
             this.BaseUri = "https://services.odata.org/V4/Northwind/Northwind.svc";
             this.EntitySet = "Orders";
             this.PageSizeRequested = 200;
         }
-#endif
     }
     //end data

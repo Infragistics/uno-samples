@@ -1,7 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Maps.GeoMap.TypeScatterDensitySeries;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Controls.Maps;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,6 @@ using System.Windows;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 
-
-namespace SamplesBrowser.Pages.Maps.GeoMap.TypeScatterDensitySeries;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {

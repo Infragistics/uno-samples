@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Grids.DataGrid.ColumnFilterOperands"
     xmlns:ig="using:Infragistics.Controls"
-                xmlns:igDataGrids="using:Infragistics.Controls.Grids"
-                        mc:Ignorable="d">
+    xmlns:igDataGrids="using:Infragistics.Controls.Grids"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,32 +15,26 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igDataGrids:XamDataGrid
-          Name="grid"
-          ItemsSource="{Binding EmployeesSalesData}"
           AutoGenerateColumns="false"
+          x:Name="grid"
+          ItemsSource="{Binding EmployeesSalesData}"
           DefaultColumnMinWidth="100"
           IsColumnOptionsEnabled="true"
           FilterUIType="FilterRow">
               <igDataGrids:XamDataGrid.Columns>
                   <igDataGrids:TextColumn
                   Field="Country"
-                  HeaderText="Code-behind Filter*">
-                      <igDataGrids:TextColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="170">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TextColumn.Width>
+                  HeaderText="Code-behind Filter*"
+                  Width="*>170">
                   </igDataGrids:TextColumn>
                   <igDataGrids:NumericColumn
                   Field="Age"
@@ -48,28 +43,13 @@
                   <igDataGrids:NumericColumn
                   Field="Sales"
                   HeaderText="In-line Filter***"
+                  Width="*>120"
                   PositivePrefix="$"
                   ShowGroupingSeparator="true">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="120">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
-                      <igDataGrids:NumericColumn.FilterOperands>
-                          <igDataGrids:FilterOperand
-                          EditorType="Numeric"
-                          IsInputRequired="false"
-                          DisplayName="(Custom) In-Line Filter"
-                          FilterRequested="DataGridFilterSalesLessThanOrEqual300k"
-                          >
-                          </igDataGrids:FilterOperand>
-                      </igDataGrids:NumericColumn.FilterOperands>
                   </igDataGrids:NumericColumn>
               </igDataGrids:XamDataGrid.Columns>
           </igDataGrids:XamDataGrid>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

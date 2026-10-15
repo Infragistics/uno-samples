@@ -172,7 +172,10 @@ $copiedServicesByName = @{}
 # doesn't (App.xaml.cs etc. — the browser has its own App/MainWindow).
 $skipPerSampleCs = @(
     'App.xaml.cs',
-    'MainWindow.xaml.cs'
+    'MainWindow.xaml.cs',
+    # The Uno single-project shell's own files.
+    'MainPage.xaml.cs',
+    'GlobalUsings.cs'
 )
 
 foreach ($s in $sampleList) {

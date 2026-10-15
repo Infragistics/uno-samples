@@ -31,6 +31,7 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        if (SmokeRunner.TryStart(this)) return;
         MainWindow = new Window();
 #if DEBUG
         MainWindow.UseStudio();

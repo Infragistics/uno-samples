@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Maps.GeoMap.BindingShpPolygons"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-            xmlns:igMaps="using:Infragistics.Controls.Maps"
-                            mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igMaps="using:Infragistics.Controls.Maps"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,26 +16,24 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igMaps:XamGeographicMap
-          Name="map"
-          
-          
+          x:Name="map"
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicShapeSeries
-                  Name="GeographicShapeSeries1"
+                  x:Name="GeographicShapeSeries1"
                   Brush="#4c929292"
                   Outline="black"
                   Thickness="1">
-                            <igMaps:GeographicShapeSeries.ShapefileDataSource>
+                      <igMaps:GeographicShapeSeries.ShapefileDataSource>
                           <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/WorldCountries.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/WorldCountries.dbf">
@@ -44,6 +43,6 @@
               </igMaps:XamGeographicMap.Series>
           </igMaps:XamGeographicMap>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

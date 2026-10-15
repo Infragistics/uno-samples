@@ -1,21 +1,21 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.CategoryChart.ValueLines;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
-using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using Infragistics.Controls.Charts;
+using Infragistics.Controls.Description;
 using System;
 
-namespace SamplesBrowser.Pages.Charts.CategoryChart.ValueLines;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
     public string[] dropDownValues1 { get; } = new string[] { "Auto", "Average", "GlobalAverage", "GlobalMaximum", "GlobalMinimum", "Maximum", "Minimum" };
     public string[] dropDownNames1 { get; } = new string[] { "Auto", "Average", "GlobalAverage", "GlobalMaximum", "GlobalMinimum", "Maximum", "Minimum" };
     public string[] includedProperties1 { get; } = new string[] { "Year", "America", "Europe" };
-    public string[] valueLines1 { get; } = new string[] {  };
+    public ValueModeCollection valueLines1 { get; } = new ValueModeCollection { ValueLayerValueMode.Auto };
 
     public Sample()
     {
@@ -59,7 +59,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionChangedEventHandler
     public void EditorChangeUpdateValueLines(object sender, PropertyEditorPropertyDescriptionChangedEventArgs args)
     {
         var item = (PropertyEditorPropertyDescription)sender;
@@ -72,7 +71,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

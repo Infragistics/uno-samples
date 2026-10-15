@@ -1,9 +1,15 @@
 ﻿//begin async data
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class SalesPersonsData : List<SalesPerson>
     {
+        public static Task<SalesPersonsData> Fetch()
+        {
+            return Task.FromResult(new SalesPersonsData());
+        }
+
         public SalesPersonsData() : this(8000) { }
 
         public SalesPersonsData(int count)

@@ -1,14 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-public class SelectableDataItem
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+public class SelectableDataItem : INotifyPropertyChanged
 {
-    public string Category { get; set; }
-    public double DataValue { get; set; }
-    public double SelectedValue { get; set; }
+    private string _category;
+    public string Category
+    {
+        get { return _category; }
+        set { _category = value; OnPropertyChanged("Category"); }
+    }
+    private double _dataValue;
+    public double DataValue
+    {
+        get { return _dataValue; }
+        set { _dataValue = value; OnPropertyChanged("DataValue"); }
+    }
+    private double _selectedValue;
+    public double SelectedValue
+    {
+        get { return _selectedValue; }
+        set { _selectedValue = value; OnPropertyChanged("SelectedValue"); }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged(string name)
+    {
+        if (PropertyChanged != null)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(name));
+        }
+    }
 }
 
 public class SelectableData
-    : List<SelectableDataItem>
+    : ObservableCollection<SelectableDataItem>
 {
     public SelectableData()
     {

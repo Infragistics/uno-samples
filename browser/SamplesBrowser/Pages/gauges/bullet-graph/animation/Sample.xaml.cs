@@ -1,7 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Gauges.BulletGraph.Animation;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
@@ -10,7 +11,6 @@ using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using Infragistics.Controls.Gauges;
 
-namespace SamplesBrowser.Pages.Gauges.BulletGraph.Animation;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -43,7 +43,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void BulletGraphAnimateToGauge1(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -82,7 +81,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         gauge.Ranges.Add(new LinearGraphRange { StartValue = 40, EndValue = 80, Brush = new SolidColorBrush(Color.FromArgb(0xFF, 0xF8, 0x62, 0x32)), Outline = new SolidColorBrush(Color.FromArgb(0xFF, 0xF8, 0x62, 0x32)), InnerStartExtent = 0.2, InnerEndExtent = 0.2, OuterStartExtent = 0.95, OuterEndExtent = 0.95 });
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void BulletGraphAnimateToGauge2(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -122,7 +120,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         gauge.Ranges.Add(new LinearGraphRange { StartValue = 175, EndValue = 200, Brush = new SolidColorBrush(Color.FromArgb(0xFF, 0x4F, 0xB9, 0xFF)), Outline = new SolidColorBrush(Color.FromArgb(0xFF, 0x4F, 0xB9, 0xFF)), InnerStartExtent = 0.2, InnerEndExtent = 0.2, OuterStartExtent = 0.95, OuterEndExtent = 0.95 });
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void BulletGraphAnimateToGauge3(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var gauge = this.gauge;
@@ -163,7 +160,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

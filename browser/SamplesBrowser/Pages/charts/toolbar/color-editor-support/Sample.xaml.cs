@@ -1,14 +1,14 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.Toolbar.ColorEditorSupport;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using Infragistics.Controls.Charts;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Markup;
 
-namespace SamplesBrowser.Pages.Charts.Toolbar.ColorEditorSupport;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -38,8 +38,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-
-    //WPF: Infragistics.Controls.Layouts.ToolCommandEventHandler
     public void ColorEditorToggleSeriesBrush(object sender, ToolCommandEventArgs e)
     {
     	var target = (XamDataChart)((XamToolbar)sender).Target;
@@ -52,7 +50,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
