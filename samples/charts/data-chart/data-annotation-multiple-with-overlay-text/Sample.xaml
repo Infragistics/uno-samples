@@ -67,7 +67,7 @@
                   Brush="green"
                   IsAxisAnnotationEnabled="true"
                   Thickness="2"
-                  DashArray="2, 4"
+                  DashArray="2,4"
                   Axis="{Binding ElementName=yAxis}"
                   OverlayText="OverlayText on ValueOverlay"
                   OverlayTextLocation="OutsideBottomCenter">
@@ -77,7 +77,7 @@
                   ValueMode="Average"
                   Brush="purple"
                   Thickness="2"
-                  DashArray="2, 4"
+                  DashArray="2,4"
                   TargetAxis="{Binding ElementName=yAxis}"
                   IsAxisAnnotationEnabled="true"
                   OverlayText="OverlayText on ValueLayer (Average)"
