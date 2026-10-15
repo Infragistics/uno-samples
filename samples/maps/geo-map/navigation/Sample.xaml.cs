@@ -9,6 +9,7 @@ using System.Windows;
 using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using System.Collections.Generic;
+using Windows.Foundation;
 
 namespace Sample;
 

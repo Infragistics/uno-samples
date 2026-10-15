@@ -29,7 +29,7 @@
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicShapeSeries
                   Name="GeographicShapeSeries1"
-                  StyleShape="ShapeFileStyling">
+                  >
                   </igMaps:GeographicShapeSeries>
               </igMaps:XamGeographicMap.Series>
           </igMaps:XamGeographicMap>

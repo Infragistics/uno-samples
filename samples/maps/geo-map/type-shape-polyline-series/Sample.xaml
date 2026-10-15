@@ -25,17 +25,19 @@
                 <Grid Grid.Column="1">
           <igMaps:XamGeographicMap
           Name="map"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicPolylineSeries
                   Name="GeographicPolylineSeries1"
                   Outline="red">
-                      <igMaps:GeographicPolylineSeries.ShapefileDataSource>
-                          <igMaps:ShapeDataSource
+                      <igMaps:GeographicPolylineSeries.ItemsSource>
+                          <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/AmericanRoads.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/AmericanRoads.dbf">
-                          </igMaps:ShapeDataSource>
-                      </igMaps:GeographicPolylineSeries.ShapefileDataSource>
+                          </ig:ShapeDataSource>
+                      </igMaps:GeographicPolylineSeries.ItemsSource>
                   </igMaps:GeographicPolylineSeries>
               </igMaps:XamGeographicMap.Series>
           </igMaps:XamGeographicMap>

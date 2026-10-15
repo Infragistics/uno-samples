@@ -35,7 +35,6 @@
           Legend="{Binding ElementName=legend}"
           IsHorizontalZoomEnabled="false"
           IsVerticalZoomEnabled="false"
-          MarkerTypes="{Binding markerTypes1}"
           MarkerBrushes="#ee5879 #c4c4c4 #9af2e4"
           MarkerOutlines="white"
           Brushes="#ee5879 #c4c4c4 #9af2e4"
@@ -45,6 +44,11 @@
           YAxisLabelLeftMargin="0"
           Thickness="2"
           ComputedPlotAreaMarginMode="Series">
+                    <igCharts:XamCategoryChart.MarkerTypes>
+                        <igCharts:MarkerTypeCollection>
+                            <igCharts:MarkerType>Triangle</igCharts:MarkerType>
+                        </igCharts:MarkerTypeCollection>
+                    </igCharts:XamCategoryChart.MarkerTypes>
           </igCharts:XamCategoryChart>
         </Grid>
               </Grid>

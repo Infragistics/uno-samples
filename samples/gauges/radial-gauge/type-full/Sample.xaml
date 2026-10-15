@@ -30,7 +30,6 @@
           Interval="5"
           LabelInterval="5"
           LabelExtent="0.71"
-          Font="15px Verdana,Arial"
           IsNeedleDraggingEnabled="true"
           NeedleEndExtent="0.5"
           NeedleShape="Triangle"

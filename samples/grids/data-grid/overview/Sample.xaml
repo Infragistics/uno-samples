@@ -15,13 +15,13 @@
       </Grid.RowDefinitions>
       <StackPanel>
                                 <Grid>
-          <ig:DataGridToolbar
+          <!--<ig:DataGridToolbar
           Name="toolbar"
           TargetGrid="{Binding ElementName=grid}"
           ToolbarTitle="Sales Team"
           ColumnChooser="true"
           ColumnPinning="true">
-          </ig:DataGridToolbar>
+          </ig:DataGridToolbar>-->
         </Grid>
                       </StackPanel>
       <Grid Grid.Row="1">
@@ -49,7 +49,9 @@
           ColumnMovingAnimationMode="SlideOver"
           ColumnShowingAnimationMode="SlideFromRightAndFadeIn"
           ColumnHidingAnimationMode="SlideToRightAndFadeOut"
-          SelectionMode="SingleRow">
+          SelectionMode="SingleRow"
+          
+          >
               <igDataGrids:XamDataGrid.GroupDescriptions>
                   <igDataGrids:ColumnGroupDescription
                   Field="Country"

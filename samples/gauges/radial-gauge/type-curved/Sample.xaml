@@ -31,7 +31,6 @@
           TransitionDuration="500"
           LabelExtent="0.55"
           LabelInterval="20"
-          Font="15px Verdana,Arial"
           ScaleStartAngle="135"
           ScaleEndAngle="45"
           ScaleBrush="#00000000"

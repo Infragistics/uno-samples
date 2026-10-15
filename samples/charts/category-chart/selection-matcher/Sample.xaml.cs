@@ -74,27 +74,27 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     {
     	var chart = this.chart;
 
-    	ChartSelection selection = new ChartSelection();
-    	var s = chart.Series.Where(s => ((AnchoredCategorySeries)s).ValueMemberPath == "Hydro").FirstOrDefault();
-    	selection.Item = ((IList)s.ItemsSource)[1];
-    	SeriesMatcher matcher = new SeriesMatcher();
-    	matcher.MemberPath = "Hydro";
-    	matcher.MemberPathType = "ValueMemberPath";
-    	selection.Matcher = matcher;
+    	//ChartSelection selection = new ChartSelection();
+    	//var s = chart.Series.Where(s => ((AnchoredCategorySeries)s).ValueMemberPath == "Hydro").FirstOrDefault();
+    	//selection.Item = ((IList)s.ItemsSource)[1];
+    	//SeriesMatcher matcher = new SeriesMatcher();
+    	//matcher.MemberPath = "Hydro";
+    	//matcher.MemberPathType = "ValueMemberPath";
+    	//selection.Matcher = matcher;
 
-    	chart.SelectedSeriesItems.Add(selection);
+    	//chart.SelectedSeriesItems.Add(selection);
 
-    	SeriesMatcher matcher2 = new SeriesMatcher();
-    	ChartSelection selection2 = new ChartSelection();
-    	selection2 = new ChartSelection();
-    	s = chart.Series.Where(s => ((AnchoredCategorySeries)s).ValueMemberPath == "Wind").FirstOrDefault();
-    	selection2.Item = ((IList)s.ItemsSource)[1];
-    	matcher2.MemberPath = "Wind";
-    	matcher2.MemberPathType = "ValueMemberPath";
+    	//SeriesMatcher matcher2 = new SeriesMatcher();
+    	//ChartSelection selection2 = new ChartSelection();
+    	//selection2 = new ChartSelection();
+    	//s = chart.Series.Where(s => ((AnchoredCategorySeries)s).ValueMemberPath == "Wind").FirstOrDefault();
+    	//selection2.Item = ((IList)s.ItemsSource)[1];
+    	//matcher2.MemberPath = "Wind";
+    	//matcher2.MemberPathType = "ValueMemberPath";
 
-    	selection.Matcher = matcher2;
+    	//selection.Matcher = matcher2;
 
-    	chart.SelectedSeriesItems.Add(selection2);
+    	//chart.SelectedSeriesItems.Add(selection2);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

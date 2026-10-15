@@ -47,7 +47,6 @@
           MinorTickBrush="#00000000"
           LabelInterval="5"
           LabelExtent="0.935"
-          Font="15px Verdana,Arial"
           RangeBrushes="#a4bd29 #f86232"
           RangeOutlines="#a4bd29 #f86232">
               <igGauges:XamRadialGauge.Ranges>

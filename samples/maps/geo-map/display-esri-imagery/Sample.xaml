@@ -25,10 +25,11 @@
                 <Grid Grid.Column="0">
           <igMaps:XamGeographicMap
           Name="streetMap"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.BackgroundContent>
                   <igMaps:ArcGISOnlineMapImagery
-                  Name="streetMapImagery"
                   MapServerUri="WorldStreetMap">
                   </igMaps:ArcGISOnlineMapImagery>
               </igMaps:XamGeographicMap.BackgroundContent>
@@ -37,10 +38,11 @@
                 <Grid Grid.Column="1">
           <igMaps:XamGeographicMap
           Name="oceansMap"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.BackgroundContent>
                   <igMaps:ArcGISOnlineMapImagery
-                  Name="oceansMapImagery"
                   MapServerUri="WorldOceansMap">
                   </igMaps:ArcGISOnlineMapImagery>
               </igMaps:XamGeographicMap.BackgroundContent>
@@ -49,10 +51,11 @@
                 <Grid Grid.Column="2">
           <igMaps:XamGeographicMap
           Name="topographicMap"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.BackgroundContent>
                   <igMaps:ArcGISOnlineMapImagery
-                  Name="topographicMapImagery"
                   MapServerUri="WorldTopographicMap">
                   </igMaps:ArcGISOnlineMapImagery>
               </igMaps:XamGeographicMap.BackgroundContent>

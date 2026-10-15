@@ -63,7 +63,7 @@
                           IsInputRequired="false"
                           DisplayName="(Custom) In-Line Filter"
                           FilterRequested="DataGridFilterSalesLessThanOrEqual300k"
-                          Name="filterOperand1">
+                          >
                           </igDataGrids:FilterOperand>
                       </igDataGrids:NumericColumn.FilterOperands>
                   </igDataGrids:NumericColumn>

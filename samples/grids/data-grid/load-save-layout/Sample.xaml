@@ -42,13 +42,13 @@
           </igLayouts:XamPropertyEditorPanel>
         </Grid>
                                 <Grid>
-          <ig:DataGridToolbar
+          <!--<ig:DataGridToolbar
           Name="toolbar"
           TargetGrid="{Binding ElementName=grid}"
           ToolbarTitle="Sales Team"
           ColumnChooser="true"
           ColumnPinning="true">
-          </ig:DataGridToolbar>
+          </ig:DataGridToolbar>-->
         </Grid>
                       </StackPanel>
       <Grid Grid.Row="1">
@@ -72,7 +72,9 @@
           SelectionMode="SingleRow"
           CornerRadiusTopLeft="0"
           CornerRadiusTopRight="0"
-          ColumnMovingAnimationMode="Auto">
+          ColumnMovingAnimationMode="Auto"
+          
+          >
               <igDataGrids:XamDataGrid.GroupDescriptions>
                   <igDataGrids:ColumnGroupDescription
                   Field="Country"

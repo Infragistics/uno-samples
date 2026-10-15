@@ -11,7 +11,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
-using Microsoft.UI;
 
 namespace Sample;
 
@@ -72,7 +71,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
             MarkerBrush = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
             MarkerOutline = new SolidColorBrush(Color.FromArgb(255, 135, 5, 255)),
             Thickness = 1,
-            MarkerType = MarkerType.Circle
+            MarkerType = Infragistics.Controls.Charts.MarkerType.Circle
         };
         map.Series.Add(series);
     }

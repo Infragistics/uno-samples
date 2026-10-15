@@ -38,7 +38,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         {
             if (_salesPersonsData == null)
             {
-                SalesPersonsData.Fetch().ContinueWith((t) => {_salesPersonsData = t.Result;  OnPropertyChanged("SalesPersonsData"); }, System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
+                _salesPersonsData = new SalesPersonsData(10000);
             }
             return _salesPersonsData;
         }

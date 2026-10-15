@@ -25,18 +25,19 @@
                 <Grid Grid.Column="1">
           <igMaps:XamGeographicMap
           Name="map"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicPolylineSeries
                   Name="GeographicPolylineSeries1"
                   ShapeFilterResolution="0"
-                  ShapeStrokeThickness="3"
-                  ShapeStroke="rgb(82, 82, 82, 0.4)">
+                  ShapeStrokeThickness="3">
                       <igMaps:GeographicPolylineSeries.ShapefileDataSource>
-                          <igMaps:ShapeDataSource
+                          <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/WorldCableRoutes.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/WorldCableRoutes.dbf">
-                          </igMaps:ShapeDataSource>
+                          </ig:ShapeDataSource>
                       </igMaps:GeographicPolylineSeries.ShapefileDataSource>
                   </igMaps:GeographicPolylineSeries>
               </igMaps:XamGeographicMap.Series>

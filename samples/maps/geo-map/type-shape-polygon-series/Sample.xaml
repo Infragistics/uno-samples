@@ -25,6 +25,8 @@
                 <Grid Grid.Column="1">
           <igMaps:XamGeographicMap
           Name="map"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicShapeSeries
@@ -32,11 +34,11 @@
                   Outline="black"
                   Thickness="0.5"
                   MarkerCollisionAvoidance="Omit">
-                      <igMaps:GeographicShapeSeries.ShapefileDataSource>
-                          <igMaps:ShapeDataSource
+                            <igMaps:GeographicShapeSeries.ShapefileDataSource>
+                          <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/world_countries_all.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/world_countries_all.dbf">
-                          </igMaps:ShapeDataSource>
+                          </ig:ShapeDataSource>
                       </igMaps:GeographicShapeSeries.ShapefileDataSource>
                   </igMaps:GeographicShapeSeries>
               </igMaps:XamGeographicMap.Series>

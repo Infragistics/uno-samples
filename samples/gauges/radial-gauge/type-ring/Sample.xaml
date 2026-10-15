@@ -30,7 +30,6 @@
           TransitionDuration="500"
           LabelInterval="10"
           LabelExtent="0.85"
-          Font="15px Verdana,Arial"
           NeedleShape="None"
           NeedlePivotShape="None"
           ScaleStartAngle="0"

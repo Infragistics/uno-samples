@@ -25,6 +25,8 @@
                 <Grid Grid.Column="1">
           <igMaps:XamGeographicMap
           Name="map"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicProportionalSymbolSeries
@@ -37,17 +39,17 @@
                   LongitudeMemberPath="X"
                   MarkerOutline="#4c000000">
                       <igMaps:GeographicProportionalSymbolSeries.RadiusScale>
-                          <igMaps:SizeScale
+                          <igCharts:SizeScale
                           MinimumValue="4"
                           MaximumValue="60">
-                          </igMaps:SizeScale>
+                          </igCharts:SizeScale>
                       </igMaps:GeographicProportionalSymbolSeries.RadiusScale>
                       <igMaps:GeographicProportionalSymbolSeries.FillScale>
-                          <igMaps:ValueBrushScale
+                                <igCharts:ValueBrushScale
                           Brushes="#660ec20e #66fcaa20 #66fc2020"
                           MinimumValue="0"
                           MaximumValue="30">
-                          </igMaps:ValueBrushScale>
+                          </igCharts:ValueBrushScale>
                       </igMaps:GeographicProportionalSymbolSeries.FillScale>
                   </igMaps:GeographicProportionalSymbolSeries>
               </igMaps:XamGeographicMap.Series>

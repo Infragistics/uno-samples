@@ -28,7 +28,7 @@
           Zoomable="true">
               <igMaps:XamGeographicMap.BackgroundContent>
                   <igMaps:OpenStreetMapImagery
-                  Name="osmImagery">
+                  >
                   </igMaps:OpenStreetMapImagery>
               </igMaps:XamGeographicMap.BackgroundContent>
           </igMaps:XamGeographicMap>

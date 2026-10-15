@@ -3,56 +3,57 @@ using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
 using Infragistics.Portable.Description;
+using Infragistics.Controls;
 
 namespace Sample;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
-    private NumberFormatSpecifier[] _numberFormatSpecifier1 = null;
-    public NumberFormatSpecifier[] numberFormatSpecifier1
-    {
-        get
-        {
-            if (_numberFormatSpecifier1 == null)
-            {
-                var numberFormatSpecifier1 = new System.Collections.Generic.List<NumberFormatSpecifier>();
+    //private NumberFormatSpecifier[] _numberFormatSpecifier1 = null;
+    //public NumberFormatSpecifier[] numberFormatSpecifier1
+    //{
+    //    get
+    //    {
+    //        if (_numberFormatSpecifier1 == null)
+    //        {
+    //            var numberFormatSpecifier1 = new System.Collections.Generic.List<NumberFormatSpecifier>();
 
-                numberFormatSpecifier1.Add(numberFormatSpecifier2);
-                _numberFormatSpecifier1 = numberFormatSpecifier1.ToArray();
-            }
-            return _numberFormatSpecifier1;
-        }
-    }
-    private NumberFormatSpecifier[] _numberFormatSpecifier3 = null;
-    public NumberFormatSpecifier[] numberFormatSpecifier3
-    {
-        get
-        {
-            if (_numberFormatSpecifier3 == null)
-            {
-                var numberFormatSpecifier3 = new System.Collections.Generic.List<NumberFormatSpecifier>();
+    //            numberFormatSpecifier1.Add(numberFormatSpecifier2);
+    //            _numberFormatSpecifier1 = numberFormatSpecifier1.ToArray();
+    //        }
+    //        return _numberFormatSpecifier1;
+    //    }
+    //}
+    //private NumberFormatSpecifier[] _numberFormatSpecifier3 = null;
+    //public NumberFormatSpecifier[] numberFormatSpecifier3
+    //{
+    //    get
+    //    {
+    //        if (_numberFormatSpecifier3 == null)
+    //        {
+    //            var numberFormatSpecifier3 = new System.Collections.Generic.List<NumberFormatSpecifier>();
 
-                numberFormatSpecifier3.Add(numberFormatSpecifier4);
-                _numberFormatSpecifier3 = numberFormatSpecifier3.ToArray();
-            }
-            return _numberFormatSpecifier3;
-        }
-    }
-    private NumberFormatSpecifier[] _numberFormatSpecifier5 = null;
-    public NumberFormatSpecifier[] numberFormatSpecifier5
-    {
-        get
-        {
-            if (_numberFormatSpecifier5 == null)
-            {
-                var numberFormatSpecifier5 = new System.Collections.Generic.List<NumberFormatSpecifier>();
+    //            numberFormatSpecifier3.Add(numberFormatSpecifier4);
+    //            _numberFormatSpecifier3 = numberFormatSpecifier3.ToArray();
+    //        }
+    //        return _numberFormatSpecifier3;
+    //    }
+    //}
+    //private NumberFormatSpecifier[] _numberFormatSpecifier5 = null;
+    //public NumberFormatSpecifier[] numberFormatSpecifier5
+    //{
+    //    get
+    //    {
+    //        if (_numberFormatSpecifier5 == null)
+    //        {
+    //            var numberFormatSpecifier5 = new System.Collections.Generic.List<NumberFormatSpecifier>();
 
-                numberFormatSpecifier5.Add(numberFormatSpecifier6);
-                _numberFormatSpecifier5 = numberFormatSpecifier5.ToArray();
-            }
-            return _numberFormatSpecifier5;
-        }
-    }
+    //            numberFormatSpecifier5.Add(numberFormatSpecifier6);
+    //            _numberFormatSpecifier5 = numberFormatSpecifier5.ToArray();
+    //        }
+    //        return _numberFormatSpecifier5;
+    //    }
+    //}
 
     public Sample()
     {
