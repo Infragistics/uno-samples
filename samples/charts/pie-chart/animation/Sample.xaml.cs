@@ -112,6 +112,8 @@ public static class PieChartAnimation
     {
         Stop();
         chart = target;
+        // Leaving the sample stops the animation, so the timer does not outlive the chart.
+        chart.Unloaded += Chart_Unloaded;
         chart.StartAngle = 0;
         chart.RadiusFactor = 0.1;
         timer = new DispatcherTimer();
@@ -127,6 +129,16 @@ public static class PieChartAnimation
             timer.Stop();
             timer = null;
         }
+        if (chart != null)
+        {
+            chart.Unloaded -= Chart_Unloaded;
+        }
+    }
+
+    private static void Chart_Unloaded(object sender, RoutedEventArgs e)
+    {
+        Stop();
+        chart = null;
     }
 
     private static void Tick()
