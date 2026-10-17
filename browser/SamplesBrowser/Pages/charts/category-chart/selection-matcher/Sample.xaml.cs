@@ -1,14 +1,14 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.CategoryChart.SelectionMatcher;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
 using Infragistics.Controls;
 using Infragistics.Controls.Charts;
 using System.Collections;
 using System.Threading;
 
-namespace SamplesBrowser.Pages.Charts.CategoryChart.SelectionMatcher;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -60,12 +60,13 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
 
     private Timer _timer;
 
-    //WPF: System.Action
     public void SelectionMatcherOnViewInit()
     {
+    	// The timer fires on a pool thread; the chart can only be touched from the UI thread.
+    	var dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
     	_timer = new Timer((state) =>
     	{
-    		AddSelection();
+    		dispatcher.TryEnqueue(() => AddSelection());
     		_timer.Dispose();
     	}, null, 100, Timeout.Infinite);
     }
@@ -73,32 +74,34 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     private void AddSelection()
     {
     	var chart = this.chart;
+    	// Shared by the category chart and data chart samples; only the category chart has ItemsSource.
+    	var data = (IList)((object)chart is XamCategoryChart categoryChart
+    		? categoryChart.ItemsSource
+    		: ((XamDataChart)(object)chart).Series[0].ItemsSource);
 
-    	//ChartSelection selection = new ChartSelection();
-    	//var s = chart.Series.Where(s => ((AnchoredCategorySeries)s).ValueMemberPath == "Hydro").FirstOrDefault();
-    	//selection.Item = ((IList)s.ItemsSource)[1];
-    	//SeriesMatcher matcher = new SeriesMatcher();
-    	//matcher.MemberPath = "Hydro";
-    	//matcher.MemberPathType = "ValueMemberPath";
-    	//selection.Matcher = matcher;
+    	ChartSelection selection = new ChartSelection();
+    	selection.Item = data[1];
+    	SeriesMatcher matcher = new SeriesMatcher();
+    	matcher.MemberPath = "Hydro";
+    	matcher.MemberPathType = "ValueMemberPath";
+    	selection.Matcher = matcher;
 
-    	//chart.SelectedSeriesItems.Add(selection);
+    	chart.SelectedSeriesItems.Add(selection);
 
-    	//SeriesMatcher matcher2 = new SeriesMatcher();
-    	//ChartSelection selection2 = new ChartSelection();
-    	//selection2 = new ChartSelection();
-    	//s = chart.Series.Where(s => ((AnchoredCategorySeries)s).ValueMemberPath == "Wind").FirstOrDefault();
-    	//selection2.Item = ((IList)s.ItemsSource)[1];
-    	//matcher2.MemberPath = "Wind";
-    	//matcher2.MemberPathType = "ValueMemberPath";
+    	SeriesMatcher matcher2 = new SeriesMatcher();
+    	ChartSelection selection2 = new ChartSelection();
+    	selection2 = new ChartSelection();
+    	selection2.Item = data[1];
+    	matcher2.MemberPath = "Wind";
+    	matcher2.MemberPathType = "ValueMemberPath";
 
-    	//selection.Matcher = matcher2;
+    	selection2.Matcher = matcher2;
 
-    	//chart.SelectedSeriesItems.Add(selection2);
+    	chart.SelectedSeriesItems.Add(selection2);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

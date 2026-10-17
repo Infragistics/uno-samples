@@ -41,7 +41,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionChangedEventHandler
     public void RadialGaugeToggleOpticalScaling(object sender, PropertyEditorPropertyDescriptionChangedEventArgs args)
     {
         var gauge = this.gauge;
@@ -49,7 +48,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         gauge.OpticalScalingEnabled = args.NewValue is bool b && b;
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionChangedEventHandler
     public void RadialGaugeSetSize(object sender, PropertyEditorPropertyDescriptionChangedEventArgs args)
     {
         var gauge = this.gauge;
@@ -60,7 +58,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -69,3 +67,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+

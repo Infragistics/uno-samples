@@ -176,7 +176,10 @@ $copiedServicesByName = @{}
 # doesn't (App.xaml.cs etc. — the browser has its own App/MainWindow).
 $skipPerSampleCs = @(
     'App.xaml.cs',
-    'MainWindow.xaml.cs'
+    'MainWindow.xaml.cs',
+    # The Uno single-project shell's own files.
+    'MainPage.xaml.cs',
+    'GlobalUsings.cs'
 )
 
 foreach ($s in $sampleList) {
@@ -185,10 +188,14 @@ foreach ($s in $sampleList) {
     New-Item -ItemType Directory -Path $destDir -Force | Out-Null
 
     # ---- Sample.xaml ----
-    $xamlContent = Get-Content $s.XamlFile -Raw
+    $xamlContent = Get-Content $s.XamlFile -Raw -Encoding UTF8
 
     # Replace x:Class="WinUIApp.Sample" with the browser namespace
     $xamlContent = $xamlContent -replace 'x:Class="[^"]*"', "x:Class=`"$($s.Namespace).Sample`""
+
+    # Code-behind types (converters etc.) move to the page namespace along with the class,
+    # so the sample's local: xmlns has to follow them.
+    $xamlContent = $xamlContent -replace 'xmlns:local="using:[^"]*"', "xmlns:local=`"using:$($s.Namespace)`""
 
     # Normalise trailing whitespace: ensure exactly one newline at end of file
     $xamlContent = $xamlContent.TrimEnd() + "`n"
@@ -198,11 +205,25 @@ foreach ($s in $sampleList) {
     $copiedItems.Add($destXaml)
 
     # ---- Sample.xaml.cs ----
-    $csContent = Get-Content $s.CsFile -Raw
+    $csContent = Get-Content $s.CsFile -Raw -Encoding UTF8
 
     # Replace namespace declaration
     $csContent = $csContent -replace 'namespace\s+\S+\s*;', "namespace $($s.Namespace);"
     $csContent = $csContent -replace 'namespace\s+\S+\s*\{', "namespace $($s.Namespace) {"
+
+    # Sibling sample routes become namespaces (e.g. maps/geo-map/marker-type ->
+    # ...GeoMap.MarkerType) that would shadow product types of the same name. Usings declared
+    # inside the file-scoped namespace take precedence over those, so move them below it.
+    $nsLine = "namespace $($s.Namespace);"
+    if ($csContent.Contains($nsLine)) {
+        $usingPattern = '(?m)^using\s+[\w.=\s]+;[ \t]*\r?\n'
+        $usings = ([regex]::Matches($csContent.Substring(0, $csContent.IndexOf($nsLine)), $usingPattern) | ForEach-Object { $_.Value.TrimEnd() }) -join "`n"
+        if ($usings) {
+            $head = [regex]::Replace($csContent.Substring(0, $csContent.IndexOf($nsLine)), $usingPattern, '')
+            $tail = $csContent.Substring($csContent.IndexOf($nsLine) + $nsLine.Length)
+            $csContent = $head.TrimStart() + $nsLine + "`n`n" + $usings + "`n" + $tail
+        }
+    }
 
     # Normalise trailing whitespace: ensure exactly one newline at end of file
     $csContent = $csContent.TrimEnd() + "`n"
@@ -210,6 +231,23 @@ foreach ($s in $sampleList) {
     $destCs = Join-Path $destDir "Sample.xaml.cs"
     Set-Content -Path $destCs -Value $csContent -NoNewline -Encoding UTF8
     $copiedItems.Add($destCs)
+
+    # ---- SampleViewModel.cs ----
+    # Holds the sample's own inline data types, which differ per sample under the same name, so it
+    # stays with the page (namespace rewritten) instead of being deduped into Services/. Most
+    # samples have none; skip the empty template.
+    $vmFile = Join-Path $s.SrcDir "SampleViewModel.cs"
+    if (Test-Path $vmFile) {
+        $vmContent = Get-Content $vmFile -Raw -Encoding UTF8
+        if ($vmContent -match '\b(class|struct|record|enum)\s+\w') {
+            $vmContent = $vmContent -replace 'namespace\s+\S+\s*;', "namespace $($s.Namespace);"
+            $vmContent = $vmContent -replace 'namespace\s+\S+\s*\{', "namespace $($s.Namespace) {"
+            $vmContent = $vmContent.TrimEnd() + "`n"
+            $destVm = Join-Path $destDir "SampleViewModel.cs"
+            Set-Content -Path $destVm -Value $vmContent -NoNewline -Encoding UTF8
+            $copiedItems.Add($destVm)
+        }
+    }
 
     # ---- Shared data classes -> Services/ (deduped by filename) ----
     # Anything else .cs in the sample folder is a POCO data class (global
@@ -219,13 +257,13 @@ foreach ($s in $sampleList) {
     # the difference is silently lost, same trade-off Blazor's ingest accepts.
     Get-ChildItem -Path $s.SrcDir -Filter "*.cs" -File | ForEach-Object {
         $name = $_.Name
-        if ($name -eq "Sample.xaml.cs") { return }
+        if ($name -eq "Sample.xaml.cs" -or $name -eq "SampleViewModel.cs") { return }
         if ($skipPerSampleCs -contains $name) { return }
 
         if ($copiedServicesByName.ContainsKey($name)) { return }
 
         $destData = Join-Path $servicesDir $name
-        $dataContent = Get-Content $_.FullName -Raw
+        $dataContent = Get-Content $_.FullName -Raw -Encoding UTF8
         $dataContent = $dataContent.TrimEnd() + "`n"
         Set-Content -Path $destData -Value $dataContent -NoNewline -Encoding UTF8
         $copiedServicesByName[$name] = $true

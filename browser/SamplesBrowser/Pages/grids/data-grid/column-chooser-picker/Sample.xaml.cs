@@ -1,8 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Grids.DataGrid.ColumnChooserPicker;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
-namespace SamplesBrowser.Pages.Grids.DataGrid.ColumnChooserPicker;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {

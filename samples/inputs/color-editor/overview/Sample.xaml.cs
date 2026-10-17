@@ -19,9 +19,14 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         };
     }
 
+    /// <summary>The colour the editor now holds, as the reader's own code would take it.</summary>
+    public void ColorEditorValueChanged(object sender, EventArgs args)
+    {
+        Console.WriteLine("selected color changed");
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -30,3 +35,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+

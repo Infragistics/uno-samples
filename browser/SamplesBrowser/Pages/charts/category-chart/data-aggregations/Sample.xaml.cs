@@ -1,15 +1,15 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.CategoryChart.DataAggregations;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
-using Infragistics.Controls;
 using Infragistics.Controls.Layouts;
+using Infragistics.Controls;
 using Infragistics.Controls.Charts;
 using Infragistics.Controls.Description;
 using System;
 
-namespace SamplesBrowser.Pages.Charts.CategoryChart.DataAggregations;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -59,7 +59,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: System.Action
     public void PropertyEditorInitAggregationsOnViewInit()
     {
     	var editor = this.editor;
@@ -98,7 +97,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     	chart.GroupSorts = groupSortsVal;
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionChangedEventHandler
     public void EditorChangeUpdateInitialGroups(object sender, PropertyEditorPropertyDescriptionChangedEventArgs args)
     {
         var chart = this.chart;
@@ -108,7 +106,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

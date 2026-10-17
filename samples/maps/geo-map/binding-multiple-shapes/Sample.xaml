@@ -25,6 +25,8 @@
                 <Grid Grid.Column="1">
           <igMaps:XamGeographicMap
           Name="map"
+          
+          
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicShapeSeries
@@ -33,10 +35,10 @@
                   Thickness="1"
                   Brush="#d10700">
                       <igMaps:GeographicShapeSeries.ShapefileDataSource>
-                          <igMaps:ShapeDataSource
+                          <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/world_region_asia.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/world_region_asia.dbf">
-                          </igMaps:ShapeDataSource>
+                          </ig:ShapeDataSource>
                       </igMaps:GeographicShapeSeries.ShapefileDataSource>
                   </igMaps:GeographicShapeSeries>
                   <igMaps:GeographicShapeSeries
@@ -44,11 +46,11 @@
                   Outline="black"
                   Thickness="1"
                   Brush="#04b530">
-                      <igMaps:GeographicShapeSeries.ShapefileDataSource>
-                          <igMaps:ShapeDataSource
+                            <igMaps:GeographicShapeSeries.ShapefileDataSource>
+                          <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/world_region_europe.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/world_region_europe.dbf">
-                          </igMaps:ShapeDataSource>
+                          </ig:ShapeDataSource>
                       </igMaps:GeographicShapeSeries.ShapefileDataSource>
                   </igMaps:GeographicShapeSeries>
                   <igMaps:GeographicShapeSeries
@@ -56,11 +58,11 @@
                   Outline="black"
                   Thickness="1"
                   Brush="#0073d1">
-                      <igMaps:GeographicShapeSeries.ShapefileDataSource>
-                          <igMaps:ShapeDataSource
+                            <igMaps:GeographicShapeSeries.ShapefileDataSource>
+                          <ig:ShapeDataSource
                           ShapefileSource="https://static.infragistics.com/xplatform/shapes/world_region_north_america.shp"
                           DatabaseSource="https://static.infragistics.com/xplatform/shapes/world_region_north_america.dbf">
-                          </igMaps:ShapeDataSource>
+                          </ig:ShapeDataSource>
                       </igMaps:GeographicShapeSeries.ShapefileDataSource>
                   </igMaps:GeographicShapeSeries>
               </igMaps:XamGeographicMap.Series>

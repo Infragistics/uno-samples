@@ -1,10 +1,10 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Grids.DataGrid.ColumnFilterOperands;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Controls.Grids;
 
-namespace SamplesBrowser.Pages.Grids.DataGrid.ColumnFilterOperands;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -36,8 +36,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-
-    //WPF: System.Action
     public void DataGridRegisterCountryFilterOnViewInit()
     {
         var grid = this.grid;
@@ -56,11 +54,19 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         args.Expression = prop.IsEqualTo("France");
     }
 
-    //WPF: System.Action
     public void DataGridRegisterCustomAgeFilterOnViewInit()
     {
         var grid = this.grid;
         grid.ActualColumns[1].FilterOperands.Add(new CustomAgeFilter());
+        var salesFilter = new FilterOperand {
+            EditorType = EditorType.Numeric,
+            IsInputRequired = false,
+            DisplayName = "(Custom) In-Line Filter"
+        };
+        salesFilter.FilterRequested += (sender, args) => {
+            args.Expression = args.FilterFactory.Property("Sales").IsLessThanOrEqualTo(300000);
+        };
+        grid.ActualColumns[2].FilterOperands.Add(salesFilter);
     }
 
     public class CustomAgeFilter : FilterOperand
@@ -80,14 +86,8 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.GridCustomFilterRequestedEventHandler
-    public void DataGridFilterSalesLessThanOrEqual300k(object sender, GridCustomFilterRequestedEventArgs args)
-    {
-        args.Expression = args.FilterFactory.Property("Sales").IsLessThanOrEqualTo(300000);
-    }
-
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

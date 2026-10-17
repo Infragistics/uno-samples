@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Charts.DataPieChart.Selection"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                            xmlns:igLayouts="using:Infragistics.Controls.Layouts"
-            mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,20 +16,20 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                <Grid>
+        <Grid>
           <igLayouts:XamPropertyEditorPanel
           ComponentRenderer="{Binding Renderer}"
           Target="{Binding ElementName=chart}"
           DescriptionType="DataPieChart"
           IsHorizontal="true"
           IsWrappingEnabled="true"
-          Name="propertyEditorPanel1">
+          x:Name="propertyEditorPanel1">
               <igLayouts:XamPropertyEditorPanel.Properties>
                   <igLayouts:PropertyEditorPropertyDescription
                   Label="Selection Behavior: "
                   ValueType="EnumValue"
                   PropertyPath="SelectionBehavior"
-                  Name="SelectionBehaviorEditor"
+                  x:Name="SelectionBehaviorEditor"
                   ShouldOverrideDefaultEditor="true"
                   DropDownNames="{Binding dropDownNames1}"
                   DropDownValues="{Binding dropDownValues1}"
@@ -36,23 +37,23 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="SelectionMode"
-                  Name="SelectionModeEditor"
+                  x:Name="SelectionModeEditor"
                   Label="Selection Mode: "
                   PrimitiveValue="Brighten">
                   </igLayouts:PropertyEditorPropertyDescription>
               </igLayouts:XamPropertyEditorPanel.Properties>
           </igLayouts:XamPropertyEditorPanel>
         </Grid>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataPieChart
-          Name="chart"
+          x:Name="chart"
           ItemsSource="{Binding EnergyGlobalDemand}"
           HighlightingMode="None"
           SelectionMode="Brighten"
@@ -62,6 +63,6 @@
           Thickness="3">
           </igCharts:XamDataPieChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

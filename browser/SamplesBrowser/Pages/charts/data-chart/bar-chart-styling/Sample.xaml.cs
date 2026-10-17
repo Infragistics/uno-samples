@@ -1,12 +1,14 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.DataChart.BarChartStyling;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
+using Infragistics.Controls.Charts;
 
-namespace SamplesBrowser.Pages.Charts.DataChart.BarChartStyling;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
-    public string[] allowedPositions1 { get; } = new string[] {  };
+    public CalloutPlacementPositionsCollection allowedPositions1 { get; } = new CalloutPlacementPositionsCollection { CalloutPlacementPositions.Right };
 
     public Sample()
     {
@@ -33,9 +35,8 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

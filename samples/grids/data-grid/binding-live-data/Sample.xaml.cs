@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using Infragistics.Controls.Grids;
-using System.Windows;
+using Windows.Foundation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
@@ -73,7 +73,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     public bool UseRowGrouping = true;
     public Random Random = new Random();
 
-    //WPF: System.Action
     public void DataGridLiveDataTickerOnViewInit()
     {
         OnGridGroupingAdd();
@@ -107,7 +106,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
             return;
         }
 
-        var data = grid.DataSource as List<PortfolioDataItem>;
+        var data = grid.ItemsSource as List<PortfolioDataItem>;
         if (data == null)
         {
             Task.Delay(Frequency).ContinueWith((t) => OnTimerTick(), TaskScheduler.FromCurrentSynchronizationContext());
@@ -252,13 +251,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         grid.GroupDescriptions.Add(new ColumnGroupDescription { Field = "Contract", SortDirection = Infragistics.Core.Controls.DataSource.ListSortDirection.Descending });
     }
 
-    // LiveSomePricesDisabled / LiveAllPricesDisabled are owned by
-    // DataGridToggleLiveAllPrices; IsUpdatingAllPrices, IsUpdatingSomePrices,
-    // IsTimerTicking and StartTicking are owned by
-    // DataGridLiveDataTickerOnViewInit. These handlers are merged into one
-    // sample class and only ever used together.
-
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void DataGridToggleLiveSomePrices(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         if (this.LiveSomePricesDisabled) return;
@@ -284,13 +276,9 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    // IsUpdatingAllPrices, IsUpdatingSomePrices, IsTimerTicking and StartTicking
-    // are owned by DataGridLiveDataTickerOnViewInit; these handlers are merged
-    // into one sample class and only ever used together.
     public bool LiveAllPricesDisabled = false;
     public bool LiveSomePricesDisabled = false;
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void DataGridToggleLiveAllPrices(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         if (LiveAllPricesDisabled) return;
@@ -317,11 +305,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    // UseRowGrouping, OnGridGroupingAdd and OnGridGroupingRemove are owned by
-    // DataGridLiveDataTickerOnViewInit; these handlers are merged into one
-    // sample class and only ever used together.
-
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionChangedEventHandler
     public void DataGridApplyLiveDataGrouping(object sender, PropertyEditorPropertyDescriptionChangedEventArgs args)
     {
         this.UseRowGrouping = args.NewValue is bool b && b;
@@ -331,10 +314,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
             this.OnGridGroupingRemove();
     }
 
-    // UseHeatBackground is owned by DataGridLiveDataTickerOnViewInit; these
-    // handlers are merged into one sample class and only ever used together.
-
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionChangedEventHandler
     public void DataGridToggleHeat(object sender, PropertyEditorPropertyDescriptionChangedEventArgs args)
     {
         this.UseHeatBackground = args.NewValue is bool b && b;
@@ -342,7 +321,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         if (grid != null) grid.InvalidateVisibleRows();
     }
 
-    //WPF: Infragistics.Controls.Grids.CellStyleRequestedEventHandler
     public void DataGridPriceStyleKey(object sender, CellStyleRequestedEventArgs args)
     {
         var grid = this.grid;
@@ -357,7 +335,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridPriceCellUpdating(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -401,7 +378,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         arrowText.Foreground = color;
     }
 
-    //WPF: Infragistics.Controls.Grids.DataBindingEventHandler
     public void DataGridPriceDataBound(object sender, DataBindingEventArgs args)
     {
         var item = args.CellInfo.RowItem as PortfolioDataItem;
@@ -442,7 +418,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -451,3 +427,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+

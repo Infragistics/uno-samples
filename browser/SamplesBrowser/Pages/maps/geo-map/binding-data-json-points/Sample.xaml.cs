@@ -1,7 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Maps.GeoMap.BindingDataJsonPoints;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Controls.Charts;
 using Infragistics.Controls.Maps;
 using Newtonsoft.Json.Linq;
@@ -11,8 +12,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
+using Microsoft.UI;
 
-namespace SamplesBrowser.Pages.Maps.GeoMap.BindingDataJsonPoints;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -30,7 +31,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         };
     }
 
-
     public class WorldPlaceJson
     {
         public string Name { get; set; }
@@ -41,7 +41,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         public bool Cap { get; set; }
     }
 
-    //WPF: System.Action
     public async void MapBindingDataJsonPointsOnViewInit()
     {
         var map = this.map;
@@ -71,13 +70,13 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
             MarkerBrush = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255)),
             MarkerOutline = new SolidColorBrush(Color.FromArgb(255, 135, 5, 255)),
             Thickness = 1,
-            MarkerType = Infragistics.Controls.Charts.MarkerType.Circle
+            MarkerType = MarkerType.Circle
         };
         map.Series.Add(series);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

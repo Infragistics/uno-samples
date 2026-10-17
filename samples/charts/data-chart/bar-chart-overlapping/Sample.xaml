@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                                mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,40 +15,40 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                        <Grid>
+        <Grid>
           <igCharts:Legend
-          Name="legend"
+          x:Name="legend"
           Orientation="Horizontal">
           </igCharts:Legend>
         </Grid>
-                              </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataChart
-          Name="Chart"
+          x:Name="Chart"
           Legend="{Binding ElementName=legend}">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryYAxis
-                  Name="yAxis1"
+                  x:Name="yAxis1"
                   Label="Category"
                   ItemsSource="{Binding RoadblocksToSuccess}"
                   Gap="0.25"
                   LabelExtent="0">
                   </igCharts:CategoryYAxis>
                   <igCharts:CategoryYAxis
-                  Name="yAxis2"
+                  x:Name="yAxis2"
                   Label="Category"
                   ItemsSource="{Binding RoadblocksToSuccess}"
                   Gap="1"
                   LabelHorizontalAlignment="Right">
                   </igCharts:CategoryYAxis>
                   <igCharts:NumericXAxis
-                  Name="xAxis"
+                  x:Name="xAxis"
                   MinimumValue="0"
                   MaximumValue="50"
                   UseEnhancedIntervalManagement="true"
@@ -59,10 +60,10 @@
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:CategoryHighlightLayer
-                  Name="CategoryHighlightLayer">
+                  x:Name="CategoryHighlightLayer">
                   </igCharts:CategoryHighlightLayer>
                   <igCharts:BarSeries
-                  Name="BarSeries1"
+                  x:Name="BarSeries1"
                   XAxis="{Binding ElementName=xAxis}"
                   YAxis="{Binding ElementName=yAxis1}"
                   Title="Sum of Top 3 Choices"
@@ -74,7 +75,7 @@
                   MarkerType="Hidden">
                   </igCharts:BarSeries>
                   <igCharts:BarSeries
-                  Name="BarSeries2"
+                  x:Name="BarSeries2"
                   XAxis="{Binding ElementName=xAxis}"
                   YAxis="{Binding ElementName=yAxis2}"
                   Title="Top Choice"
@@ -86,7 +87,7 @@
                   MarkerType="Hidden">
                   </igCharts:BarSeries>
                   <igCharts:CalloutLayer
-                  Name="CalloutLayer1"
+                  x:Name="CalloutLayer1"
                   IsAutoCalloutBehaviorEnabled="true"
                   AllowedPositions="{Binding allowedPositions1}"
                   CalloutLeaderBrush="#00000000"
@@ -98,7 +99,7 @@
                   CalloutPositionPadding="0">
                   </igCharts:CalloutLayer>
                   <igCharts:CalloutLayer
-                  Name="CalloutLayer2"
+                  x:Name="CalloutLayer2"
                   IsAutoCalloutBehaviorEnabled="true"
                   AllowedPositions="{Binding allowedPositions2}"
                   CalloutLeaderBrush="#00000000"
@@ -110,11 +111,11 @@
                   CalloutPositionPadding="0">
                   </igCharts:CalloutLayer>
                   <igCharts:DataToolTipLayer
-                  Name="Tooltips">
+                  x:Name="Tooltips">
                   </igCharts:DataToolTipLayer>
               </igCharts:XamDataChart.Series>
           </igCharts:XamDataChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

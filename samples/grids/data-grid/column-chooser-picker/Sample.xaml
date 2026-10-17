@@ -15,11 +15,11 @@
       </Grid.RowDefinitions>
       <StackPanel>
                                 <Grid>
-          <ig:ColumnChooser
+          <!--<ig:ColumnChooser
           Name="chooser"
           TargetGrid="{Binding ElementName=grid}"
           Title="Column Chooser">
-          </ig:ColumnChooser>
+          </ig:ColumnChooser>-->
         </Grid>
                       </StackPanel>
       <Grid Grid.Row="1">
@@ -34,7 +34,9 @@
           ItemsSource="{Binding ProductOrders}"
           AutoGenerateColumns="false"
           DefaultColumnMinWidth="120"
-          IsColumnOptionsEnabled="true">
+          IsColumnOptionsEnabled="true"
+          
+          >
               <igDataGrids:XamDataGrid.Columns>
                   <igDataGrids:TextColumn
                   Field="ProductID"

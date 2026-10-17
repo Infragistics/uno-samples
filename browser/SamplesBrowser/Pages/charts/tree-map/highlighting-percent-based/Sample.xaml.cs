@@ -1,10 +1,10 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.TreeMap.HighlightingPercentBased;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
 
-namespace SamplesBrowser.Pages.Charts.TreeMap.HighlightingPercentBased;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -50,7 +50,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

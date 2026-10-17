@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Charts.DataChart.DataAnnotationMultipleWithOverlayText"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                                mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,21 +15,21 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataChart
-          Name="chart"
+          x:Name="chart"
           PlotAreaMarginBottom="50"
           Title="This sample demonstrates the DataAnnotationSliceLayer with overlay text compared against the value layers in the DataChart.">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryXAxis
-                  Name="xAxis"
+                  x:Name="xAxis"
                   ItemsSource="{Binding StockTesla}"
                   Label="Date"
                   LabelLeftMargin="0"
@@ -37,7 +38,7 @@
                   LabelBottomMargin="15">
                   </igCharts:CategoryXAxis>
                   <igCharts:NumericYAxis
-                  Name="yAxis"
+                  x:Name="yAxis"
                   LabelExtent="60"
                   LabelHorizontalAlignment="Center"
                   LabelLeftMargin="0"
@@ -50,7 +51,7 @@
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:LineSeries
-                  Name="series1"
+                  x:Name="series1"
                   Title="Stock Price"
                   XAxis="{Binding ElementName=xAxis}"
                   YAxis="{Binding ElementName=yAxis}"
@@ -61,29 +62,29 @@
                   Brush="black">
                   </igCharts:LineSeries>
                   <igCharts:ValueOverlay
-                  Name="valueOverlay"
+                  x:Name="valueOverlay"
                   Value="435"
                   Brush="green"
                   IsAxisAnnotationEnabled="true"
                   Thickness="2"
-                  DashArray="2, 4"
+                  DashArray="2,4"
                   Axis="{Binding ElementName=yAxis}"
                   OverlayText="OverlayText on ValueOverlay"
                   OverlayTextLocation="OutsideBottomCenter">
                   </igCharts:ValueOverlay>
                   <igCharts:ValueLayer
-                  Name="valueLayer"
+                  x:Name="valueLayer"
                   ValueMode="Average"
                   Brush="purple"
                   Thickness="2"
-                  DashArray="2, 4"
+                  DashArray="2,4"
                   TargetAxis="{Binding ElementName=yAxis}"
                   IsAxisAnnotationEnabled="true"
                   OverlayText="OverlayText on ValueLayer (Average)"
                   OverlayTextLocation="OutsideBottomCenter">
                   </igCharts:ValueLayer>
                   <igCharts:DataAnnotationSliceLayer
-                  Name="AnnoLayer"
+                  x:Name="AnnoLayer"
                   ItemsSource="{Binding AnnotationSliceMultiOverlayData}"
                   TargetAxis="{Binding ElementName=yAxis}"
                   Brush="green"
@@ -100,6 +101,6 @@
               </igCharts:XamDataChart.Series>
           </igCharts:XamDataChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

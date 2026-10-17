@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Gauges.RadialGauge.OpticalScaling"
     xmlns:ig="using:Infragistics.Controls"
-                    xmlns:igGauges="using:Infragistics.Controls.Gauges"
-                xmlns:igLayouts="using:Infragistics.Controls.Layouts"
-            mc:Ignorable="d">
+    xmlns:igGauges="using:Infragistics.Controls.Gauges"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,9 +16,9 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                <Grid>
+        <Grid>
           <igLayouts:XamPropertyEditorPanel
-          Name="PropertyEditor"
+          x:Name="PropertyEditor"
           ComponentRenderer="{Binding Renderer}"
           Target="{Binding ElementName=gauge}"
           DescriptionType="RadialGauge"
@@ -25,7 +26,7 @@
           IsWrappingEnabled="true">
               <igLayouts:XamPropertyEditorPanel.Properties>
                   <igLayouts:PropertyEditorPropertyDescription
-                  Name="OpticalScalingEditor"
+                  x:Name="OpticalScalingEditor"
                   Label="Optical Scaling"
                   ShouldOverrideDefaultEditor="true"
                   ValueType="Boolean"
@@ -33,7 +34,7 @@
                   Changed="RadialGaugeToggleOpticalScaling">
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
-                  Name="GaugeSizeEditor"
+                  x:Name="GaugeSizeEditor"
                   Label="Resize Gauge"
                   ShouldOverrideDefaultEditor="true"
                   ValueType="Slider"
@@ -46,16 +47,16 @@
               </igLayouts:XamPropertyEditorPanel.Properties>
           </igLayouts:XamPropertyEditorPanel>
         </Grid>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igGauges:XamRadialGauge
-          Name="gauge"
+          x:Name="gauge"
           OpticalScalingEnabled="true"
           OpticalScalingSize="500"
           SubtitleText="MPH"
@@ -66,6 +67,6 @@
           Interval="10">
           </igGauges:XamRadialGauge>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

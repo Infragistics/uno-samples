@@ -53,14 +53,12 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void DataGridSelectAllRows(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var grid = this.grid;
         grid.SelectAllRows();
     }
 
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void DataGridDeselectAllRows(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var grid = this.grid;
@@ -68,7 +66,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -77,3 +75,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+

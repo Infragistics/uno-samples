@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Charts.DataChart.DataAnnotationSliceLayer"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                                mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,16 +15,16 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataChart
-          Name="chart"
+          x:Name="chart"
           ShouldAutoExpandMarginForInitialLabels="true"
           ComputedPlotAreaMarginMode="Series"
           IsVerticalZoomEnabled="false"
@@ -42,7 +43,7 @@
           Title="This Data Chart demonstrates the DataAnnotationSliceLayer bound to data that annotates stock splits and earnings miss/beat events.">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryXAxis
-                  Name="xAxisBottom"
+                  x:Name="xAxisBottom"
                   ItemsSource="{Binding StockTesla}"
                   Label="Index"
                   TickLength="0"
@@ -57,13 +58,13 @@
                   LabelAngle="90">
                   </igCharts:CategoryXAxis>
                   <igCharts:CategoryXAxis
-                  Name="xAxisTop"
+                  x:Name="xAxisTop"
                   ItemsSource="{Binding StockTesla}"
                   Label="Date"
                   LabelLocation="OutsideBottom">
                   </igCharts:CategoryXAxis>
                   <igCharts:NumericYAxis
-                  Name="yAxisLeft"
+                  x:Name="yAxisLeft"
                   LabelLocation="OutsideLeft"
                   LabelFontSize="12"
                   LabelExtent="80"
@@ -76,7 +77,7 @@
                   MaximumValue="550">
                   </igCharts:NumericYAxis>
                   <igCharts:NumericYAxis
-                  Name="yAxisRight"
+                  x:Name="yAxisRight"
                   LabelLocation="OutsideRight"
                   LabelFontSize="12"
                   LabelExtent="80"
@@ -91,7 +92,7 @@
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:FinancialPriceSeries
-                  Name="series1"
+                  x:Name="series1"
                   Title="Stock Price"
                   DisplayType="Candlestick"
                   XAxis="{Binding ElementName=xAxisTop}"
@@ -104,12 +105,12 @@
                   ShowDefaultTooltip="false">
                   </igCharts:FinancialPriceSeries>
                   <igCharts:DataToolTipLayer
-                  Name="Tooltip"
+                  x:Name="Tooltip"
                   IncludedColumns="{Binding includedColumns1}"
                   LayoutMode="Vertical">
                   </igCharts:DataToolTipLayer>
                   <igCharts:DataAnnotationSliceLayer
-                  Name="SliceLayerStockSplit"
+                  x:Name="SliceLayerStockSplit"
                   ItemsSource="{Binding AnnotationSliceStockSplitData}"
                   TargetAxis="{Binding ElementName=xAxisBottom}"
                   Brush="dodgerblue"
@@ -123,7 +124,7 @@
                   OverlayTextLocation="Hidden">
                   </igCharts:DataAnnotationSliceLayer>
                   <igCharts:DataAnnotationSliceLayer
-                  Name="SliceLayerEarningsMissAnnotations"
+                  x:Name="SliceLayerEarningsMissAnnotations"
                   ItemsSource="{Binding AnnotationSliceEarningsMissData}"
                   TargetAxis="{Binding ElementName=xAxisBottom}"
                   Brush="red"
@@ -137,7 +138,7 @@
                   OverlayTextLocation="Hidden">
                   </igCharts:DataAnnotationSliceLayer>
                   <igCharts:DataAnnotationSliceLayer
-                  Name="SliceLayerEarningsBeatAnnotations"
+                  x:Name="SliceLayerEarningsBeatAnnotations"
                   ItemsSource="{Binding AnnotationSliceEarningsBeatData}"
                   TargetAxis="{Binding ElementName=xAxisBottom}"
                   Brush="green"
@@ -153,6 +154,6 @@
               </igCharts:XamDataChart.Series>
           </igCharts:XamDataChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

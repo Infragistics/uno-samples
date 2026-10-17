@@ -36,8 +36,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-
-    //WPF: Infragistics.Controls.Layouts.ToolCommandEventHandler
     public void ToolbarToggleAnnotations(object sender, ToolCommandEventArgs e)
     {
     	var target = (XamDataChart)((XamToolbar)sender).Target;
@@ -114,7 +112,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -123,3 +121,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+

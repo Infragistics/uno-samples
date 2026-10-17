@@ -1,0 +1,67 @@
+﻿<UserControl
+    x:Class="SamplesBrowser.Pages.Charts.CategoryChart.MarkerTemplates.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Charts.CategoryChart.MarkerTemplates"
+    xmlns:ig="using:Infragistics.Controls"
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+      <local:SeriesValueConverter x:Key="SeriesValueConverter" />
+      <DataTemplate x:Key="CategoryChartValueMarkerTemplate">
+          <!-- The same marker the web side draws into a canvas, said declaratively: the value this marker
+               stands for above the point, and a white dot with a dark outline on it. One template serves
+               every series, so the value is read from the record and the series together. WinUI has no
+               MultiBinding, so the whole data context goes to the converter and it reads both halves. -->
+          <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+              <TextBlock Text="{Binding Converter={StaticResource SeriesValueConverter}}"
+                         FontFamily="Verdana" FontSize="11" Foreground="Black"
+                         HorizontalAlignment="Center" Margin="0,0,0,2" />
+              <Ellipse Width="12" Height="12" Fill="White" Stroke="Black" StrokeThickness="1"
+                       HorizontalAlignment="Center" />
+          </StackPanel>
+      </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+        <Grid>
+          <igCharts:Legend
+          x:Name="legend"
+          Orientation="Horizontal">
+          </igCharts:Legend>
+        </Grid>
+      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" x:Name="ContentRoot">
+          <igCharts:XamCategoryChart
+          x:Name="chart"
+          ItemsSource="{Binding EnergyGenerationChange}"
+          Legend="{Binding ElementName=legend}"
+          ChartType="Column"
+          Thickness="2"
+          IsHorizontalZoomEnabled="false"
+          IsVerticalZoomEnabled="false"
+          IsSeriesHighlightingEnabled="true"
+          XAxisMajorStrokeThickness="1"
+          XAxisMajorStroke="lightgray"
+          YAxisMinimumValue="-20"
+          YAxisMaximumValue="30"
+          YAxisInterval="10"
+          SeriesAdded="CategoryChartMarkerTemplateSeriesAdded">
+          </igCharts:XamCategoryChart>
+        </Grid>
+      </Grid>
+    </Grid>
+</UserControl>

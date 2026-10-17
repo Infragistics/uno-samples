@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infragistics.Controls.Grids;
-using System.Windows;
+using Windows.Foundation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
@@ -66,7 +66,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     public Random Random = new Random();
     public int ToChangePerInterval = 200;
 
-    //WPF: System.Action
     public void DataGridPerformanceTickerOnViewInit()
     {
         StartTicking();
@@ -188,7 +187,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         item.PercentChange = (item.AvgSale / prevSale) * 100.0;
     }
 
-    //WPF: Infragistics.Controls.Grids.CellStyleRequestedEventHandler
     public void DataGridPerformanceAvgSaleStyleKey(object sender, CellStyleRequestedEventArgs args)
     {
         var grid = this.grid;
@@ -203,7 +201,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridPerformanceAvgSaleCellUpdating(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -240,7 +237,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         priceText.Foreground = color;
     }
 
-    //WPF: Infragistics.Controls.Grids.DataBindingEventHandler
     public void DataGridPerformanceAvgSaleDataBound(object sender, DataBindingEventArgs args)
     {
         var item = args.CellInfo.RowItem as SalesPerson;
@@ -268,7 +264,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.CellStyleRequestedEventHandler
     public void DataGridPerformanceChangeStyleKey(object sender, CellStyleRequestedEventArgs args)
     {
         var value = System.Convert.ToDouble(args.ResolvedValue);
@@ -282,7 +277,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridPerformanceChangeCellUpdating(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -318,7 +312,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         border.BorderBrush = color;
     }
 
-    //WPF: Infragistics.Controls.Grids.CellStyleRequestedEventHandler
     public void DataGridPerformancePercentStyleKey(object sender, CellStyleRequestedEventArgs args)
     {
         var value = System.Convert.ToDouble(args.ResolvedValue);
@@ -332,7 +325,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.TemplateCellUpdatingEventHandler
     public void DataGridPerformancePercentCellUpdating(object sender, TemplateCellUpdatingEventArgs args)
     {
         var content = args.Content;
@@ -368,7 +360,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         border.BorderBrush = color;
     }
 
-    //WPF: Infragistics.Controls.Grids.CellStyleRequestedEventHandler
     public void DataGridPerformanceKpiStyleKey(object sender, CellStyleRequestedEventArgs args)
     {
         var value = System.Convert.ToDouble(args.ResolvedValue);
@@ -382,7 +373,6 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-    //WPF: Infragistics.Controls.Grids.DataBindingEventHandler
     public void DataGridPerformanceKpiDataBound(object sender, DataBindingEventArgs args)
     {
         var value = System.Convert.ToDouble(args.ResolvedValue);
@@ -397,7 +387,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -406,3 +396,4 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 }
+

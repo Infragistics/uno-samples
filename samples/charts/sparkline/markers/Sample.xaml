@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                            xmlns:igLayouts="using:Infragistics.Controls.Layouts"
-            mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,18 +16,18 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                <Grid>
+        <Grid>
           <igLayouts:XamPropertyEditorPanel
           ComponentRenderer="{Binding Renderer}"
           Target="{Binding ElementName=chart}"
           DescriptionType="Sparkline"
           IsHorizontal="true"
           IsWrappingEnabled="true"
-          Name="propertyEditorPanel1">
+          x:Name="propertyEditorPanel1">
               <igLayouts:XamPropertyEditorPanel.Properties>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="FirstMarkerVisibility"
-                  Name="FirstMarkerVisibilityEditor"
+                  x:Name="FirstMarkerVisibilityEditor"
                   Label="First Markers"
                   ShouldOverrideDefaultEditor="true"
                   ValueType="EnumValue"
@@ -36,7 +37,7 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="HighMarkerVisibility"
-                  Name="HighMarkerVisibilityEditor"
+                  x:Name="HighMarkerVisibilityEditor"
                   Label="High Markers"
                   ValueType="EnumValue"
                   DropDownNames="{Binding dropDownNames2}"
@@ -45,7 +46,7 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="LowMarkerVisibility"
-                  Name="LowMarkerVisibilityEditor"
+                  x:Name="LowMarkerVisibilityEditor"
                   Label="Low Markers"
                   ValueType="EnumValue"
                   DropDownNames="{Binding dropDownNames3}"
@@ -54,7 +55,7 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="NegativeMarkerVisibility"
-                  Name="NegativeMarkerVisibilityEditor"
+                  x:Name="NegativeMarkerVisibilityEditor"
                   Label="Negative Markers"
                   ValueType="EnumValue"
                   DropDownNames="{Binding dropDownNames4}"
@@ -63,7 +64,7 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="LastMarkerVisibility"
-                  Name="LastMarkerVisibilityEditor"
+                  x:Name="LastMarkerVisibilityEditor"
                   Label="Last Markers"
                   ValueType="EnumValue"
                   DropDownNames="{Binding dropDownNames5}"
@@ -72,7 +73,7 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="MarkerVisibility"
-                  Name="MarkerVisibilityEditor"
+                  x:Name="MarkerVisibilityEditor"
                   Label="All Markers"
                   ValueType="EnumValue"
                   DropDownNames="{Binding dropDownNames6}"
@@ -82,16 +83,16 @@
               </igLayouts:XamPropertyEditorPanel.Properties>
           </igLayouts:XamPropertyEditorPanel>
         </Grid>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamSparkline
-          Name="chart"
+          x:Name="chart"
           ItemsSource="{Binding SparklineProfitData}"
           DisplayType="Line"
           LabelMemberPath="Label"
@@ -112,6 +113,6 @@
           Maximum="60">
           </igCharts:XamSparkline>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

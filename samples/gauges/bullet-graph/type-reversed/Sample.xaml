@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
     xmlns:ig="using:Infragistics.Controls"
-                    xmlns:igGauges="using:Infragistics.Controls.Gauges"
-                    mc:Ignorable="d">
+    xmlns:igGauges="using:Infragistics.Controls.Gauges"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,9 +15,9 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                <Grid>
+        <Grid>
           <igGauges:XamBulletGraph
-          Name="graph1"
+          x:Name="graph1"
           Height="120px"
           Orientation="Horizontal"
           BackingBrush="#00000000"
@@ -73,16 +74,16 @@
               </igGauges:XamBulletGraph.Ranges>
           </igGauges:XamBulletGraph>
         </Grid>
-                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igGauges:XamBulletGraph
-          Name="graph2"
+          x:Name="graph2"
           Height="120px"
           Orientation="Horizontal"
           BackingBrush="#00000000"
@@ -139,6 +140,6 @@
               </igGauges:XamBulletGraph.Ranges>
           </igGauges:XamBulletGraph>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

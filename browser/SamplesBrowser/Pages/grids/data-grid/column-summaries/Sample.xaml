@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Grids.DataGrid.ColumnSummaries"
     xmlns:ig="using:Infragistics.Controls"
-                xmlns:igDataGrids="using:Infragistics.Controls.Grids"
-                    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
-            mc:Ignorable="d">
+    xmlns:igDataGrids="using:Infragistics.Controls.Grids"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,9 +16,9 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                <Grid>
+        <Grid>
           <igLayouts:XamPropertyEditorPanel
-          Name="PropertyEditor"
+          x:Name="PropertyEditor"
           ComponentRenderer="{Binding Renderer}"
           Target="{Binding ElementName=grid}"
           DescriptionType="DataGrid"
@@ -26,7 +27,7 @@
               <igLayouts:XamPropertyEditorPanel.Properties>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="SummaryScope"
-                  Name="SummaryScopeEditor"
+                  x:Name="SummaryScopeEditor"
                   Label="Summary Scope"
                   ShouldOverrideDefaultEditor="true"
                   ValueType="EnumValue"
@@ -36,7 +37,7 @@
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="GroupSummaryDisplayMode"
-                  Name="GroupSummaryDisplayModeEditor"
+                  x:Name="GroupSummaryDisplayModeEditor"
                   Label="Group Summary Display Mode"
                   ShouldOverrideDefaultEditor="true"
                   ValueType="EnumValue"
@@ -47,18 +48,18 @@
               </igLayouts:XamPropertyEditorPanel.Properties>
           </igLayouts:XamPropertyEditorPanel>
         </Grid>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igDataGrids:XamDataGrid
-          Name="grid"
-          ItemsSource="{Binding ProductOrders}"
           AutoGenerateColumns="false"
+          x:Name="grid"
+          ItemsSource="{Binding ProductOrders}"
           IsColumnOptionsEnabled="true"
           IsGroupCollapsable="true"
           GroupHeaderDisplayMode="Combined"
@@ -118,102 +119,54 @@
                   <igDataGrids:NumericColumn
                   Field="ProductID"
                   HeaderText="ID"
+                  Width="*>120"
                   HorizontalAlignment="Center">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="120">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
                   </igDataGrids:NumericColumn>
                   <igDataGrids:TextColumn
                   Field="ProductName"
-                  HeaderText="Product">
-                      <igDataGrids:TextColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="130">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TextColumn.Width>
+                  HeaderText="Product"
+                  Width="*>130">
                   </igDataGrids:TextColumn>
                   <igDataGrids:NumericColumn
                   Field="ProductPrice"
                   HeaderText="Price"
+                  Width="*>120"
                   PositivePrefix="$"
                   ShowGroupingSeparator="true">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="120">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="OrderItems"
-                  HeaderText="Orders">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="140">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  HeaderText="Orders"
+                  Width="*>140">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="OrderValue"
                   HeaderText="Order Totals"
+                  Width="*>160"
                   PositivePrefix="$"
                   ShowGroupingSeparator="true">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="160">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
                   </igDataGrids:NumericColumn>
                   <igDataGrids:DateTimeColumn
                   Field="OrderDate"
                   HeaderText="Order Date"
+                  Width="*>150"
                   HorizontalAlignment="Right">
-                      <igDataGrids:DateTimeColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="150">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:DateTimeColumn.Width>
                   </igDataGrids:DateTimeColumn>
                   <igDataGrids:NumericColumn
                   Field="Profit"
                   HeaderText="Profit"
+                  Width="*>140"
                   PositivePrefix="$"
                   ShowGroupingSeparator="true">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="140">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
                   </igDataGrids:NumericColumn>
                   <igDataGrids:TextColumn
                   Field="Country"
-                  HeaderText="Ship Country">
-                      <igDataGrids:TextColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="170">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TextColumn.Width>
+                  HeaderText="Ship Country"
+                  Width="*>170">
                   </igDataGrids:TextColumn>
               </igDataGrids:XamDataGrid.Columns>
           </igDataGrids:XamDataGrid>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

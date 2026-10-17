@@ -12,6 +12,7 @@ using System.Windows;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 using Microsoft.UI;
+using Windows.Foundation;
 
 namespace Sample;
 
@@ -61,22 +62,22 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
                 Population = double.Parse(columns[3])
             });
         }
-        var series = new GeographicHighDensityScatterSeries
-        {
-            Name = "hdSeries",
-            ItemsSource = geoLocations,
-            LatitudeMemberPath = "Latitude",
-            LongitudeMemberPath = "Longitude",
-            HeatMaximumColor = Colors.Red,
-            HeatMinimumColor = Colors.Black,
-            HeatMinimum = 0,
-            HeatMaximum = 5,
-            PointExtent = 1,
-            MouseOverEnabled = true
-        };
-        map.Series.Add(series);
+        //var series = new GeographicHighDensityScatterSeries
+        //{
+        //    Name = "hdSeries",
+        //    ItemsSource = geoLocations,
+        //    LatitudeMemberPath = "Latitude",
+        //    LongitudeMemberPath = "Longitude",
+        //    HeatMaximumColor = Colors.Red,
+        //    HeatMinimumColor = Colors.Black,
+        //    HeatMinimum = 0,
+        //    HeatMaximum = 5,
+        //    PointExtent = 1,
+        //    MouseOverEnabled = true
+        //};
+        //map.Series.Add(series);
 
-        var geoBounds = new Rect(-130, 15, Math.Abs(-130 + 65), Math.Abs(50 - 15));
+        var geoBounds = new Infragistics.Controls.IGRect(-130, 15, Math.Abs(-130 + 65), Math.Abs(50 - 15));
         map.ZoomToGeographic(geoBounds);
     }
 

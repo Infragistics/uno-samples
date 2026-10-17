@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Charts.Toolbar.LayoutInVerticalOrientation"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-                            xmlns:igLayouts="using:Infragistics.Controls.Layouts"
-            mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,39 +16,39 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                <Grid>
+        <Grid>
           <igLayouts:XamToolbar
-          Name="toolbar"
+          x:Name="toolbar"
           Target="{Binding ElementName=chart}"
           Orientation="Vertical">
           </igLayouts:XamToolbar>
         </Grid>
-                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igCharts:XamDataChart
           IsHorizontalZoomEnabled="true"
-          Name="chart">
+          x:Name="chart">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryXAxis
-                  Name="xAxis"
+                  x:Name="xAxis"
                   ItemsSource="{Binding CountryRenewableElectricity}"
                   Label="Year">
                   </igCharts:CategoryXAxis>
                   <igCharts:NumericYAxis
-                  Name="yAxis"
+                  x:Name="yAxis"
                   Title="TWh"
                   LabelLocation="OutsideRight">
                   </igCharts:NumericYAxis>
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:LineSeries
-                  Name="lineSeries1"
+                  x:Name="lineSeries1"
                   Title="Electricity"
                   XAxis="{Binding ElementName=xAxis}"
                   YAxis="{Binding ElementName=yAxis}"
@@ -57,6 +58,6 @@
               </igCharts:XamDataChart.Series>
           </igCharts:XamDataChart>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

@@ -1,13 +1,15 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Charts.CategoryChart.AreaChartStyling;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
+using Infragistics.Controls.Charts;
 
-namespace SamplesBrowser.Pages.Charts.CategoryChart.AreaChartStyling;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
     public string[] includedProperties1 { get; } = new string[] { "Year", "Europe", "China", "America" };
-    public string[] markerTypes1 { get; } = new string[] {  };
+    public MarkerTypeCollection markerTypes1 { get; } = new MarkerTypeCollection { MarkerType.Triangle };
 
     public Sample()
     {
@@ -34,9 +36,8 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
-
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)

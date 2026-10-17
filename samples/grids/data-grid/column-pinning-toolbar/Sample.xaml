@@ -15,12 +15,12 @@
       </Grid.RowDefinitions>
       <StackPanel>
                                 <Grid>
-          <ig:DataGridToolbar
+          <!--<ig:DataGridToolbar
           Name="toolbar"
           TargetGrid="{Binding ElementName=grid}"
           ToolbarTitle="Global Sales"
           ColumnPinning="true">
-          </ig:DataGridToolbar>
+          </ig:DataGridToolbar>-->
         </Grid>
                       </StackPanel>
       <Grid Grid.Row="1">
@@ -33,7 +33,9 @@
           <igDataGrids:XamDataGrid
           Name="grid"
           ItemsSource="{Binding EmployeesSalesData}"
-          AutoGenerateColumns="false">
+          AutoGenerateColumns="false"
+          
+          >
               <igDataGrids:XamDataGrid.Columns>
                   <igDataGrids:TextColumn
                   Field="ID"

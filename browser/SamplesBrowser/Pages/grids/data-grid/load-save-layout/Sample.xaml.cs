@@ -1,13 +1,13 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Grids.DataGrid.LoadSaveLayout;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Portable.Description;
 using Infragistics.Controls.Description;
 using Infragistics.Controls.Layouts;
 using Infragistics.Controls.Grids;
 
-namespace SamplesBrowser.Pages.Grids.DataGrid.LoadSaveLayout;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -37,6 +37,8 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         }
     }
 
+    private DataGridLayoutState dataGridLayoutState = new DataGridLayoutState();
+
     private ComponentRenderer _componentRenderer = null;
     public ComponentRenderer Renderer
     {
@@ -48,34 +50,29 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
                 var context = this._componentRenderer.Context;
                 PropertyEditorPanelDescriptionModule.Register(context);
                 DataGridDescriptionModule.Register(context);
-                DataGridToolbarDescriptionModule.Register(context);
             }
         return this._componentRenderer;
         }
     }
 
-    public string SavedLayout = "";
-
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void DataGridLoadLayout(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
-        if (string.IsNullOrEmpty(this.SavedLayout)) return;
+        var state = this.dataGridLayoutState;
+        if (string.IsNullOrEmpty(state.SavedLayout)) return;
         var grid = this.grid;
         if (grid == null) return;
-        grid.LoadLayout(this.SavedLayout);
+        grid.LoadLayout(state.SavedLayout);
     }
 
-    
-    //WPF: Infragistics.Controls.Layouts.PropertyEditorPropertyDescriptionButtonClickEventHandler
     public void DataGridSaveLayout(object sender, PropertyEditorPropertyDescriptionButtonClickEventArgs args)
     {
         var grid = this.grid;
         if (grid == null) return;
-        SavedLayout = grid.SaveLayout();
+        this.dataGridLayoutState.SavedLayout = grid.SaveLayout();
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
+    private void OnPropertyChanged(string propertyName)
     {
         PropertyChangedEventHandler handler = PropertyChanged;
         if (handler != null)
@@ -83,4 +80,14 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
             handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+}
+
+/// <summary>
+/// The layout the save button stores and the load button restores. The two handlers are separate
+/// items, so the value they share is a supporting item each asks for, rather than a field each
+/// declares and a sample that uses both would declare twice.
+/// </summary>
+public class DataGridLayoutState
+{
+    public string SavedLayout = "";
 }

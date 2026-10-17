@@ -1,7 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Maps.GeoMap.BindingDataCsv;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-
 using Infragistics.Controls.Charts;
 using Infragistics.Controls.Maps;
 using System;
@@ -14,7 +15,6 @@ using Windows.UI;
 using Microsoft.UI;
 using Windows.Foundation;
 
-namespace SamplesBrowser.Pages.Maps.GeoMap.BindingDataCsv;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {
@@ -77,7 +77,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         //};
         //map.Series.Add(series);
 
-        var geoBounds = new Rect(-130, 15, Math.Abs(-130 + 65), Math.Abs(50 - 15));
+        var geoBounds = new Infragistics.Controls.IGRect(-130, 15, Math.Abs(-130 + 65), Math.Abs(50 - 15));
         map.ZoomToGeographic(geoBounds);
     }
 

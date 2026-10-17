@@ -1,8 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Maps.GeoMap.BindingMultipleShapes;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
-namespace SamplesBrowser.Pages.Maps.GeoMap.BindingMultipleShapes;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {

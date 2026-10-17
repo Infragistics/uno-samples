@@ -1,4 +1,4 @@
-{
+﻿{
     "groups":  [
                    {
                        "name":  "Charts",
@@ -123,6 +123,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Column Chart With Highlighting",
+                                                                  "route":  "charts/category-chart/column-chart-with-highlighting",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Column Chart With Tooltips",
                                                                   "route":  "charts/category-chart/column-chart-with-tooltips",
                                                                   "showLink":  true
@@ -173,6 +178,16 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "High Frequency",
+                                                                  "route":  "charts/category-chart/high-frequency",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "High Volume",
+                                                                  "route":  "charts/category-chart/high-volume",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Highlighting Behavior",
                                                                   "route":  "charts/category-chart/highlighting-behavior",
                                                                   "showLink":  true
@@ -203,8 +218,28 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Line Chart With Animations",
+                                                                  "route":  "charts/category-chart/line-chart-with-animations",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Line Chart With Annotations",
+                                                                  "route":  "charts/category-chart/line-chart-with-annotations",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Line Chart With Titles",
+                                                                  "route":  "charts/category-chart/line-chart-with-titles",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Marker Options",
                                                                   "route":  "charts/category-chart/marker-options",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Marker Templates",
+                                                                  "route":  "charts/category-chart/marker-templates",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -355,6 +390,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Axis Crossing",
+                                                                  "route":  "charts/data-chart/axis-crossing",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Axis Label Rotation",
                                                                   "route":  "charts/data-chart/axis-label-rotation",
                                                                   "showLink":  true
@@ -362,6 +402,11 @@
                                                               {
                                                                   "name":  "Axis Min Max Gap",
                                                                   "route":  "charts/data-chart/axis-min-max-gap",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Axis Sharing",
+                                                                  "route":  "charts/data-chart/axis-sharing",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -402,6 +447,21 @@
                                                               {
                                                                   "name":  "Chart Highlight Filter Multiple Series",
                                                                   "route":  "charts/data-chart/chart-highlight-filter-multiple-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Chart Synchronization",
+                                                                  "route":  "charts/data-chart/chart-synchronization",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Composite Chart",
+                                                                  "route":  "charts/data-chart/composite-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Crosshair Layer Styling",
+                                                                  "route":  "charts/data-chart/crosshair-layer-styling",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -477,6 +537,11 @@
                                                               {
                                                                   "name":  "Data Tooltip Styling",
                                                                   "route":  "charts/data-chart/data-tooltip-styling",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Final Value Layer Styling",
+                                                                  "route":  "charts/data-chart/final-value-layer-styling",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -560,13 +625,33 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Radial Sankey Budget Flow",
+                                                                  "route":  "charts/data-chart/radial-sankey-budget-flow",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Range Area Chart",
                                                                   "route":  "charts/data-chart/range-area-chart",
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Range Bar Chart",
+                                                                  "route":  "charts/data-chart/range-bar-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Range Column Chart",
                                                                   "route":  "charts/data-chart/range-column-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Sankey Budget Flow",
+                                                                  "route":  "charts/data-chart/sankey-budget-flow",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Sankey Highlighted Values",
+                                                                  "route":  "charts/data-chart/sankey-highlighted-values",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -595,6 +680,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Scatter Marker Options",
+                                                                  "route":  "charts/data-chart/scatter-marker-options",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Scatter Point Chart",
                                                                   "route":  "charts/data-chart/scatter-point-chart",
                                                                   "showLink":  true
@@ -607,6 +697,11 @@
                                                               {
                                                                   "name":  "Selection Matcher",
                                                                   "route":  "charts/data-chart/selection-matcher",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Series Value Overlay",
+                                                                  "route":  "charts/data-chart/series-value-overlay",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -650,6 +745,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Stacked Chart Types",
+                                                                  "route":  "charts/data-chart/stacked-chart-types",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Stacked Column Chart",
                                                                   "route":  "charts/data-chart/stacked-column-chart",
                                                                   "showLink":  true
@@ -677,6 +777,16 @@
                                                               {
                                                                   "name":  "Trendline Layer",
                                                                   "route":  "charts/data-chart/trendline-layer",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Type Scatter Contour Series",
+                                                                  "route":  "charts/data-chart/type-scatter-contour-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "User Annotation Layer",
+                                                                  "route":  "charts/data-chart/user-annotation-layer",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -750,6 +860,11 @@
                                                                   "name":  "Rings",
                                                                   "route":  "charts/doughnut-chart/rings",
                                                                   "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Selection",
+                                                                  "route":  "charts/doughnut-chart/selection",
+                                                                  "showLink":  true
                                                               }
                                                           ]
                                           },
@@ -757,6 +872,16 @@
                                               "name":  "Pie Chart",
                                               "folder":  "pie-chart",
                                               "samples":  [
+                                                              {
+                                                                  "name":  "Animation",
+                                                                  "route":  "charts/pie-chart/animation",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Explosion",
+                                                                  "route":  "charts/pie-chart/explosion",
+                                                                  "showLink":  true
+                                                              },
                                                               {
                                                                   "name":  "Legend",
                                                                   "route":  "charts/pie-chart/legend",
@@ -770,6 +895,11 @@
                                                               {
                                                                   "name":  "Overview",
                                                                   "route":  "charts/pie-chart/overview",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Selection",
+                                                                  "route":  "charts/pie-chart/selection",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -796,6 +926,11 @@
                                                               {
                                                                   "name":  "Display Lines",
                                                                   "route":  "charts/sparkline/display-lines",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Display Types",
+                                                                  "route":  "charts/sparkline/display-types",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -1397,8 +1532,18 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Binding Data Model",
+                                                                  "route":  "maps/geo-map/binding-data-model",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Binding Multiple Shapes",
                                                                   "route":  "maps/geo-map/binding-multiple-shapes",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Binding Multiple Sources",
+                                                                  "route":  "maps/geo-map/binding-multiple-sources",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -1477,6 +1622,26 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Shape Styling Comparison",
+                                                                  "route":  "maps/geo-map/shape-styling-comparison",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Shape Styling Random",
+                                                                  "route":  "maps/geo-map/shape-styling-random",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Shape Styling Range",
+                                                                  "route":  "maps/geo-map/shape-styling-range",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Shape Styling Scale",
+                                                                  "route":  "maps/geo-map/shape-styling-scale",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Synchronization",
                                                                   "route":  "maps/geo-map/synchronization",
                                                                   "showLink":  true
@@ -1484,6 +1649,11 @@
                                                               {
                                                                   "name":  "Type Scatter Bubble Series",
                                                                   "route":  "maps/geo-map/type-scatter-bubble-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Type Scatter Contour Series",
+                                                                  "route":  "maps/geo-map/type-scatter-contour-series",
                                                                   "showLink":  true
                                                               },
                                                               {

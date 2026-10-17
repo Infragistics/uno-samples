@@ -1,8 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace SamplesBrowser.Pages.Maps.GeoMap.DisplayHeatImagery;
+
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
-namespace SamplesBrowser.Pages.Maps.GeoMap.DisplayHeatImagery;
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
 {

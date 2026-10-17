@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
     xmlns:ig="using:Infragistics.Controls"
-        xmlns:igCharts="using:Infragistics.Controls.Charts"
-            xmlns:igMaps="using:Infragistics.Controls.Maps"
-                            mc:Ignorable="d">
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igMaps="using:Infragistics.Controls.Maps"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -15,20 +16,20 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igMaps:XamGeographicMap
-          Name="map"
+          x:Name="map"
           Zoomable="true">
               <igMaps:XamGeographicMap.Series>
                   <igMaps:GeographicProportionalSymbolSeries
-                  Name="WorldCitiesSeries"
+                  x:Name="WorldCitiesSeries"
                   ItemsSource="{Binding WorldCities}"
                   MarkerType="Circle"
                   FillMemberPath="Population"
@@ -37,22 +38,22 @@
                   LongitudeMemberPath="X"
                   MarkerOutline="#4c000000">
                       <igMaps:GeographicProportionalSymbolSeries.RadiusScale>
-                          <igMaps:SizeScale
+                          <igCharts:SizeScale
                           MinimumValue="4"
                           MaximumValue="60">
-                          </igMaps:SizeScale>
+                          </igCharts:SizeScale>
                       </igMaps:GeographicProportionalSymbolSeries.RadiusScale>
                       <igMaps:GeographicProportionalSymbolSeries.FillScale>
-                          <igMaps:ValueBrushScale
+                          <igCharts:ValueBrushScale
                           Brushes="#660ec20e #66fcaa20 #66fc2020"
                           MinimumValue="0"
                           MaximumValue="30">
-                          </igMaps:ValueBrushScale>
+                          </igCharts:ValueBrushScale>
                       </igMaps:GeographicProportionalSymbolSeries.FillScale>
                   </igMaps:GeographicProportionalSymbolSeries>
               </igMaps:XamGeographicMap.Series>
           </igMaps:XamGeographicMap>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>

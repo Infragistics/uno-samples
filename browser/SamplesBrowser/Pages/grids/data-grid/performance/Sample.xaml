@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:SamplesBrowser.Pages.Grids.DataGrid.Performance"
     xmlns:ig="using:Infragistics.Controls"
-                xmlns:igDataGrids="using:Infragistics.Controls.Grids"
-                        mc:Ignorable="d">
+    xmlns:igDataGrids="using:Infragistics.Controls.Grids"
+    mc:Ignorable="d">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -14,18 +15,18 @@
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel>
-                                      </StackPanel>
+      </StackPanel>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="ContentRoot">
           <igDataGrids:XamDataGrid
-          Name="grid"
-          ItemsSource="{Binding SalesPersonsData}"
           AutoGenerateColumns="false"
+          x:Name="grid"
+          ItemsSource="{Binding SalesPersonsData}"
           RowHeight="40"
           DefaultColumnMinWidth="80"
           IsRowHoverEnabled="false"
@@ -41,667 +42,361 @@
               <igDataGrids:XamDataGrid.Columns>
                   <igDataGrids:TextColumn
                   Field="FirstName"
-                  HeaderText="First Name">
-                      <igDataGrids:TextColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="125">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TextColumn.Width>
+                  HeaderText="First Name"
+                  Width="*>125">
                   </igDataGrids:TextColumn>
                   <igDataGrids:TextColumn
                   Field="LastName"
-                  HeaderText="Last Name">
-                      <igDataGrids:TextColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="125">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TextColumn.Width>
+                  HeaderText="Last Name"
+                  Width="*>125">
                   </igDataGrids:TextColumn>
                   <igDataGrids:TextColumn
-                  Field="Territory">
-                      <igDataGrids:TextColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="115">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TextColumn.Width>
+                  Field="Territory"
+                  Width="*>115">
                   </igDataGrids:TextColumn>
                   <igDataGrids:NumericColumn
                   Field="YearToDateSales"
                   HeaderText="YTD Sales"
+                  Width="*>120"
                   PositivePrefix="$"
                   ShowGroupingSeparator="true">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="120">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
                   </igDataGrids:NumericColumn>
                   <igDataGrids:TemplateColumn
                   Field="AvgSale"
                   HeaderText="Avg. Sale"
+                  Width="*>125"
                   HorizontalAlignment="Right"
                   CellStyleKeyRequested="DataGridPerformanceAvgSaleStyleKey"
                   CellUpdating="DataGridPerformanceAvgSaleCellUpdating"
                   DataBound="DataGridPerformanceAvgSaleDataBound"
-                  Name="templateColumn1">
-                      <igDataGrids:TemplateColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="125">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TemplateColumn.Width>
+                  x:Name="templateColumn1">
                   </igDataGrids:TemplateColumn>
                   <igDataGrids:TemplateColumn
                   Field="Change"
+                  Width="*>120"
                   HorizontalAlignment="Right"
                   CellStyleKeyRequested="DataGridPerformanceChangeStyleKey"
                   CellUpdating="DataGridPerformanceChangeCellUpdating"
-                  Name="templateColumn2">
-                      <igDataGrids:TemplateColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="120">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TemplateColumn.Width>
+                  x:Name="templateColumn2">
                   </igDataGrids:TemplateColumn>
                   <igDataGrids:TemplateColumn
                   Field="PercentChange"
                   HeaderText="Change (%)"
+                  Width="*>135"
                   HorizontalAlignment="Right"
                   CellStyleKeyRequested="DataGridPerformancePercentStyleKey"
                   CellUpdating="DataGridPerformancePercentCellUpdating"
-                  Name="templateColumn3">
-                      <igDataGrids:TemplateColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="135">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:TemplateColumn.Width>
+                  x:Name="templateColumn3">
                   </igDataGrids:TemplateColumn>
                   <igDataGrids:DateTimeColumn
                   Field="DateValue"
-                  HeaderText="Date">
-                      <igDataGrids:DateTimeColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="true"
-                          Value="1"
-                          MinimumWidth="120">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:DateTimeColumn.Width>
+                  HeaderText="Date"
+                  Width="*>120">
                   </igDataGrids:DateTimeColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_0"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn1">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn1">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_1"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn2">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn2">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_2"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn3">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn3">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_3"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn4">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn4">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_4"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn5">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn5">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_5"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn6">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn6">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_6"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn7">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn7">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_7"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn8">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn8">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_8"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn9">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn9">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_9"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn10">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn10">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_10"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn11">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn11">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_11"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn12">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn12">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_12"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn13">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn13">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_13"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn14">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn14">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_14"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn15">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn15">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_15"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn16">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn16">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_16"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn17">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn17">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_17"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn18">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn18">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_18"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn19">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn19">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_19"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn20">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn20">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_20"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn21">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn21">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_21"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn22">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn22">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_22"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn23">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn23">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_23"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn24">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn24">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_24"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn25">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn25">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_25"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn26">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn26">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_26"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn27">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn27">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_27"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn28">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn28">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_28"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn29">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn29">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_29"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn30">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn30">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_30"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn31">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn31">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_31"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn32">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn32">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_32"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn33">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn33">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_33"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn34">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn34">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_34"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn35">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn35">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_35"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn36">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn36">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_36"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn37">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn37">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_37"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn38">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn38">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_38"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn39">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn39">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_39"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn40">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn40">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_40"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn41">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn41">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_41"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn42">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn42">
                   </igDataGrids:NumericColumn>
                   <igDataGrids:NumericColumn
                   Field="KPI_42"
+                  Width="110"
                   CellStyleKeyRequested="DataGridPerformanceKpiStyleKey"
                   DataBound="DataGridPerformanceKpiDataBound"
-                  Name="numericColumn43">
-                      <igDataGrids:NumericColumn.Width>
-                          <igDataGrids:ColumnWidth
-                          IsStarSized="false"
-                          Value="110"
-                          MinimumWidth="110">
-                          </igDataGrids:ColumnWidth>
-                      </igDataGrids:NumericColumn.Width>
+                  x:Name="numericColumn43">
                   </igDataGrids:NumericColumn>
               </igDataGrids:XamDataGrid.Columns>
           </igDataGrids:XamDataGrid>
         </Grid>
-              </Grid>
-          </Grid>
+      </Grid>
+    </Grid>
 </UserControl>
