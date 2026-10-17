@@ -47,7 +47,7 @@
     <PackageReference Include="Microsoft.Data.Edm" />
   </ItemGroup>
 
-	<!--<ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Infragistics.Uno.Core.Trial"  />
 		<PackageReference Include="Infragistics.Uno.Charts.Trial" />
 		<PackageReference Include="Infragistics.Uno.DataVisualization.Trial" />
@@ -59,11 +59,11 @@
 		<PackageReference Include="Infragistics.Uno.TreeMap.Trial"  />
 		<PackageReference Include="Infragistics.Uno.Sparkline.Trial"  />
 		<PackageReference Include="Infragistics.Uno.Maps.Trial"  />
-	</ItemGroup>-->
+	</ItemGroup>
 	
   <!-- Infragistics Uno control assemblies, resolved per-TargetFramework from the dev-tools
        UNO build output. $(InfragisticsUnoBuild) is defined in the repo-root Directory.Build.props. -->
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="Infragistics.Core">
       <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.dll</HintPath>
     </Reference>
@@ -133,7 +133,7 @@
     <Reference Include="Infragistics.Uno.Maps">
       <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Maps.dll</HintPath>
     </Reference>
-  </ItemGroup>
+  </ItemGroup>-->
 
     <ItemGroup>
 		<!-- Drop any Content items the SDK globbed from Assets before re-adding them explicitly

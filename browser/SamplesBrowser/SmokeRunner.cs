@@ -51,7 +51,7 @@ public static class SmokeRunner
         {
             AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
             {
-                try { _log.WriteLine($"FIRSTCHANCE\t{_current}\t{e.Exception.GetType().Name}: {e.Exception.Message} @ {Environment.StackTrace.Split('\n').Skip(4).Take(6).Select(l => l.Trim()).Aggregate((a, b) => a + " | " + b)}".Replace('\r', ' ').Replace('\n', ' ')); } catch { }
+                try { _log.WriteLine($"FIRSTCHANCE\t{_current}\t{e.Exception.GetType().Name}: {e.Exception.Message} @ {Environment.StackTrace.Split('\n').Skip(3).Take(18).Select(l => l.Trim()).Aggregate((a, b) => a + " | " + b)}".Replace('\r', ' ').Replace('\n', ' ')); } catch { }
             };
             AppDomain.CurrentDomain.ProcessExit += (s, e) => { try { _log.WriteLine($"PROCESSEXIT\t{_current}\t{Environment.StackTrace.Replace('\r', ' ').Replace('\n', '|')}"); } catch { } };
         }

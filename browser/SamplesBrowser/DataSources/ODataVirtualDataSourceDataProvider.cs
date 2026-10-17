@@ -419,6 +419,9 @@ namespace Infragistics.Controls.DataSource
             }
         }
 
+        // Sorting is performed by the OData service, so local case-insensitive sorting doesn't apply.
+        public string[] CaseInsensitiveSortProperties { get; set; }
+
         private string[] _propertiesRequested;
         public string[] PropertiesRequested
         {
