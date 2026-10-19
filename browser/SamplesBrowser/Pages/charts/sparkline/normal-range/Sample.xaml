@@ -43,7 +43,7 @@
                   ValueType="EnumValue"
                   DropDownNames="{Binding dropDownNames2}"
                   DropDownValues="{Binding dropDownValues2}"
-                  PrimitiveValue="25">
+                  PrimitiveValue="15">
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
                   PropertyPath="NormalRangeMaximum"

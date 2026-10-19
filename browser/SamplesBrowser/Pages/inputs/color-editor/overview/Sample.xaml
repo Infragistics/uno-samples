@@ -25,6 +25,8 @@
         <Grid Grid.Column="1" x:Name="ContentRoot">
           <igInputs:XamColorEditor
           x:Name="colorEditor"
+          Width="200px"
+          Height="40px"
           ValueChanged="ColorEditorValueChanged">
           </igInputs:XamColorEditor>
         </Grid>

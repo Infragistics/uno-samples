@@ -26,20 +26,30 @@
           <igCharts:XamDataChart
           x:Name="Chart"
           IsHorizontalZoomEnabled="false"
-          IsVerticalZoomEnabled="false">
+          IsVerticalZoomEnabled="false"
+          HighlightingMode="FadeOthersSpecific"
+          HighlightingBehavior="DirectlyOver">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryXAxis
                   x:Name="xAxis"
                   ItemsSource="{Binding SankeyBudgetStages}"
-                  Label="Stage">
+                  Label="Stage"
+                  TickLength="0"
+                  Stroke="#00000000"
+                  MajorStroke="#00000000">
                   </igCharts:CategoryXAxis>
                   <igCharts:NumericYAxis
-                  x:Name="yAxis">
+                  x:Name="yAxis"
+                  AreLabelsVisible="false"
+                  TickLength="0"
+                  Stroke="#00000000"
+                  MajorStroke="#00000000">
                   </igCharts:NumericYAxis>
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:SankeySeries
                   x:Name="sankey"
+                  Title="Budget"
                   XAxis="{Binding ElementName=xAxis}"
                   YAxis="{Binding ElementName=yAxis}"
                   ItemsSource="{Binding SankeyBudgetNodes}"
@@ -50,7 +60,8 @@
                   LinkSourceMemberPath="Source"
                   LinkTargetMemberPath="Target"
                   LinkValueMemberPath="Value"
-                  IsTransitionInEnabled="true">
+                  IsTransitionInEnabled="true"
+                  UseItemWiseColors="true">
                   </igCharts:SankeySeries>
                   <igCharts:DataToolTipLayer
                   x:Name="Tooltips">
