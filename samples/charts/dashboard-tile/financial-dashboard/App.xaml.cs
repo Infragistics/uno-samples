@@ -13,6 +13,12 @@ public partial class App : Application
         // also does this, but it can be trimmed on iOS/WASM — so the explicit call is reliable.
         Infragistics.Core.UnoPlatformRegistration.Register();
 
+        Infragistics.Controls.Dashboards.WinUIDataChartDashboardTileFeature.Register();
+        Infragistics.Controls.Dashboards.WinUIGeographicMapDashboardTileFeature.Register();
+        Infragistics.Controls.Dashboards.WinUILinearGaugeDashboardTileFeature.Register();
+        Infragistics.Controls.Dashboards.WinUIPieChartDashboardTileFeature.Register();
+        Infragistics.Controls.Dashboards.WinUIRadialGaugeDashboardTileFeature.Register();
+
         this.InitializeComponent();
     }
 
