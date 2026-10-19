@@ -1,0 +1,116 @@
+<UserControl
+    x:Class="Sample.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
+    xmlns:ig="using:Infragistics.Controls"
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    xmlns:igLayouts="using:Infragistics.Controls.Layouts"
+    mc:Ignorable="d">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+        <Grid>
+          <igLayouts:XamPropertyEditorPanel
+          x:Name="editor"
+          ComponentRenderer="{Binding Renderer}"
+          Target="{Binding ElementName=chart}"
+          DescriptionType="DataChart"
+          IsHorizontal="true"
+          IsWrappingEnabled="true">
+              <igLayouts:XamPropertyEditorPanel.Properties>
+                  <igLayouts:PropertyEditorPropertyDescription
+                  PropertyPath="MonthHandler"
+                  x:Name="MonthEditor"
+                  Label="Month"
+                  ShouldOverrideDefaultEditor="true"
+                  ValueType="EnumValue"
+                  DropDownNames="{Binding dropDownNames1}"
+                  DropDownValues="{Binding dropDownValues1}"
+                  PrimitiveValue="July"
+                  Changed="EditorChangeSankeyMonth">
+                  </igLayouts:PropertyEditorPropertyDescription>
+              </igLayouts:XamPropertyEditorPanel.Properties>
+          </igLayouts:XamPropertyEditorPanel>
+        </Grid>
+      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" x:Name="ContentRoot">
+          <igCharts:XamDataChart
+          x:Name="chart"
+          IsHorizontalZoomEnabled="false"
+          IsVerticalZoomEnabled="false"
+          HighlightingMode="FadeOthersSpecific"
+          HighlightingBehavior="DirectlyOver"
+          PlotAreaMarginRight="120"
+          AnimateSeriesWhenAxisRangeChanges="true">
+              <igCharts:XamDataChart.Axes>
+                  <igCharts:CategoryXAxis
+                  x:Name="xAxis"
+                  ItemsSource="{Binding SankeyBudgetStages}"
+                  Label="Stage"
+                  AreLabelsVisible="false"
+                  TickLength="0"
+                  Stroke="#00000000"
+                  MajorStroke="#00000000">
+                  </igCharts:CategoryXAxis>
+                  <igCharts:NumericYAxis
+                  x:Name="yAxis"
+                  AreLabelsVisible="false"
+                  TickLength="0"
+                  Stroke="#00000000"
+                  MajorStroke="#00000000">
+                  </igCharts:NumericYAxis>
+              </igCharts:XamDataChart.Axes>
+              <igCharts:XamDataChart.Series>
+                  <igCharts:SankeySeries
+                  x:Name="sankey"
+                  Title="Budget"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding SankeyBudgetNodes}"
+                  NodeIdMemberPath="Id"
+                  NodeLabelMemberPath="Label"
+                  NodeLayerMemberPath="Layer"
+                  LinkSource="{Binding SankeyBudgetMonths}"
+                  LinkIdMemberPath="Id"
+                  LinkSourceMemberPath="Source"
+                  LinkTargetMemberPath="Target"
+                  LinkValueMemberPath="July"
+                  UseItemWiseColors="true"
+                  Thickness="0"
+                  AreaFillOpacity="0.7"
+                  IsTransitionInEnabled="true"
+                  ShouldAnimateOnDataSourceSwap="true"
+                  TransitionDuration="1000">
+                  </igCharts:SankeySeries>
+                  <igCharts:CalloutLayer
+                  x:Name="nodeLabels"
+                  TargetSeries="{Binding ElementName=sankey}"
+                  IsAutoCalloutBehaviorEnabled="true"
+                  UseValueForAutoCalloutLabels="false"
+                  UseItemColorForOutline="true"
+                  CalloutStrokeThickness="2"
+                  CalloutTextColor="black"
+                  CalloutBackground="white">
+                  </igCharts:CalloutLayer>
+                  <igCharts:DataToolTipLayer
+                  x:Name="tooltips">
+                  </igCharts:DataToolTipLayer>
+              </igCharts:XamDataChart.Series>
+          </igCharts:XamDataChart>
+        </Grid>
+      </Grid>
+    </Grid>
+</UserControl>

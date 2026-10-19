@@ -26,20 +26,30 @@
           <igCharts:XamDataChart
           x:Name="Chart"
           IsHorizontalZoomEnabled="false"
-          IsVerticalZoomEnabled="false">
+          IsVerticalZoomEnabled="false"
+          HighlightingMode="FadeOthersSpecific"
+          HighlightingBehavior="DirectlyOver">
               <igCharts:XamDataChart.Axes>
                   <igCharts:CategoryAngleAxis
                   x:Name="angleAxis"
                   ItemsSource="{Binding SankeyBudgetStages}"
-                  Label="Stage">
+                  Label="Stage"
+                  TickLength="0"
+                  Stroke="#00000000"
+                  MajorStroke="#00000000">
                   </igCharts:CategoryAngleAxis>
                   <igCharts:NumericRadiusAxis
-                  x:Name="radiusAxis">
+                  x:Name="radiusAxis"
+                  AreLabelsVisible="false"
+                  TickLength="0"
+                  Stroke="#00000000"
+                  MajorStroke="#00000000">
                   </igCharts:NumericRadiusAxis>
               </igCharts:XamDataChart.Axes>
               <igCharts:XamDataChart.Series>
                   <igCharts:RadialSankeySeries
                   x:Name="radialSankey"
+                  Title="Budget"
                   AngleAxis="{Binding ElementName=angleAxis}"
                   RadiusAxis="{Binding ElementName=radiusAxis}"
                   ItemsSource="{Binding SankeyBudgetNodes}"
@@ -50,7 +60,8 @@
                   LinkSourceMemberPath="Source"
                   LinkTargetMemberPath="Target"
                   LinkValueMemberPath="Value"
-                  IsTransitionInEnabled="true">
+                  IsTransitionInEnabled="true"
+                  UseItemWiseColors="true">
                   </igCharts:RadialSankeySeries>
                   <igCharts:DataToolTipLayer
                   x:Name="Tooltips">

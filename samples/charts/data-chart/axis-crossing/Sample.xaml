@@ -26,7 +26,7 @@
           x:Name="propertyEditorPanel1">
               <igLayouts:XamPropertyEditorPanel.Properties>
                   <igLayouts:PropertyEditorPropertyDescription
-                  PropertyPath="Axes[1 as NumericYAxis].CrossingValue"
+                  PropertyPath="Axes[0 as NumericXAxis].CrossingValue"
                   x:Name="XAxisCrossingValue"
                   Label="Where the X axis crosses"
                   ShouldOverrideDefaultEditor="true"
@@ -37,7 +37,7 @@
                   Step="0.125">
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
-                  PropertyPath="Axes[0 as NumericXAxis].CrossingValue"
+                  PropertyPath="Axes[1 as NumericYAxis].CrossingValue"
                   x:Name="YAxisCrossingValue"
                   Label="Where the Y axis crosses"
                   ShouldOverrideDefaultEditor="true"

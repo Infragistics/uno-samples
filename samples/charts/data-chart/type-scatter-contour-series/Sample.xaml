@@ -37,7 +37,7 @@
                   Step="1">
                   </igLayouts:PropertyEditorPropertyDescription>
                   <igLayouts:PropertyEditorPropertyDescription
-                  PropertyPath="Series[0 as ScatterContourSeries].ValueResolver.ValueCount"
+                  PropertyPath="Series[0 as ScatterContourSeries].ValueResolver as LinearContourValueResolver.ValueCount"
                   x:Name="Contours"
                   Label="Contours"
                   ShouldOverrideDefaultEditor="true"
