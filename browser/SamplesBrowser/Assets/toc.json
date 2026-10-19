@@ -630,6 +630,21 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Radial Sankey Highlighted Overlay",
+                                                                  "route":  "charts/data-chart/radial-sankey-highlighted-overlay",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Radial Sankey Proportional Stages",
+                                                                  "route":  "charts/data-chart/radial-sankey-proportional-stages",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Radial Sankey Showcase",
+                                                                  "route":  "charts/data-chart/radial-sankey-showcase",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Range Area Chart",
                                                                   "route":  "charts/data-chart/range-area-chart",
                                                                   "showLink":  true
@@ -645,13 +660,43 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Sankey Alluvial",
+                                                                  "route":  "charts/data-chart/sankey-alluvial",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Sankey Budget Flow",
                                                                   "route":  "charts/data-chart/sankey-budget-flow",
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Sankey Budget Showcase",
+                                                                  "route":  "charts/data-chart/sankey-budget-showcase",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Sankey Edge List",
+                                                                  "route":  "charts/data-chart/sankey-edge-list",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Sankey Highlighted Overlay",
+                                                                  "route":  "charts/data-chart/sankey-highlighted-overlay",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Sankey Highlighted Values",
                                                                   "route":  "charts/data-chart/sankey-highlighted-values",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Sankey Monthly Flow",
+                                                                  "route":  "charts/data-chart/sankey-monthly-flow",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Sankey Styling",
+                                                                  "route":  "charts/data-chart/sankey-styling",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -787,6 +832,51 @@
                                                               {
                                                                   "name":  "User Annotation Layer",
                                                                   "route":  "charts/data-chart/user-annotation-layer",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Area Chart",
+                                                                  "route":  "charts/data-chart/vertical-area-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Chart Combined",
+                                                                  "route":  "charts/data-chart/vertical-chart-combined",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Line Chart",
+                                                                  "route":  "charts/data-chart/vertical-line-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Point Chart",
+                                                                  "route":  "charts/data-chart/vertical-point-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Spline Area Chart",
+                                                                  "route":  "charts/data-chart/vertical-spline-area-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Spline Chart",
+                                                                  "route":  "charts/data-chart/vertical-spline-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Step Area Chart",
+                                                                  "route":  "charts/data-chart/vertical-step-area-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Step Line Chart",
+                                                                  "route":  "charts/data-chart/vertical-step-line-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Vertical Waterfall Chart",
+                                                                  "route":  "charts/data-chart/vertical-waterfall-chart",
                                                                   "showLink":  true
                                                               },
                                                               {
