@@ -2,23 +2,20 @@
     x:Class="SamplesBrowser.Pages.SampleHostPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
     Background="{StaticResource SamplePageBackground}">
-
-    <!--
-        This page hosts a sample UserControl.
-        The UserControl instance is passed as a navigation parameter (Func<object>)
-        and placed into SampleContent on navigation.
-        Only the active sample is instantiated (lazy loading).
-    -->
-    <Border Padding="{StaticResource SampleContentPadding}">
-        <ContentPresenter x:Name="SampleContent"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          HorizontalContentAlignment="Stretch"
-                          VerticalContentAlignment="Stretch"/>
-    </Border>
-
+    <Grid>
+        <Border x:Name="SampleBorder" Padding="{StaticResource SampleContentPadding}">
+            <ContentPresenter x:Name="SampleContent"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                              HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+        </Border>
+        <Grid x:Name="SourceContainer" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="SourceStatus" Margin="16" TextWrapping="Wrap" Visibility="Collapsed"/>
+            <Grid x:Name="SourceViewHost" Grid.Row="1"/>
+        </Grid>
+    </Grid>
 </Page>

@@ -162,7 +162,7 @@
     </Style>
 
     <!-- *********** SAMPLE PAGES *********** -->
-    <Thickness x:Key="SampleContentPadding">48</Thickness>
+    <Thickness x:Key="SampleContentPadding">24</Thickness>
     <x:Double x:Key="SampleContentGridRowSpacing">24</x:Double>
 
 </ResourceDictionary>

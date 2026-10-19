@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Ingests individual WinUI samples from the samples/ folder into the combined
+    Ingests individual Uno Platform samples from the samples/ folder into the combined
     SamplesBrowser application.
 
 .DESCRIPTION
@@ -153,6 +153,10 @@ foreach ($xamlFile in $sampleFiles) {
 Write-Host "  Processed $($sampleList.Count) sample(s)." -ForegroundColor Green
 
 # ---- Copy sample files into browser/Pages/ ----
+
+# Capture original source before rewriting namespaces or deduplicating data classes.
+& dotnet run --project (Join-Path $scriptDir 'source-viewer\SourceViewerGenerator.csproj') --configuration Release --no-launch-profile -- $SamplesRoot $BrowserRoot
+if ($LASTEXITCODE -ne 0) { throw '.NET source generation failed.' }
 
 Write-Host ""
 Write-Host "Copying sample files ..." -ForegroundColor Yellow

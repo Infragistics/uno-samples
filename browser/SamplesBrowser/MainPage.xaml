@@ -36,7 +36,9 @@
                 <SolidColorBrush x:Key="NavigationViewContentBackground" Color="{StaticResource NavigationViewContentBackgroundOverride}"/>
                 <SolidColorBrush x:Key="NavigationViewHeaderBackground" Color="{StaticResource NavigationViewHeaderBackgroundOverride}"/>
                 <Style x:Key="NavigationViewHeaderContentPresenterStyle" TargetType="ContentPresenter">
-                    <Setter Property="Margin" Value="36,16,36,8"/>
+                    <Setter Property="Margin" Value="0,16,0,8"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
             </NavigationView.Resources>
 
@@ -48,7 +50,7 @@
                         </Image.Source>
                     </Image>
                     <TextBlock
-                        Text="IG Uno Samples"
+                        Text="IG Uno Platform Samples"
                         Style="{StaticResource NavPaneAppNameTextStyle}"
                         Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                         VerticalAlignment="Center"/>
@@ -86,8 +88,8 @@
                                 HorizontalAlignment="Left" Padding="32,0,0,0" Spacing="18">
 
                                     <StackPanel VerticalAlignment="Center" Spacing="4">
-                                        <TextBlock Text="Infragistics Uno" Style="{StaticResource HeroSubtitleTextStyle}"/>
-                                        <TextBlock Text="Uno Samples Browser" Style="{StaticResource HeroTitleTextStyle}"/>
+                                        <TextBlock Text="Infragistics Uno Platform" Style="{StaticResource HeroSubtitleTextStyle}"/>
+                                        <TextBlock Text="Uno Platform Samples Browser" Style="{StaticResource HeroTitleTextStyle}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
@@ -168,6 +170,16 @@
             </Grid>
 
         </NavigationView>
+        <Frame x:Name="EmbeddedFrame" Grid.RowSpan="2" Visibility="Collapsed"/>
+        <TextBlock x:Name="EmbedError" Grid.RowSpan="2" Visibility="Collapsed"
+                   Margin="16" TextWrapping="Wrap"/>
+        <Grid x:Name="WarmupHost" Grid.RowSpan="2" Width="640" Height="360" IsHitTestVisible="False"/>
+        <Grid x:Name="StartupOverlay" Grid.RowSpan="2" Background="{StaticResource SamplePageBackground}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+                <ProgressRing x:Name="StartupProgress" IsActive="True" Width="32" Height="32"/>
+                <TextBlock Text="Loading components…" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </Page>
