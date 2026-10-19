@@ -27,78 +27,93 @@
     </UnoFeatures>
   </PropertyGroup>
 
-  <!-- Infragistics Uno control assemblies, resolved per-TargetFramework from the dev-tools
-       UNO build output. $(InfragisticsUnoBuild) is defined in the repo-root Directory.Build.props.
-       The build-output subfolder name matches $(TargetFramework) for every head we target. -->
-  <ItemGroup>
+  <!-- Infragistics Uno packages; the versions are managed centrally. -->
+  <ItemGroup Condition="'$(InfragisticsUnoBuild)' == ''">
+    <PackageReference Include="Infragistics.Uno.Core.Trial" />
+    <PackageReference Include="Infragistics.Uno.Charts.Trial" />
+    <PackageReference Include="Infragistics.Uno.DataVisualization.Trial" />
+    <PackageReference Include="Infragistics.Uno.DataGrid.Trial" />
+    <PackageReference Include="Infragistics.Uno.Layouts.Trial" />
+    <PackageReference Include="Infragistics.Uno.Inputs.Trial" />
+    <PackageReference Include="Infragistics.Uno.Gauges.Trial" />
+    <PackageReference Include="Infragistics.Uno.Dashboards.Trial" />
+    <PackageReference Include="Infragistics.Uno.TreeMap.Trial" />
+    <PackageReference Include="Infragistics.Uno.Sparkline.Trial" />
+    <PackageReference Include="Infragistics.Uno.Maps.Trial" />
+  </ItemGroup>
+
+  <!-- Or the Infragistics Uno control assemblies from a dev-tools UNO build output, when
+       $(InfragisticsUnoBuild) names one (e.g. /p:InfragisticsUnoBuild=c:\work\dev-tools\XPlatform\Main\Source\Build\UNO).
+       The build-output subfolder name matches net9.0 for every head we target. -->
+  <ItemGroup Condition="'$(InfragisticsUnoBuild)' != ''">
     <Reference Include="Infragistics.Core">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Charts">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Charts.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Charts.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.DataVisualization">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.DataVisualization.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.DataVisualization.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.DataVisualization.SkiaSharp">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.DataVisualization.SkiaSharp.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.DataVisualization.SkiaSharp.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.DataGrid">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.DataGrid.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.DataGrid.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Layouts">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Layouts.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Layouts.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Inputs">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Inputs.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Inputs.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Gauges">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Gauges.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Gauges.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Dashboards">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Dashboards.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Dashboards.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.TreeMap">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.TreeMap.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.TreeMap.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Sparkline">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Sparkline.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Sparkline.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Maps">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Maps.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Maps.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Core.Platform">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Core.Platform.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Core.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Charts">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Charts.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Charts.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Layouts">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Layouts.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Layouts.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Inputs">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Inputs.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Inputs.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.DataGrid">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.DataGrid.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.DataGrid.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Gauges">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Gauges.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Gauges.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.DataVisualization">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.DataVisualization.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.DataVisualization.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Dashboards">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Dashboards.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Dashboards.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.TreeMap">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.TreeMap.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.TreeMap.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Sparkline">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Sparkline.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Sparkline.dll</HintPath>
     </Reference>
     <Reference Include="Infragistics.Uno.Maps">
-      <HintPath>$(InfragisticsUnoBuild)\$(TargetFramework)\Infragistics.Uno.Maps.dll</HintPath>
+      <HintPath>$(InfragisticsUnoBuild)\net9.0\Infragistics.Uno.Maps.dll</HintPath>
     </Reference>
   </ItemGroup>
 

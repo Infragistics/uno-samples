@@ -376,6 +376,6 @@ Write-Host "=== Done ===" -ForegroundColor Cyan
 Write-Host "  $($sampleList.Count) sample(s) ingested into the browser."
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor White
-Write-Host "  1. Open browser\SamplesBrowser\SamplesBrowser.csproj in Visual Studio 2022"
+Write-Host "  1. Open SamplesBrowser.sln at the repository root in Visual Studio"
 Write-Host "  2. Build (Ctrl+Shift+B) and run (F5)"
 Write-Host ""

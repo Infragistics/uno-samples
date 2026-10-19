@@ -31,7 +31,7 @@ Each folder under `samples/` is a standalone, independently-buildable WinUI 3 ap
 
 To run a sample independently:
 
-1. Open `samples/<group>/<component>/<sample>/WinUIApp.csproj` in Visual Studio 2022
+1. Open `samples/<group>/<component>/<sample>/Sample.csproj` in Visual Studio 2022
 2. Press F5 to build and run
 
 ## Combined Samples Browser
@@ -47,7 +47,7 @@ The `browser/SamplesBrowser/` project provides a tree-navigation interface that 
    .\ingest-samples.ps1
    ```
 
-2. Open `browser/SamplesBrowser/SamplesBrowser.csproj` in Visual Studio 2022
+2. Open `SamplesBrowser.sln` at the repository root in Visual Studio
 
 3. Press F5 to build and run
 

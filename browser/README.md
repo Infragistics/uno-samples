@@ -29,7 +29,7 @@ cd scripts
 .\ingest-samples.ps1
 ```
 
-Then open `SamplesBrowser.csproj` in Visual Studio 2022 and press F5.
+Then open `SamplesBrowser.sln` at the repository root in Visual Studio and press F5.
 
 ## Requirements
 

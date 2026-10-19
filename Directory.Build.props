@@ -12,9 +12,8 @@
     -->
     <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257</NoWarn>
 
-    <!-- All samples reference the Infragistics Uno control assemblies produced by the
-         dev-tools UNO build, resolved per-TargetFramework. Bump this if the build output
-         moves. -->
-    <InfragisticsUnoBuild>c:\work\dev-tools\XPlatform\Main\Source\Build\UNO</InfragisticsUnoBuild>
+    <!-- The samples reference the Infragistics Uno packages (versions in Directory.Packages.props).
+         To build one against a dev-tools UNO build output instead, pass
+         /p:InfragisticsUnoBuild=c:\work\dev-tools\XPlatform\Main\Source\Build\UNO. -->
   </PropertyGroup>
 </Project>
