@@ -14,16 +14,16 @@
     <PackageVersion Include="Microsoft.Data.OData" Version="5.8.5" />
     <PackageVersion Include="Microsoft.Data.Edm" Version="5.8.5" />
     <!-- Infragistics Uno Trial packages under test from ProGet. -->
-    <PackageVersion Include="Infragistics.Uno.Core.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.DataVisualization.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Charts.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Gauges.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Maps.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Sparkline.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.TreeMap.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Inputs.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Layouts.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.DataGrid.Trial" Version="26.1.1000-alpha.23" />
-    <PackageVersion Include="Infragistics.Uno.Dashboards.Trial" Version="26.1.1000-alpha.23" />
+    <PackageVersion Include="Infragistics.Uno.Core.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.DataVisualization.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Charts.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Gauges.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Maps.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Sparkline.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.TreeMap.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Inputs.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Layouts.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.DataGrid.Trial" Version="26.1.1000-alpha.24" />
+    <PackageVersion Include="Infragistics.Uno.Dashboards.Trial" Version="26.1.1000-alpha.24" />
   </ItemGroup>
 </Project>
