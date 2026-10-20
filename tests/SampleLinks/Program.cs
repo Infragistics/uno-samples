@@ -13,6 +13,8 @@ var cases = new (string Address, string Base, string Route)[]
     ("https://example.com/uno-demos/gauges/radial-gauge/overview", "https://example.com/uno-demos/", "gauges/radial-gauge/overview"),
     ("https://example.com/uno-demos/charts/category-chart/%6Fverview", "https://example.com/uno-demos/", "charts/category-chart/overview"),
     ("https://example.com/uno-demos/charts/category-chart/missing", "https://example.com/uno-demos/", "charts/category-chart/missing"),
+    ("https://staging.infragistics.com/uno-wasm-demos/charts/category-chart/overview", "https://staging.infragistics.com/uno-wasm-demos/", "charts/category-chart/overview"),
+    ("https://www.infragistics.com/uno-wasm-demos/samples/gauges/radial-gauge/overview", "https://www.infragistics.com/uno-wasm-demos/", "gauges/radial-gauge/overview"),
     ("https://example.com/outside/charts/category-chart/overview", "https://example.com/uno-demos/", ""),
     ("https://other.example.com/uno-demos/charts/category-chart/overview", "https://example.com/uno-demos/", ""),
     ("not a URL", "https://example.com/", ""),
