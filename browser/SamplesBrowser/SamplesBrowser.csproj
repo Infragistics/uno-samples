@@ -233,4 +233,13 @@
       <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
   </Target>
+  <Target Name="PublishDocumentationSource" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+    <ItemGroup>
+      <_DocumentationSource Include="$(MSBuildProjectDirectory)\Assets\Source\code-viewer\**\*.json" />
+    </ItemGroup>
+    <Error Condition="'@(_DocumentationSource)' == ''" Text="Documentation code-viewer JSON was not generated." />
+    <Copy SourceFiles="@(_DocumentationSource)"
+          DestinationFiles="@(_DocumentationSource->'$(PublishDir)wwwroot\code-viewer\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
 </Project>

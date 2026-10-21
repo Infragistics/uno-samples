@@ -1,0 +1,108 @@
+name: Build and Deploy Uno WASM Samples
+run-name: Uno WASM samples - ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [vnext, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uno-wasm-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-dispatch:
+    if: github.ref == 'refs/heads/vnext' || github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Install WebAssembly build tools
+        run: dotnet workload install wasm-tools
+
+      - name: Check direct sample links
+        run: dotnet run --project tests/SampleLinks/SampleLinks.csproj --configuration Release
+
+      - name: Check source capture and documentation JSON
+        run: dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj --configuration Release -- --self-test
+
+      - name: Publish AOT browser
+        shell: pwsh
+        run: |
+          dotnet publish browser/SamplesBrowser/SamplesBrowser.csproj `
+            --framework net9.0-browserwasm --configuration Release `
+            -p:TargetFrameworks=net9.0-browserwasm `
+            -p:RunAOTCompilation=true `
+            -p:WasmShellMonoRuntimeExecutionMode=InterpreterAndAOT `
+            -p:WasmShellWebAppBasePath=/uno-wasm-demos/ `
+            --output "${{ github.workspace }}/out/uno-wasm"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Validate deployable site
+        shell: pwsh
+        run: |
+          $site = Join-Path $env:GITHUB_WORKSPACE 'out/uno-wasm/wwwroot'
+          foreach ($file in @('index.html', 'web.config')) {
+            if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
+          }
+          if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
+          $index = Get-Content (Join-Path $site 'index.html') -Raw
+          if ($index -notmatch '<base\s+href="/uno-wasm-demos/"') { throw 'Incorrect deployment base path' }
+          $registry = Get-Content browser/SamplesBrowser/SampleRegistry.cs -Raw
+          $routes = [regex]::Matches($registry, '\{\s*"([^"]+)"\s*,')
+          if ($routes.Count -eq 0) { throw 'No registered sample routes' }
+          foreach ($match in $routes) {
+            $route = $match.Groups[1].Value
+            $source = Join-Path $site "code-viewer/$route.json"
+            if (-not (Test-Path $source)) { throw "Missing documentation source: $route" }
+            $data = Get-Content $source -Raw | ConvertFrom-Json
+            if (-not $data.sampleFiles -or -not ($data.sampleFiles | Where-Object fileName -eq 'Sample.xaml')) {
+              throw "Invalid documentation source: $route"
+            }
+          }
+
+      # Deploy the site contents directly; deploy.yml supports contentPath sync.
+      - name: Upload site
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnoWasmSamplesBrowser
+          path: out/uno-wasm/wwwroot/
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Get deployment dispatch token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.IGNITEUI_GITHUB_APP_ID }}
+          private-key: ${{ secrets.IGNITEUI_GITHUB_APP_PRIVATE_KEY }}
+          owner: IgniteUI
+          repositories: igniteui-actions
+          permission-contents: write
+
+      - name: Dispatch IIS deployment
+        uses: actions/github-script@v9
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'IgniteUI',
+              repo: 'igniteui-actions',
+              event_type: 'uno-samples-cd',
+              client_payload: {
+                calling_branch: context.ref,
+                repository: context.repo.owner + '/' + context.repo.repo,
+                run_id: String(context.runId),
+                artifact_name: 'UnoWasmSamplesBrowser',
+                sha: context.sha
+              }
+            });

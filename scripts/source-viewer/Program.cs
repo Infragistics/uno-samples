@@ -49,6 +49,20 @@ internal static class Program
         template.Replace("{{ROUTE_TITLE}}", WebUtility.HtmlEncode(route))
             .Replace("/*SOURCE_FILES*/[]", JsonSerializer.Serialize(files, JsonOptions));
 
+    private static string DocumentationJson(SourceFile[] files) =>
+        JsonSerializer.Serialize(new
+        {
+            sampleFiles = files.Select(file => new
+            {
+                fileExtension = Path.GetExtension(file.Name).TrimStart('.'),
+                fileHeader = Path.GetExtension(file.Name).TrimStart('.'),
+                fileName = file.Name,
+                path = file.Name,
+                content = file.Text,
+                isMain = true
+            })
+        }, JsonOptions) + "\n";
+
     private static bool WriteIfChanged(string path, string content)
     {
         if (File.Exists(path) && File.ReadAllText(path) == content) return false;
@@ -74,6 +88,7 @@ internal static class Program
             if (Encoding.UTF8.GetByteCount(html) > 2 * 1024 * 1024)
                 throw new InvalidOperationException($"Source document exceeds WebView2's 2 MB limit: {route}");
             if (WriteIfChanged(Path.Combine(outputRoot, route + ".html"), html)) regenerated++;
+            WriteIfChanged(Path.Combine(outputRoot, "code-viewer", route + ".json"), DocumentationJson(files));
             var digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(html)));
             manifest.Add(new { route, digest, files = files.Select(f => new { f.Name, f.Language }) });
         }
@@ -91,6 +106,7 @@ internal static class Program
         const string prefix = "const files = ";
         var start = html.IndexOf(prefix, StringComparison.Ordinal) + prefix.Length;
         var end = html.IndexOf(";\n", start, StringComparison.Ordinal);
+        if (end < 0) end = html.IndexOf(";\r\n", start, StringComparison.Ordinal);
         return JsonSerializer.Deserialize<SourceFile[]>(html[start..end], JsonOptions)!;
     }
 
@@ -129,14 +145,25 @@ internal static class Program
                 var captured = ReadSource(html);
                 Check(captured.Select(f => f.Name).SequenceEqual(new[] { "Sample.xaml", "Sample.xaml.cs", "Data.cs" }), "Scaffolding included or file order incorrect.");
                 Check(captured[0].Text == source && captured[2].Text == "// data belonging to " + name + "\n", "Per-sample source not preserved.");
+                using var json = JsonDocument.Parse(File.ReadAllText(Path.Combine(browserRoot, "Assets", "Source", "code-viewer", "charts", "test", name + ".json")));
+                var tabs = json.RootElement.GetProperty("sampleFiles").EnumerateArray().ToArray();
+                Check(tabs.Select(tab => tab.GetProperty("fileName").GetString()).SequenceEqual(captured.Select(file => file.Name)), "Documentation file names or order differ from captured source.");
+                Check(tabs.Select(tab => tab.GetProperty("fileExtension").GetString()).SequenceEqual(new[] { "xaml", "cs", "cs" }), "Documentation language extensions incorrect.");
+                Check(tabs.All(tab => tab.GetProperty("isMain").GetBoolean()), "Documentation hides supporting source files.");
+                Check(tabs.Select(tab => tab.GetProperty("content").GetString()).SequenceEqual(captured.Select(file => file.Text)), "Documentation source text differs from original source.");
             }
             var output = Path.Combine(browserRoot, "Assets", "Source", "charts", "test", "one.html");
+            var jsonOutput = Path.Combine(browserRoot, "Assets", "Source", "code-viewer", "charts", "test", "one.json");
             var timestamp = File.GetLastWriteTimeUtc(output);
+            var jsonTimestamp = File.GetLastWriteTimeUtc(jsonOutput);
             Generate(samplesRoot, browserRoot);
             Check(File.GetLastWriteTimeUtc(output) == timestamp, "Unchanged source rewritten.");
+            Check(File.GetLastWriteTimeUtc(jsonOutput) == jsonTimestamp, "Unchanged documentation JSON rewritten.");
             File.WriteAllText(Path.Combine(samplesRoot, "charts", "test", "one", "Data.cs"), "// changed");
             Generate(samplesRoot, browserRoot);
             Check(ReadSource(File.ReadAllText(output))[2].Text == "// changed", "Changed source not regenerated.");
+            using var updatedJson = JsonDocument.Parse(File.ReadAllText(jsonOutput));
+            Check(updatedJson.RootElement.GetProperty("sampleFiles")[2].GetProperty("content").GetString() == "// changed", "Changed documentation source not regenerated.");
         }
         finally
         {
