@@ -1,6 +1,6 @@
 # Uno Platform Samples
 
-Uno Platform samples browser for Infragistics Uno Platform components, targeting WebAssembly, desktop and Android.
+Uno Platform samples browser for Infragistics Uno Platform components, targeting WebAssembly, desktop, iOS and Android.
 
 ## Structure
 
