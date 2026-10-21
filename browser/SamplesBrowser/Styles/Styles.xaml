@@ -55,7 +55,7 @@
     <Color x:Key="NavigationViewHeaderBackgroundOverride">#FFFFFFFF</Color>
 
     <!-- *********** FONTS *********** -->
-    <FontFamily x:Key="AppFontFamily">/Assets/Fonts/DMSans.ttf#DM Sans</FontFamily>
+    <FontFamily x:Key="AppFontFamily">ms-appx:///Assets/Fonts/DMSans.ttf#DM Sans</FontFamily>
 
     <!-- *********** TEXT STYLES — BASE *********** -->
     <Style x:Key="BodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
