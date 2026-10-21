@@ -27,14 +27,16 @@ public sealed class SampleLink
 
     public static SampleLink Current()
     {
-#if __WASM__
+        // Checked at run time: the Skia browser target does not define __WASM__.
         if (!OperatingSystem.IsBrowser()) return new SampleLink();
         // Read this iframe's location, rather than the embedding page's URL.
         using var location = System.Runtime.InteropServices.JavaScript.JSHost.GlobalThis.GetPropertyAsJSObject("location");
         using var document = System.Runtime.InteropServices.JavaScript.JSHost.GlobalThis.GetPropertyAsJSObject("document");
-        return Parse(location.GetPropertyAsString("href"), document.GetPropertyAsString("baseURI"));
-#else
-        return new SampleLink();
-#endif
+        var href = location.GetPropertyAsString("href");
+        var appBase = document.GetPropertyAsString("baseURI");
+        // Without a <base> element (published with no WasmShellWebAppBasePath), baseURI is the page
+        // URL itself, which would leave no route; the app is then served from the site root.
+        if (appBase == href) appBase = location.GetPropertyAsString("origin") + "/";
+        return Parse(href, appBase);
     }
 }

@@ -18,13 +18,17 @@ public static class ComponentAssemblyPreloader
 
     private static async Task LoadAsync()
     {
-#if __WASM__
-        // WASM may have no worker threads; yield to the startup flow before resolving assemblies.
-        await Task.Yield();
-        LoadAssemblies();
-#else
-        await Task.Run(LoadAssemblies);
-#endif
+        // Checked at run time: the Skia browser target does not define __WASM__.
+        if (OperatingSystem.IsBrowser())
+        {
+            // WASM may have no worker threads; yield to the startup flow before resolving assemblies.
+            await Task.Yield();
+            LoadAssemblies();
+        }
+        else
+        {
+            await Task.Run(LoadAssemblies);
+        }
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2026",
