@@ -1,0 +1,21 @@
+<Project>
+  <Target Name="UseUnoRuntimeFixes"
+          AfterTargets="ReplaceUnoRuntime"
+          Condition="'$(UnoRuntimeFixesPath)' != '' and '$(TargetFramework)' == 'net9.0-browserwasm' and '$(OutputType)' == 'Exe'">
+    <Error Condition="'$(UnoVersion)' != '6.5.237'"
+           Text="The local Uno runtime fixes apply to Uno 6.5.237. Remove UnoRuntimeFixesPath when changing Uno versions." />
+    <Error Condition="!Exists('$(UnoRuntimeFixesPath)/Uno.UI.dll') or !Exists('$(UnoRuntimeFixesPath)/Uno.UI.Runtime.Skia.WebAssembly.Browser.dll') or !Exists('$(UnoRuntimeFixesPath)/source-revision.txt')"
+           Text="UnoRuntimeFixesPath must contain the output of scripts/build-uno-fixes.ps1." />
+    <ItemGroup>
+      <_UnoRuntimeFixesOriginal Include="@(RuntimeCopyLocalItems)"
+                               Condition="'%(Filename)' == 'Uno.UI' or '%(Filename)' == 'Uno.UI.Runtime.Skia.WebAssembly.Browser'" />
+    </ItemGroup>
+    <Error Condition="'@(_UnoRuntimeFixesOriginal->Count())' != '2'"
+           Text="Expected both Uno runtime assemblies after ReplaceUnoRuntime; the SDK runtime layout has changed." />
+    <ItemGroup>
+      <RuntimeCopyLocalItems Remove="@(_UnoRuntimeFixesOriginal)" />
+      <RuntimeCopyLocalItems Include="@(_UnoRuntimeFixesOriginal->'$(UnoRuntimeFixesPath)/%(Filename)%(Extension)')" />
+    </ItemGroup>
+    <Message Importance="high" Text="Using source-built Uno 6.5.237 runtime fixes from $(UnoRuntimeFixesPath)" />
+  </Target>
+</Project>

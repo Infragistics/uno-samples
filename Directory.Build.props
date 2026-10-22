@@ -1,4 +1,11 @@
 <Project>
+  <PropertyGroup Condition="'$(UnoRuntimeFixesPath)' != '' and Exists('$(UnoRuntimeFixesPath)/source-revision.txt')">
+    <_UnoRuntimeFixesSourceKey>$([System.IO.File]::ReadAllText('$(UnoRuntimeFixesPath)/source-revision.txt'))</_UnoRuntimeFixesSourceKey>
+    <_UnoRuntimeFixesCacheKey>$([MSBuild]::StableStringHash('$(UnoRuntimeFixesPath)|$(_UnoRuntimeFixesSourceKey)'))</_UnoRuntimeFixesCacheKey>
+    <BaseIntermediateOutputPath>obj/uno-runtime-fixes/$(_UnoRuntimeFixesCacheKey)/</BaseIntermediateOutputPath>
+    <DefaultExcludesInProjectFolder>$(DefaultExcludesInProjectFolder);obj/**</DefaultExcludesInProjectFolder>
+  </PropertyGroup>
+
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>

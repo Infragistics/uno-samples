@@ -1,0 +1,9 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-browserwasm</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+    <RootNamespace>WasmRuntimeRegression</RootNamespace>
+    <UnoFeatures>SkiaRenderer;Skia</UnoFeatures>
+  </PropertyGroup>
+</Project>

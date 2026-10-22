@@ -1,0 +1,56 @@
+--- a/src/Uno.UI.Runtime.Skia.WebAssembly.Browser/Hosting/WebAssemblyBrowserHost.cs
++++ b/src/Uno.UI.Runtime.Skia.WebAssembly.Browser/Hosting/WebAssemblyBrowserHost.cs
+@@ -108,12 +108,12 @@
+ 	void IXamlRootHost.InvalidateRender()
+ 	{
+ 		_renderer?.InvalidateRender();
+-		Window.CurrentSafe!.RootElement?.XamlRoot?.InvalidateOverlays();
++		Window.CurrentSafe?.RootElement?.XamlRoot?.InvalidateOverlays();
+ 	}
+ 
+ 	internal void RemoveSplashScreen() => NativeMethods.RemoveLoading();
+ 
+-	UIElement? IXamlRootHost.RootElement => Window.CurrentSafe!.RootElement;
++	UIElement? IXamlRootHost.RootElement => Window.CurrentSafe?.RootElement;
+ 
+ 	private static partial class NativeMethods
+ 	{
+--- a/src/Uno.UI.Runtime.Skia.WebAssembly.Browser/Rendering/BrowserRenderer.cs
++++ b/src/Uno.UI.Runtime.Skia.WebAssembly.Browser/Rendering/BrowserRenderer.cs
+@@ -53,6 +53,12 @@
+ 
+ 	private void RenderFrame()
+ 	{
++		if (_host.RootElement is not { Visual.CompositionTarget: CompositionTarget compositionTarget })
++		{
++			InvalidateRender();
++			return;
++		}
++
+ 		_renderStopwatch.Restart();
+ 
+ 		if (this.Log().IsEnabled(LogLevel.Trace))
+@@ -68,7 +74,7 @@
+ 			_canvas = null;
+ 		}
+ 
+-		var currentClipPath = ((CompositionTarget)_host.RootElement!.Visual.CompositionTarget!).OnNativePlatformFrameRequested(_canvas, size =>
++		var currentClipPath = compositionTarget.OnNativePlatformFrameRequested(_canvas, size =>
+ 		{
+ 			return _canvas = _renderer.Resize((int)size.Width, (int)size.Height);
+ 		});
+--- a/src/Uno.UI/DataBinding/BindingPropertyHelper.cs
++++ b/src/Uno.UI/DataBinding/BindingPropertyHelper.cs
+@@ -280,6 +280,12 @@
+ 							_log.ErrorFormat("The Indexer property getter does not exist on type [{0}]", type);
+ 							return null;
+ 						}
++					}
++
++					var dependencyProperty = FindDependencyProperty(type, property);
++					if (dependencyProperty != null)
++					{
++						return dependencyProperty.Type;
+ 					}
+ 
+ 					var propertyInfo = GetPropertyInfo(type, property, allowPrivateMembers: allowPrivateMembers);

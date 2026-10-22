@@ -53,20 +53,32 @@ public partial class App : Application
         MainWindow.Activate();
     }
 
+    // Logging is on in every configuration: Uno catches exceptions thrown from event handlers and
+    // timer ticks and only logs them, so without a logger a Release build fails silently.
     public static void InitializeLogging()
     {
-#if DEBUG
         var factory = LoggerFactory.Create(builder =>
         {
-#if __WASM__
-            builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
-#elif __IOS__
+#if __IOS__
             builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
             builder.AddConsole();
 #else
-            builder.AddConsole();
+            // Checked at run time: the Skia browser target does not define __WASM__, and the
+            // console logger is not supported in the browser.
+            if (OperatingSystem.IsBrowser())
+            {
+                builder.AddProvider(new Services.BrowserConsoleLoggerProvider());
+            }
+            else
+            {
+                builder.AddConsole();
+            }
 #endif
+#if DEBUG
             builder.SetMinimumLevel(LogLevel.Information);
+#else
+            builder.SetMinimumLevel(LogLevel.Warning);
+#endif
             builder.AddFilter("Uno", LogLevel.Warning);
             builder.AddFilter("Windows", LogLevel.Warning);
             builder.AddFilter("Microsoft", LogLevel.Warning);
@@ -76,7 +88,6 @@ public partial class App : Application
 
 #if HAS_UNO
         global::Uno.UI.Adapter.Microsoft.Extensions.Logging.LoggingAdapter.Initialize();
-#endif
 #endif
     }
 }
