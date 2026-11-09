@@ -55,8 +55,12 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
+          # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
+          # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw
-          if ($index -notmatch '<base\s+href="/uno-wasm-demos/"') { throw 'Incorrect deployment base path' }
+          if ($index -notmatch 'src="/uno-wasm-demos/package_[0-9a-f]+/uno-bootstrap\.js"') { throw 'Incorrect deployment base path' }
+          $config = Get-ChildItem $site -Recurse -Filter 'uno-config.js' | Get-Content -Raw
+          if ($config -notmatch '"UNO_BOOTSTRAP_WEBAPP_BASE_PATH"\] = "/uno-wasm-demos/"') { throw 'Incorrect app base path' }
           $registry = Get-Content browser/SamplesBrowser/SampleRegistry.cs -Raw
           $routes = [regex]::Matches($registry, '\{\s*"([^"]+)"\s*,')
           if ($routes.Count -eq 0) { throw 'No registered sample routes' }

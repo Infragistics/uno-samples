@@ -31,12 +31,10 @@ public sealed class SampleLink
         if (!OperatingSystem.IsBrowser()) return new SampleLink();
         // Read this iframe's location, rather than the embedding page's URL.
         using var location = System.Runtime.InteropServices.JavaScript.JSHost.GlobalThis.GetPropertyAsJSObject("location");
-        using var document = System.Runtime.InteropServices.JavaScript.JSHost.GlobalThis.GetPropertyAsJSObject("document");
-        var href = location.GetPropertyAsString("href");
-        var appBase = document.GetPropertyAsString("baseURI");
-        // Without a <base> element (published with no WasmShellWebAppBasePath), baseURI is the page
-        // URL itself, which would leave no route; the app is then served from the site root.
-        if (appBase == href) appBase = location.GetPropertyAsString("origin") + "/";
-        return Parse(href, appBase);
+        // The bootstrapper emits no <base> element; it passes WasmShellWebAppBasePath ("/" when
+        // unset) to the runtime instead.
+        var basePath = Environment.GetEnvironmentVariable("UNO_BOOTSTRAP_WEBAPP_BASE_PATH");
+        if (string.IsNullOrEmpty(basePath) || !basePath.StartsWith("/", StringComparison.Ordinal)) basePath = "/";
+        return Parse(location.GetPropertyAsString("href"), location.GetPropertyAsString("origin") + basePath);
     }
 }
