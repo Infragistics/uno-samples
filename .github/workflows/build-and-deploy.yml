@@ -82,6 +82,7 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
+          if (Get-ChildItem $site -Recurse -Filter '*.gz') { throw 'gzip copies were published; only .br copies should ship' }
           # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
           # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw
