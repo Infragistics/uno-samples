@@ -242,4 +242,18 @@
           DestinationFiles="@(_DocumentationSource->'$(PublishDir)wwwroot\code-viewer\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
+  <!-- Uno keeps the splash screen until every face in the default font's manifest has loaded: 36 Open
+       Sans faces (4.8 MB), mostly condensed widths the app never uses. The default can't be redirected
+       to another manifest, because every Infragistics Uno assembly (built with Uno.Sdk) sets it back to
+       Uno.Fonts.OpenSans/Fonts/OpenSans.ttf from a module initializer when it loads. So replace the
+       published manifest with the 6 faces the app uses, and delete its compressed copies so the .br
+       rewrite rule can't serve the original. -->
+  <Target Name="PublishOpenSansSubset" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+    <ItemGroup>
+      <_OpenSansManifest Include="$(PublishDir)wwwroot\package_*\Uno.Fonts.OpenSans\Fonts\OpenSans.ttf.manifest" />
+    </ItemGroup>
+    <Error Condition="'@(_OpenSansManifest)' == ''" Text="Uno.Fonts.OpenSans/Fonts/OpenSans.ttf.manifest is missing from the publish output; check the Uno.Fonts.OpenSans package." />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Platforms\WebAssembly\OpenSans.ttf.manifest" DestinationFiles="@(_OpenSansManifest)" />
+    <Delete Files="@(_OpenSansManifest->'%(FullPath).br');@(_OpenSansManifest->'%(FullPath).gz')" />
+  </Target>
 </Project>

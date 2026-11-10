@@ -88,6 +88,14 @@ jobs:
           if ($index -notmatch 'src="/uno-wasm-demos/package_[0-9a-f]+/uno-bootstrap\.js"') { throw 'Incorrect deployment base path' }
           $config = Get-ChildItem $site -Recurse -Filter 'uno-config.js' | Get-Content -Raw
           if ($config -notmatch '"UNO_BOOTSTRAP_WEBAPP_BASE_PATH"\] = "/uno-wasm-demos/"') { throw 'Incorrect app base path' }
+          # Uno preloads every face in this manifest before it removes the splash screen.
+          $fontsDir = Get-ChildItem $site -Directory -Filter 'package_*' | ForEach-Object { Join-Path $_.FullName 'Uno.Fonts.OpenSans/Fonts' }
+          $faces = (Get-Content (Join-Path $fontsDir 'OpenSans.ttf.manifest') -Raw | ConvertFrom-Json).fonts
+          if ($faces.Count -ne 6) { throw "OpenSans.ttf.manifest lists $($faces.Count) faces instead of the 6-face subset" }
+          foreach ($face in $faces) {
+            $file = Join-Path $fontsDir ([IO.Path]::GetFileName($face.family_name))
+            if (-not (Test-Path $file)) { throw "Font face missing from the published site: $($face.family_name)" }
+          }
           $registry = Get-Content browser/SamplesBrowser/SampleRegistry.cs -Raw
           $routes = [regex]::Matches($registry, '\{\s*"([^"]+)"\s*,')
           if ($routes.Count -eq 0) { throw 'No registered sample routes' }
