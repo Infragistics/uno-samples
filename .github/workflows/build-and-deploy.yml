@@ -4,6 +4,10 @@ run-name: Uno WASM samples - ${{ github.ref_name }}
 on:
   push:
     branches: [vnext, main]
+    # Markdown never reaches the published site: the source viewer reads only .cs, .xaml, .xml,
+    # .json and .csv files. A push that changes nothing else skips the ~25 minute build and deploy.
+    paths-ignore:
+      - '**/*.md'
   workflow_dispatch:
 
 permissions:
