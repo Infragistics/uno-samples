@@ -2,6 +2,28 @@
   <assembly fullname="SamplesBrowser" />
 
   <!--
+  TEMPORARY: remove with the next Infragistics alpha. The Infragistics Uno controls (26.1.1000-alpha.25)
+  build some ControlTemplates at run time with XamlReader.Load, and Uno's XAML reader resolves
+  {TemplateBinding} through this marker type, which nothing else references. Trimmed, the load
+  fails and the property editor panel renders nothing. The controls now create those templates in
+  code instead.
+  -->
+  <assembly fullname="Uno.UI">
+    <type fullname="Microsoft.UI.Xaml.Data.TemplateBinding" />
+  </assembly>
+
+  <!--
+  TEMPORARY: remove with the next Infragistics alpha. A shape series bound to a ShapeDataSource through
+  ItemsSource and ShapeMemberPath="Points" reads Points by name; trimmed, the getter is gone and the
+  series draws no shapes. The data source now keeps it.
+  -->
+  <assembly fullname="Infragistics.Uno.DataVisualization">
+    <type fullname="Infragistics.Controls.ShapefileRecord">
+      <property name="Points" />
+    </type>
+  </assembly>
+
+  <!--
   Uncomment this section when using JSON.NET
   <assembly fullname="System.Core">
     <type fullname="System.Linq.Expressions*" />
