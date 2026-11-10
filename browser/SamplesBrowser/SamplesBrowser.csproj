@@ -242,4 +242,14 @@
           DestinationFiles="@(_DocumentationSource->'$(PublishDir)wwwroot\code-viewer\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
+  <!-- Ship Brotli copies only: web.config serves the .br files, and nginx compresses responses for
+       clients without Brotli. The .gz copies were 46 MB of the artifact that every deployment
+       downloads. SDK 9.0.3xx writes .gz files in two passes (build and publish), so no single
+       compression property removes them all; delete them after publish instead. -->
+  <Target Name="DropGzipCopies" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+    <ItemGroup>
+      <_GzipCopy Include="$(PublishDir)wwwroot\**\*.gz" />
+    </ItemGroup>
+    <Delete Files="@(_GzipCopy)" />
+  </Target>
 </Project>
