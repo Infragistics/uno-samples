@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-dispatch:
+  build:
     if: github.ref == 'refs/heads/vnext' || github.ref == 'refs/heads/main'
     runs-on: windows-latest
     timeout-minutes: 120
@@ -83,12 +83,20 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
+  # The app key is only used here. This job runs no repository code and does not check out
+  # the repository, so the build's tools and packages never run alongside the key.
+  dispatch:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
       - name: Get deployment dispatch token
         id: app-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
-          app-id: ${{ secrets.IGNITEUI_GITHUB_APP_ID }}
-          private-key: ${{ secrets.IGNITEUI_GITHUB_APP_PRIVATE_KEY }}
+          client-id: ${{ secrets.INFRA_APP_CLIENT_ID }}
+          private-key: ${{ secrets.INFRA_APP_PRIVATE_KEY }}
           owner: IgniteUI
           repositories: igniteui-actions
           permission-contents: write
