@@ -24,6 +24,13 @@
   </assembly>
 
   <!--
+  Simple.OData.Client loads its protocol adapter by name (Assembly.Load), so nothing references the
+  adapter assembly statically and trimming drops it, together with Microsoft.OData.Core/Edm. Without
+  it, the remote-data grid sample (grids/data-grid/binding-remote-data) cannot load data on WASM.
+  -->
+  <assembly fullname="Simple.OData.Client.V4.Adapter" />
+
+  <!--
   Uncomment this section when using JSON.NET
   <assembly fullname="System.Core">
     <type fullname="System.Linq.Expressions*" />
