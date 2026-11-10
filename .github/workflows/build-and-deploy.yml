@@ -16,7 +16,8 @@ concurrency:
 jobs:
   build:
     if: github.ref == 'refs/heads/vnext' || github.ref == 'refs/heads/main'
-    runs-on: windows-latest
+    # Pinned rather than ubuntu-latest, which will later move to Ubuntu 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -28,8 +29,27 @@ jobs:
         with:
           global-json-file: global.json
 
+      # The SDK already carries the wasm workload manifests; skipping the manifest update avoids
+      # downloading the manifests of every other workload.
       - name: Install WebAssembly build tools
-        run: dotnet workload install wasm-tools
+        run: dotnet workload install wasm-tools --skip-manifest-update
+
+      # Uno points Emscripten at a private cache that starts empty, so every run rebuilt the same
+      # system libraries (about a minute). Emscripten clears the cache itself when its version or
+      # LLVM path changes; the key also changes with the SDK, the .NET root and global.json.
+      - name: Compute Emscripten cache key
+        id: emsdk
+        shell: bash
+        run: |
+          sdk=$(dotnet --version | tail -n 1)
+          root=$(printf '%s' "$DOTNET_ROOT" | sha256sum | cut -c1-12)
+          echo "key=emsdk-${RUNNER_OS}-${RUNNER_ARCH}-${sdk}-${root}" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Emscripten system libraries
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/emsdk-cache
+          key: ${{ steps.emsdk.outputs.key }}-${{ hashFiles('global.json') }}
 
       - name: Check direct sample links
         run: dotnet run --project tests/SampleLinks/SampleLinks.csproj --configuration Release
@@ -37,6 +57,8 @@ jobs:
       - name: Check source capture and documentation JSON
         run: dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj --configuration Release -- --self-test
 
+      # UnoDisableHotDesign/UnoDisableMCPSupport: Uno.Sdk 6.7 restores these dev-time packages even
+      # in Release (Uno.UI.HotDesign alone is a 207 MB package), although the app uses none of them.
       - name: Publish AOT browser
         shell: pwsh
         run: |
@@ -46,6 +68,9 @@ jobs:
             -p:RunAOTCompilation=true `
             -p:WasmShellMonoRuntimeExecutionMode=InterpreterAndAOT `
             -p:WasmShellWebAppBasePath=/uno-wasm-demos/ `
+            -p:UnoDisableHotDesign=true `
+            -p:UnoDisableMCPSupport=true `
+            "-p:WasmCachePath=$env:RUNNER_TEMP/emsdk-cache" `
             --output "${{ github.workspace }}/out/uno-wasm"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
