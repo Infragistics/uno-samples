@@ -93,6 +93,11 @@ jobs:
           if ($index -notmatch 'src="/uno-wasm-demos/package_[0-9a-f]+/uno-bootstrap\.js"') { throw 'Incorrect deployment base path' }
           $config = Get-ChildItem $site -Recurse -Filter 'uno-config.js' | Get-Content -Raw
           if ($config -notmatch '"UNO_BOOTSTRAP_WEBAPP_BASE_PATH"\] = "/uno-wasm-demos/"') { throw 'Incorrect app base path' }
+          # The PWA stays off; service-worker.js only retires workers registered by earlier builds.
+          if ($config -notmatch 'config\.enable_pwa = false') { throw 'PWA is on again: Platforms/WebAssembly/manifest.webmanifest is back' }
+          $worker = Get-Content (Join-Path $site 'service-worker.js') -Raw
+          if ($worker -notmatch 'registration\.unregister') { throw 'service-worker.js is not the retiring worker' }
+          if (Test-Path (Join-Path $site 'service-worker.js.br')) { throw 'A compressed copy of the generated service worker was published' }
           $registry = Get-Content browser/SamplesBrowser/SampleRegistry.cs -Raw
           $routes = [regex]::Matches($registry, '\{\s*"([^"]+)"\s*,')
           if ($routes.Count -eq 0) { throw 'No registered sample routes' }
