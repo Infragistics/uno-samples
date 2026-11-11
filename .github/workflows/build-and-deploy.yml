@@ -86,7 +86,11 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
-          if (Get-ChildItem $site -Recurse -Filter '*.gz') { throw 'gzip copies were published; only .br copies should ship' }
+          # Only dotnet.native.wasm keeps a gzip copy (DropGzipCopies in SamplesBrowser.csproj).
+          $gzip = @(Get-ChildItem $site -Recurse -Filter '*.gz')
+          $unexpected = @($gzip | Where-Object { $_.Name -notlike 'dotnet.native.*.wasm.gz' -or $_.Directory.Name -ne '_framework' })
+          if ($unexpected) { throw "Unexpected gzip copies: $(($unexpected | Select-Object -First 5).Name -join ', ')" }
+          if ($gzip.Count -ne 1) { throw "Expected one gzip copy, of dotnet.native.wasm; found $($gzip.Count)" }
           # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
           # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw
