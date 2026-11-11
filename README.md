@@ -32,7 +32,7 @@ Each folder under `samples/` is a standalone, independently-buildable Uno Platfo
 
 To run a sample independently:
 
-1. Open `samples/<group>/<component>/<sample>/Sample.csproj` in Visual Studio 2022
+1. Open `samples/<group>/<component>/<sample>/Sample.csproj` in Visual Studio 2026
 2. Press F5 to build and run
 
 ## Combined Samples Browser
@@ -75,7 +75,7 @@ own Uno Platform WASM app instance.
 Publish the combined browser once; a separate WASM build per sample is unnecessary:
 
 ```powershell
-dotnet publish browser/SamplesBrowser/SamplesBrowser.csproj -f net9.0-browserwasm -c Release "-p:WasmShellWebAppBasePath=/uno-demos/"
+dotnet publish browser/SamplesBrowser/SamplesBrowser.csproj -f net10.0-browserwasm -c Release "-p:WasmShellWebAppBasePath=/uno-demos/"
 ```
 
 Set `WasmShellWebAppBasePath` to the actual deployment directory (use `/` at the host
@@ -93,7 +93,8 @@ examples in documentation, but do not execute the native Windows WinUI runtime.
 ## Requirements
 
 - Uno Platform tooling and the Uno SDK version pinned in `global.json`.
-- .NET 9 target packs and workloads for the selected target.
+- The .NET 10 SDK band pinned in `global.json` (10.0.1xx) and the workloads for the selected target.
+- Visual Studio 2026, Rider, or VS Code with the Uno Platform extension. Visual Studio 2022 17.14 also builds them with the 10.0.1xx SDK that `global.json` pins, but Microsoft supports .NET 10 targets only in Visual Studio 2026.
 - Access to the Infragistics Uno Platform trial packages declared in `Directory.Packages.props`.
 
 ## Viewing sample source

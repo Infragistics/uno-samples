@@ -63,8 +63,8 @@ jobs:
         shell: pwsh
         run: |
           dotnet publish browser/SamplesBrowser/SamplesBrowser.csproj `
-            --framework net9.0-browserwasm --configuration Release `
-            -p:TargetFrameworks=net9.0-browserwasm `
+            --framework net10.0-browserwasm --configuration Release `
+            -p:TargetFrameworks=net10.0-browserwasm `
             -p:RunAOTCompilation=true `
             -p:WasmShellMonoRuntimeExecutionMode=InterpreterAndAOT `
             -p:WasmShellWebAppBasePath=/uno-wasm-demos/ `

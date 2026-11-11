@@ -11,7 +11,7 @@ namespace SamplesBrowser.Pages;
 public sealed partial class SampleHostPage : Page
 {
     private SampleHostParameter _sample;
-    private WebView2 _webView;
+    private Microsoft.UI.Xaml.Controls.WebView2 _webView;
 
     public SampleHostPage()
     {
@@ -97,7 +97,7 @@ public sealed partial class SampleHostPage : Page
         SourceStatus.Text = "Loading source…";
         SourceStatus.Visibility = Visibility.Visible;
         var sample = _sample;
-        var view = _webView = new WebView2();
+        var view = _webView = new Microsoft.UI.Xaml.Controls.WebView2();
         view.NavigationCompleted += async (_, args) =>
         {
             if (_webView != view) return;
@@ -120,7 +120,7 @@ public sealed partial class SampleHostPage : Page
         SourceViewHost.Children.Add(view);
     }
 
-    private async Task LoadSourceAsync(WebView2 view, SampleHostParameter sample)
+    private async Task LoadSourceAsync(Microsoft.UI.Xaml.Controls.WebView2 view, SampleHostParameter sample)
     {
         try
         {
@@ -154,7 +154,7 @@ public sealed partial class SampleHostPage : Page
         if (_webView != null) await ApplySourceThemeAsync(_webView);
     }
 
-    private async Task ApplySourceThemeAsync(WebView2 view)
+    private async Task ApplySourceThemeAsync(Microsoft.UI.Xaml.Controls.WebView2 view)
     {
         try
         {

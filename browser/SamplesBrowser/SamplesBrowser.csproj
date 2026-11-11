@@ -1,6 +1,6 @@
 <Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net9.0-android;net9.0-browserwasm;net9.0-desktop</TargetFrameworks>
+    <TargetFrameworks>net10.0-android;net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
     <UnoSingleProject>true</UnoSingleProject>
@@ -233,7 +233,7 @@
       <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
   </Target>
-  <Target Name="PublishDocumentationSource" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+  <Target Name="PublishDocumentationSource" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net10.0-browserwasm'">
     <ItemGroup>
       <_DocumentationSource Include="$(MSBuildProjectDirectory)\Assets\Source\code-viewer\**\*.json" />
     </ItemGroup>
