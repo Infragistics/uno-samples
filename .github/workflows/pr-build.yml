@@ -1,9 +1,9 @@
 name: PR build
 run-name: PR build - ${{ github.event.pull_request.title }}
 
-# Checks that a pull request does not break the build: the deployable WebAssembly site, built and
-# checked exactly as for vnext and main, and every platform the samples browser and the standalone
-# samples target. It deploys nothing and uses no secrets.
+# Checks that a pull request still builds: the samples browser and the standalone samples, with the
+# same build on every platform they target. It produces nothing to deploy: no AOT, no trimming, no
+# compression and no artifact (build-and-deploy.yml does that for vnext and main). No secrets.
 on:
   pull_request:
     branches: [vnext, main]
@@ -19,13 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # The build job of build-and-deploy.yml as this pull request changes it: AOT publish, the sample
-  # link and source-viewer checks, and the deployable-site validation. Its dispatch job is skipped.
-  webassembly-site:
-    uses: ./.github/workflows/build-and-deploy.yml
-
-  # Reads the target framework from the samples browser, so the matrix follows a framework change
-  # in the pull request itself, and picks the projects to build on every platform.
+  # Reads the target framework from the samples browser, so the builds follow a framework change in
+  # the pull request itself, and picks the samples to build.
   plan:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -39,7 +34,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 2   # the merge commit and its first parent, the base branch
 
-      - name: Plan the platform builds
+      - name: Plan the builds
         id: plan
         shell: bash
         run: |
@@ -58,7 +53,7 @@ jobs:
             while read -r s; do [ -f "samples/$s/Sample.csproj" ] && echo "$s"; done)
           count=$(printf '%s\n' "$changed" | grep -c . || true)
           if [ "$count" -gt 5 ]; then
-            echo "::notice::This pull request changes $count samples; the platform builds cover the first 5 of them. The samples browser compiles every sample."
+            echo "::notice::This pull request changes $count samples; the builds cover the first 5 of them. The samples browser compiles every sample."
           fi
           for s in $(printf '%s\n' "$changed" | head -n 5); do
             case " $samples " in *" $s "*) ;; *) samples="$samples $s" ;; esac
@@ -66,18 +61,42 @@ jobs:
           echo "Target framework: $net; Xcode: $xcode; samples: $samples"
           { echo "net=$net"; echo "xcode=$xcode"; echo "samples=$samples"; } >> "$GITHUB_OUTPUT"
 
-  platforms:
+  # The two checks of the repository's own tools that build-and-deploy.yml also runs.
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install pinned .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Check direct sample links
+        run: dotnet run --project tests/SampleLinks/SampleLinks.csproj --configuration Release
+
+      - name: Check source capture and documentation JSON
+        run: dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj --configuration Release -- --self-test
+
+  # The same Debug build on every platform. The samples browser targets browserwasm, android and
+  # desktop; every standalone sample also targets ios. maccatalyst is not built: Uno's Skia runtime
+  # for Apple (Uno.WinUI.Runtime.Skia.AppleUIKit 6.7) brings Uno.icu-ios, which has no Mac Catalyst
+  # library, so linking fails ("building for 'macCatalyst', but linking in object file ... built
+  # for 'iOS'") on net9.0 and net10.0.
+  build:
     needs: plan
-    name: ${{ matrix.platform }}
+    name: build (${{ matrix.platform }})
     strategy:
       fail-fast: false
       matrix:
         include:
-          # The samples browser targets android, browserwasm and desktop; its browserwasm build is
-          # webassembly-site. The standalone samples also target ios and maccatalyst. maccatalyst is
-          # not built: Uno's Skia runtime for Apple (Uno.WinUI.Runtime.Skia.AppleUIKit 6.7) brings
-          # Uno.icu-ios, which has no Mac Catalyst library, so linking fails ("building for
-          # 'macCatalyst', but linking in object file ... built for 'iOS'") on net9.0 and net10.0.
+          - platform: browserwasm
+            os: ubuntu-24.04
+            workload: wasm-tools
+            browser: true
           - platform: android
             os: ubuntu-24.04
             workload: android
@@ -85,9 +104,6 @@ jobs:
           - platform: desktop
             os: ubuntu-24.04
             browser: true
-          - platform: browserwasm
-            os: ubuntu-24.04
-            workload: wasm-tools
           - platform: ios
             os: macos-15
             workload: ios
@@ -98,6 +114,9 @@ jobs:
     env:
       TFM: ${{ needs.plan.outputs.net }}-${{ matrix.platform }}
       SAMPLES: ${{ needs.plan.outputs.samples }}
+      # DisableBuildCompression: skip the .br/.gz copies of the WebAssembly build; only a deployment
+      # needs them. Other platforms ignore it.
+      BUILD_ARGS: -c Debug -p:DisableBuildCompression=true ${{ matrix.extra }}
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_NOLOGO: 1
     steps:
@@ -122,13 +141,14 @@ jobs:
 
       - name: Build the samples browser
         if: matrix.browser
-        run: dotnet build browser/SamplesBrowser/SamplesBrowser.csproj -c Debug -f "$TFM" "-p:TargetFrameworks=$TFM"
+        shell: bash
+        run: dotnet build browser/SamplesBrowser/SamplesBrowser.csproj -f "$TFM" "-p:TargetFrameworks=$TFM" $BUILD_ARGS
 
       - name: Build standalone samples
         shell: bash
         run: |
           for s in $SAMPLES; do
             echo "::group::$s ($TFM)"
-            dotnet build "samples/$s/Sample.csproj" -c Debug -f "$TFM" "-p:TargetFrameworks=$TFM" ${{ matrix.extra }} || { echo "::endgroup::"; echo "::error::$s failed to build for $TFM"; exit 1; }
+            dotnet build "samples/$s/Sample.csproj" -f "$TFM" "-p:TargetFrameworks=$TFM" $BUILD_ARGS || { echo "::endgroup::"; echo "::error::$s failed to build for $TFM"; exit 1; }
             echo "::endgroup::"
           done
