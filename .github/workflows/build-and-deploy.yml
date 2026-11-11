@@ -4,6 +4,10 @@ run-name: Uno WASM samples - ${{ github.ref_name }}
 on:
   push:
     branches: [vnext, main]
+    # Markdown never reaches the published site: the source viewer reads only .cs, .xaml, .xml,
+    # .json and .csv files. A push that changes nothing else skips the ~25 minute build and deploy.
+    paths-ignore:
+      - '**/*.md'
   workflow_dispatch:
 
 permissions:
@@ -82,12 +86,26 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
+          if (Get-ChildItem $site -Recurse -Filter '*.gz') { throw 'gzip copies were published; only .br copies should ship' }
           # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
           # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw
           if ($index -notmatch 'src="/uno-wasm-demos/package_[0-9a-f]+/uno-bootstrap\.js"') { throw 'Incorrect deployment base path' }
           $config = Get-ChildItem $site -Recurse -Filter 'uno-config.js' | Get-Content -Raw
           if ($config -notmatch '"UNO_BOOTSTRAP_WEBAPP_BASE_PATH"\] = "/uno-wasm-demos/"') { throw 'Incorrect app base path' }
+          # Uno preloads every face in this manifest before it removes the splash screen.
+          $fontsDir = Get-ChildItem $site -Directory -Filter 'package_*' | ForEach-Object { Join-Path $_.FullName 'Uno.Fonts.OpenSans/Fonts' }
+          $faces = (Get-Content (Join-Path $fontsDir 'OpenSans.ttf.manifest') -Raw | ConvertFrom-Json).fonts
+          if ($faces.Count -ne 6) { throw "OpenSans.ttf.manifest lists $($faces.Count) faces instead of the 6-face subset" }
+          foreach ($face in $faces) {
+            $file = Join-Path $fontsDir ([IO.Path]::GetFileName($face.family_name))
+            if (-not (Test-Path $file)) { throw "Font face missing from the published site: $($face.family_name)" }
+          }
+          # The PWA stays off; service-worker.js only retires workers registered by earlier builds.
+          if ($config -notmatch 'config\.enable_pwa = false') { throw 'PWA is on again: Platforms/WebAssembly/manifest.webmanifest is back' }
+          $worker = Get-Content (Join-Path $site 'service-worker.js') -Raw
+          if ($worker -notmatch 'registration\.unregister') { throw 'service-worker.js is not the retiring worker' }
+          if (Test-Path (Join-Path $site 'service-worker.js.br')) { throw 'A compressed copy of the generated service worker was published' }
           $registry = Get-Content browser/SamplesBrowser/SampleRegistry.cs -Raw
           $routes = [regex]::Matches($registry, '\{\s*"([^"]+)"\s*,')
           if ($routes.Count -eq 0) { throw 'No registered sample routes' }
