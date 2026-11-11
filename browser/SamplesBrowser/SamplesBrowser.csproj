@@ -242,4 +242,38 @@
           DestinationFiles="@(_DocumentationSource->'$(PublishDir)wwwroot\code-viewer\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
+  <!-- Uno keeps the splash screen until every face in the default font's manifest has loaded: 36 Open
+       Sans faces (4.8 MB), mostly condensed widths the app never uses. The default can't be redirected
+       to another manifest, because every Infragistics Uno assembly (built with Uno.Sdk) sets it back to
+       Uno.Fonts.OpenSans/Fonts/OpenSans.ttf from a module initializer when it loads. So replace the
+       published manifest with the 6 faces the app uses, and delete its compressed copies so the .br
+       rewrite rule can't serve the original. -->
+  <Target Name="PublishOpenSansSubset" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+    <ItemGroup>
+      <_OpenSansManifest Include="$(PublishDir)wwwroot\package_*\Uno.Fonts.OpenSans\Fonts\OpenSans.ttf.manifest" />
+    </ItemGroup>
+    <Error Condition="'@(_OpenSansManifest)' == ''" Text="Uno.Fonts.OpenSans/Fonts/OpenSans.ttf.manifest is missing from the publish output; check the Uno.Fonts.OpenSans package." />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Platforms\WebAssembly\OpenSans.ttf.manifest" DestinationFiles="@(_OpenSansManifest)" />
+    <Delete Files="@(_OpenSansManifest->'%(FullPath).br');@(_OpenSansManifest->'%(FullPath).gz')" />
+  </Target>
+  <!-- The PWA is off (no Platforms/WebAssembly/manifest.webmanifest), but Uno.Wasm.Bootstrap 9.0.23
+       still writes service-worker.js, and browsers that ran an earlier build keep that registration
+       and re-check the URL on every visit. Publish a worker there that unregisters itself, and delete
+       the generated file's .br/.gz copies so web.config's rewrite rules can't serve the old worker. -->
+  <Target Name="PublishRetiringServiceWorker" AfterTargets="Publish"
+          Condition="'$(TargetFramework)' == 'net9.0-browserwasm' And '$(WasmPWAManifestFile)' == ''">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/Platforms/WebAssembly/service-worker.retire.js"
+          DestinationFiles="$(PublishDir)wwwroot/service-worker.js" />
+    <Delete Files="$(PublishDir)wwwroot/service-worker.js.br;$(PublishDir)wwwroot/service-worker.js.gz" />
+  </Target>
+  <!-- Ship Brotli copies only: web.config serves the .br files, and nginx compresses responses for
+       clients without Brotli. The .gz copies were 46 MB of the artifact that every deployment
+       downloads. SDK 9.0.3xx writes .gz files in two passes (build and publish), so no single
+       compression property removes them all; delete them after publish instead. -->
+  <Target Name="DropGzipCopies" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+    <ItemGroup>
+      <_GzipCopy Include="$(PublishDir)wwwroot\**\*.gz" />
+    </ItemGroup>
+    <Delete Files="@(_GzipCopy)" />
+  </Target>
 </Project>
