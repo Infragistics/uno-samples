@@ -32,7 +32,7 @@ Each folder under `samples/` is a standalone, independently-buildable Uno Platfo
 
 To run a sample independently:
 
-1. Open `samples/<group>/<component>/<sample>/Sample.csproj` in Visual Studio 2026
+1. Open `samples/<group>/<component>/<sample>/Sample.csproj` in Visual Studio 2026 (Visual Studio 2022 17.14 also works; see Requirements)
 2. Press F5 to build and run
 
 ## Combined Samples Browser
