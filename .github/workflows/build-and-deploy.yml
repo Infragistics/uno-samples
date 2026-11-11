@@ -28,6 +28,21 @@ jobs:
         with:
           persist-credentials: false
 
+      # global.json leaves the .NET SDK to whoever builds (Visual Studio picks one it can load),
+      # but CI builds with an exact SDK so the WebAssembly toolchain stays the same between runs.
+      # Without the pin the runner's newest SDK (.NET 10) would build. Pin it for this run only.
+      - name: Pin the .NET SDK for this run
+        shell: bash
+        run: |
+          node -e '
+            const fs = require("fs");
+            const text = fs.readFileSync("global.json", "utf8").replace(/^\s*\/\/.*$/gm, "");
+            const json = JSON.parse(text);
+            json.sdk = { version: "9.0.315", rollForward: "latestPatch", allowPrerelease: false };
+            fs.writeFileSync("global.json", JSON.stringify(json, null, 2) + "\n");
+          '
+          cat global.json
+
       - name: Install pinned .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
@@ -86,7 +101,11 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
-          if (Get-ChildItem $site -Recurse -Filter '*.gz') { throw 'gzip copies were published; only .br copies should ship' }
+          # Only dotnet.native.wasm keeps a gzip copy (DropGzipCopies in SamplesBrowser.csproj).
+          $gzip = @(Get-ChildItem $site -Recurse -Filter '*.gz')
+          $unexpected = @($gzip | Where-Object { $_.Name -notlike 'dotnet.native.*.wasm.gz' -or $_.Directory.Name -ne '_framework' })
+          if ($unexpected) { throw "Unexpected gzip copies: $(($unexpected | Select-Object -First 5).Name -join ', ')" }
+          if ($gzip.Count -ne 1) { throw "Expected one gzip copy, of dotnet.native.wasm; found $($gzip.Count)" }
           # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
           # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw
