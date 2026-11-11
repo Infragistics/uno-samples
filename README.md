@@ -39,7 +39,7 @@ To run a sample independently:
 
 The `browser/SamplesBrowser/` project provides a tree-navigation interface that lets you browse all samples in one place. It uses Uno Platform's `NavigationView` for the sidebar and lazy-loads only the active sample's content.
 
-The browser preloads the Infragistics assemblies at startup and shows the home page as soon as the table of contents has loaded. About a second later it warms the four controls whose first creation is slowest (category chart, data grid, color editor, data pie chart) through construction, layout and rendering, hidden behind the navigation view, and stops as soon as a sample is opened. Direct sample links skip the warmup. Debug output reports component warmup and sample creation/loading times; individual sample data and specialized series can still add first-use work.
+The browser preloads the Infragistics assemblies at startup and shows the home page as soon as the table of contents has loaded. About a second later it warms the four controls whose first creation is slowest (category chart, data grid, color editor, data pie chart) through construction, layout and rendering, hidden behind the navigation view. It stops before the next control once a sample is opened, and is skipped if one is already open. Direct sample links skip the warmup. Debug output reports component warmup and sample creation/loading times; individual sample data and specialized series can still add first-use work.
 
 ### Running the Browser
 

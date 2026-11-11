@@ -63,8 +63,11 @@ public sealed partial class MainPage : Page
             NavView.IsEnabled = true;
         }
 
-        // Warm the expensive controls after the home page is on screen; stop once the user navigates.
+        // Warm the expensive controls after the home page is on screen. The assemblies load first (the
+        // preloader started at launch and has normally finished by now). The warmup is skipped if a
+        // sample is already open, and stops before the next control once one opens.
         await System.Threading.Tasks.Task.Delay(1000);
+        await ComponentAssemblyPreloader.Ready;
         if (ContentFrame.Visibility != Visibility.Visible)
             await ComponentControlWarmup.RunAsync(WarmupHost, () => ContentFrame.Visibility == Visibility.Visible);
     }
