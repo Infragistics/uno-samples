@@ -266,13 +266,16 @@
           DestinationFiles="$(PublishDir)wwwroot/service-worker.js" />
     <Delete Files="$(PublishDir)wwwroot/service-worker.js.br;$(PublishDir)wwwroot/service-worker.js.gz" />
   </Target>
-  <!-- Ship Brotli copies only: web.config serves the .br files, and nginx compresses responses for
-       clients without Brotli. The .gz copies were 46 MB of the artifact that every deployment
-       downloads. The SDK (9.0.3xx, 10.0.1xx) writes .gz files in two passes (build and publish), so no single
-       compression property removes them all; delete them after publish instead. -->
+  <!-- Keep one gzip copy, of the ~108 MB dotnet.native.wasm, for clients that don't accept Brotli
+       (some TLS-inspecting corporate proxies remove it). web.config serves the .br copies to
+       everyone else; gzip-only clients get the other files as they are or compressed by nginx.
+       The other 520 .gz copies were 18.8 MB of the artifact that every deployment downloads.
+       The SDK writes .gz files in two passes (build and publish), so no single compression
+       property removes them; delete them after publish instead. -->
   <Target Name="DropGzipCopies" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net10.0-browserwasm'">
     <ItemGroup>
-      <_GzipCopy Include="$(PublishDir)wwwroot\**\*.gz" />
+      <_GzipCopy Include="$(PublishDir)wwwroot\**\*.gz"
+                 Exclude="$(PublishDir)wwwroot\_framework\dotnet.native.*.wasm.gz" />
     </ItemGroup>
     <Delete Files="@(_GzipCopy)" />
   </Target>

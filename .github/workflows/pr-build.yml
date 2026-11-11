@@ -1,0 +1,154 @@
+name: PR build
+run-name: PR build - ${{ github.event.pull_request.title }}
+
+# Checks that a pull request still builds: the samples browser and the standalone samples, with the
+# same build on every platform they target. It produces nothing to deploy: no AOT, no trimming, no
+# compression and no artifact (build-and-deploy.yml does that for vnext and main). No secrets.
+on:
+  pull_request:
+    branches: [vnext, main]
+    # Markdown never reaches a build, as in build-and-deploy.yml.
+    paths-ignore:
+      - '**/*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-build-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Reads the target framework from the samples browser, so the builds follow a framework change in
+  # the pull request itself, and picks the samples to build.
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      net: ${{ steps.plan.outputs.net }}
+      xcode: ${{ steps.plan.outputs.xcode }}
+      samples: ${{ steps.plan.outputs.samples }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2   # the merge commit and its first parent, the base branch
+
+      - name: Plan the builds
+        id: plan
+        shell: bash
+        run: |
+          net=$(grep -o -m 1 -E 'net[0-9]+\.[0-9]+-browserwasm' browser/SamplesBrowser/SamplesBrowser.csproj | sed 's/-browserwasm$//')
+          if [ -z "$net" ]; then echo "::error::SamplesBrowser.csproj has no browserwasm target framework."; exit 1; fi
+          # The Xcode that the iOS workload of this .NET version builds with
+          # (net9.0: iOS SDK 18.0; net10.0: iOS SDK 26.0). Both are installed on macos-15.
+          case "$net" in
+            net9.0)  xcode=16.4 ;;
+            net10.0) xcode=26.0.1 ;;
+            *) echo "::error::No Xcode version is mapped for $net in pr-build.yml."; exit 1 ;;
+          esac
+          # Three samples from different packages, plus up to five that this pull request changes.
+          samples="charts/category-chart/overview grids/data-grid/binding-local-data maps/geo-map/binding-data-csv"
+          changed=$(git diff --name-only HEAD^1 HEAD -- samples | cut -d/ -f2-4 | sort -u |
+            while read -r s; do [ -f "samples/$s/Sample.csproj" ] && echo "$s"; done)
+          count=$(printf '%s\n' "$changed" | grep -c . || true)
+          if [ "$count" -gt 5 ]; then
+            echo "::notice::This pull request changes $count samples; the builds cover the first 5 of them. The samples browser compiles every sample."
+          fi
+          for s in $(printf '%s\n' "$changed" | head -n 5); do
+            case " $samples " in *" $s "*) ;; *) samples="$samples $s" ;; esac
+          done
+          echo "Target framework: $net; Xcode: $xcode; samples: $samples"
+          { echo "net=$net"; echo "xcode=$xcode"; echo "samples=$samples"; } >> "$GITHUB_OUTPUT"
+
+  # The two checks of the repository's own tools that build-and-deploy.yml also runs.
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Check direct sample links
+        run: dotnet run --project tests/SampleLinks/SampleLinks.csproj --configuration Release
+
+      - name: Check source capture and documentation JSON
+        run: dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj --configuration Release -- --self-test
+
+  # The same Debug build on every platform. The samples browser targets browserwasm, android and
+  # desktop; every standalone sample also targets ios. maccatalyst is not built: Uno's Skia runtime
+  # for Apple (Uno.WinUI.Runtime.Skia.AppleUIKit 6.7) brings Uno.icu-ios, which has no Mac Catalyst
+  # library, so linking fails ("building for 'macCatalyst', but linking in object file ... built
+  # for 'iOS'") on net9.0 and net10.0.
+  build:
+    needs: plan
+    name: build (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: browserwasm
+            os: ubuntu-24.04
+            workload: wasm-tools
+            browser: true
+          - platform: android
+            os: ubuntu-24.04
+            workload: android
+            browser: true
+          - platform: desktop
+            os: ubuntu-24.04
+            browser: true
+          - platform: ios
+            os: macos-15
+            workload: ios
+            # A simulator build needs no signing.
+            extra: -p:RuntimeIdentifier=iossimulator-arm64
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    env:
+      TFM: ${{ needs.plan.outputs.net }}-${{ matrix.platform }}
+      SAMPLES: ${{ needs.plan.outputs.samples }}
+      # DisableBuildCompression: skip the .br/.gz copies of the WebAssembly build; only a deployment
+      # needs them. Other platforms ignore it.
+      BUILD_ARGS: -c Debug -p:DisableBuildCompression=true ${{ matrix.extra }}
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_NOLOGO: 1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Select Xcode ${{ needs.plan.outputs.xcode }}
+        if: runner.os == 'macOS'
+        run: |
+          sudo xcode-select -s "/Applications/Xcode_${{ needs.plan.outputs.xcode }}.app"
+          xcodebuild -version
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install the ${{ matrix.workload }} workload
+        if: matrix.workload
+        run: dotnet workload install ${{ matrix.workload }} --skip-manifest-update
+
+      - name: Build the samples browser
+        if: matrix.browser
+        shell: bash
+        run: dotnet build browser/SamplesBrowser/SamplesBrowser.csproj -f "$TFM" "-p:TargetFrameworks=$TFM" $BUILD_ARGS
+
+      - name: Build standalone samples
+        shell: bash
+        run: |
+          for s in $SAMPLES; do
+            echo "::group::$s ($TFM)"
+            dotnet build "samples/$s/Sample.csproj" -f "$TFM" "-p:TargetFrameworks=$TFM" $BUILD_ARGS || { echo "::endgroup::"; echo "::error::$s failed to build for $TFM"; exit 1; }
+            echo "::endgroup::"
+          done

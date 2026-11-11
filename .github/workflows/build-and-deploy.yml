@@ -28,10 +28,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install pinned .NET SDK
+      # The newest .NET 10 SDK, as a local build uses the newest one installed. Nothing pins it.
+      - name: Install .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          global-json-file: global.json
+          dotnet-version: 10.0.x
 
       # The SDK already carries the wasm workload manifests; skipping the manifest update avoids
       # downloading the manifests of every other workload.
@@ -86,7 +87,11 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
-          if (Get-ChildItem $site -Recurse -Filter '*.gz') { throw 'gzip copies were published; only .br copies should ship' }
+          # Only dotnet.native.wasm keeps a gzip copy (DropGzipCopies in SamplesBrowser.csproj).
+          $gzip = @(Get-ChildItem $site -Recurse -Filter '*.gz')
+          $unexpected = @($gzip | Where-Object { $_.Name -notlike 'dotnet.native.*.wasm.gz' -or $_.Directory.Name -ne '_framework' })
+          if ($unexpected) { throw "Unexpected gzip copies: $(($unexpected | Select-Object -First 5).Name -join ', ')" }
+          if ($gzip.Count -ne 1) { throw "Expected one gzip copy, of dotnet.native.wasm; found $($gzip.Count)" }
           # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
           # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw

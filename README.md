@@ -93,8 +93,8 @@ examples in documentation, but do not execute the native Windows WinUI runtime.
 ## Requirements
 
 - Uno Platform tooling and the Uno SDK version pinned in `global.json`.
-- The .NET 10 SDK band pinned in `global.json` (10.0.1xx) and the workloads for the selected target.
-- Visual Studio 2026, Rider, or VS Code with the Uno Platform extension. Visual Studio 2022 17.14 also builds them with the 10.0.1xx SDK that `global.json` pins, but Microsoft supports .NET 10 targets only in Visual Studio 2026.
+- A .NET 10 SDK and the workloads for the selected target. `global.json` doesn't pin the SDK, so builds use the newest one installed.
+- Visual Studio 2026, Rider, or VS Code with the Uno Platform extension. Visual Studio 2022 17.14 also builds them when a 10.0.1xx SDK is installed: it uses the newest SDK it can load, and 10.0.2xx and later need Visual Studio 2026. Microsoft supports .NET 10 targets only in Visual Studio 2026.
 - Access to the Infragistics Uno Platform trial packages declared in `Directory.Packages.props`.
 
 ## Viewing sample source
