@@ -45,7 +45,7 @@ jobs:
         run: |
           net=$(grep -o -m 1 -E 'net[0-9]+\.[0-9]+-browserwasm' browser/SamplesBrowser/SamplesBrowser.csproj | sed 's/-browserwasm$//')
           if [ -z "$net" ]; then echo "::error::SamplesBrowser.csproj has no browserwasm target framework."; exit 1; fi
-          # The Xcode that the iOS and Mac Catalyst workloads of this .NET version build with
+          # The Xcode that the iOS workload of this .NET version builds with
           # (net9.0: iOS SDK 18.0; net10.0: iOS SDK 26.0). Both are installed on macos-15.
           case "$net" in
             net9.0)  xcode=16.4 ;;
@@ -74,7 +74,10 @@ jobs:
       matrix:
         include:
           # The samples browser targets android, browserwasm and desktop; its browserwasm build is
-          # webassembly-site. Every standalone sample targets all five platforms.
+          # webassembly-site. The standalone samples also target ios and maccatalyst. maccatalyst is
+          # not built: Uno's Skia runtime for Apple (Uno.WinUI.Runtime.Skia.AppleUIKit 6.7) brings
+          # Uno.icu-ios, which has no Mac Catalyst library, so linking fails ("building for
+          # 'macCatalyst', but linking in object file ... built for 'iOS'") on net9.0 and net10.0.
           - platform: android
             os: ubuntu-24.04
             workload: android
@@ -90,9 +93,6 @@ jobs:
             workload: ios
             # A simulator build needs no signing.
             extra: -p:RuntimeIdentifier=iossimulator-arm64
-          - platform: maccatalyst
-            os: macos-15
-            workload: maccatalyst
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     env:
