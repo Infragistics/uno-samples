@@ -118,7 +118,7 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
             horizontal.XAxis = this.catXAxis;
             horizontal.YAxis = this.numYAxis;
         }
-
+        stack.ItemsSource = EnergyProductionByCountry;
         foreach (var fragment in Fragments())
         {
             stack.Series.Add(fragment);
