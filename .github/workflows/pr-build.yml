@@ -31,6 +31,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       net: ${{ steps.plan.outputs.net }}
+      xcode: ${{ steps.plan.outputs.xcode }}
       samples: ${{ steps.plan.outputs.samples }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -44,6 +45,13 @@ jobs:
         run: |
           net=$(grep -o -m 1 -E 'net[0-9]+\.[0-9]+-browserwasm' browser/SamplesBrowser/SamplesBrowser.csproj | sed 's/-browserwasm$//')
           if [ -z "$net" ]; then echo "::error::SamplesBrowser.csproj has no browserwasm target framework."; exit 1; fi
+          # The Xcode that the iOS and Mac Catalyst workloads of this .NET version build with
+          # (net9.0: iOS SDK 18.0; net10.0: iOS SDK 26.0). Both are installed on macos-15.
+          case "$net" in
+            net9.0)  xcode=16.4 ;;
+            net10.0) xcode=26.0.1 ;;
+            *) echo "::error::No Xcode version is mapped for $net in pr-build.yml."; exit 1 ;;
+          esac
           # Three samples from different packages, plus up to five that this pull request changes.
           samples="charts/category-chart/overview grids/data-grid/binding-local-data maps/geo-map/binding-data-csv"
           changed=$(git diff --name-only HEAD^1 HEAD -- samples | cut -d/ -f2-4 | sort -u |
@@ -55,8 +63,8 @@ jobs:
           for s in $(printf '%s\n' "$changed" | head -n 5); do
             case " $samples " in *" $s "*) ;; *) samples="$samples $s" ;; esac
           done
-          echo "Target framework: $net; samples: $samples"
-          { echo "net=$net"; echo "samples=$samples"; } >> "$GITHUB_OUTPUT"
+          echo "Target framework: $net; Xcode: $xcode; samples: $samples"
+          { echo "net=$net"; echo "xcode=$xcode"; echo "samples=$samples"; } >> "$GITHUB_OUTPUT"
 
   platforms:
     needs: plan
@@ -66,10 +74,7 @@ jobs:
       matrix:
         include:
           # The samples browser targets android, browserwasm and desktop; its browserwasm build is
-          # webassembly-site. The standalone samples also list ios and maccatalyst, but they have no
-          # Platforms/iOS or Platforms/MacCatalyst files (Info.plist and the app entry point), so
-          # those builds fail; add the platforms to scripts/uno-template and the samples, then add
-          # ios and maccatalyst here on macos-15 (Xcode 16.4 for net9.0, 26.0.1 for net10.0).
+          # webassembly-site. Every standalone sample targets all five platforms.
           - platform: android
             os: ubuntu-24.04
             workload: android
@@ -80,6 +85,14 @@ jobs:
           - platform: browserwasm
             os: ubuntu-24.04
             workload: wasm-tools
+          - platform: ios
+            os: macos-15
+            workload: ios
+            # A simulator build needs no signing.
+            extra: -p:RuntimeIdentifier=iossimulator-arm64
+          - platform: maccatalyst
+            os: macos-15
+            workload: maccatalyst
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     env:
@@ -92,6 +105,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Select Xcode ${{ needs.plan.outputs.xcode }}
+        if: runner.os == 'macOS'
+        run: |
+          sudo xcode-select -s "/Applications/Xcode_${{ needs.plan.outputs.xcode }}.app"
+          xcodebuild -version
 
       - name: Install pinned .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -111,6 +129,6 @@ jobs:
         run: |
           for s in $SAMPLES; do
             echo "::group::$s ($TFM)"
-            dotnet build "samples/$s/Sample.csproj" -c Debug -f "$TFM" "-p:TargetFrameworks=$TFM" || { echo "::endgroup::"; echo "::error::$s failed to build for $TFM"; exit 1; }
+            dotnet build "samples/$s/Sample.csproj" -c Debug -f "$TFM" "-p:TargetFrameworks=$TFM" ${{ matrix.extra }} || { echo "::endgroup::"; echo "::error::$s failed to build for $TFM"; exit 1; }
             echo "::endgroup::"
           done
