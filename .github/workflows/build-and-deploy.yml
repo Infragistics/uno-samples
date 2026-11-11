@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - '**/*.md'
   workflow_dispatch:
+  # pr-build.yml calls this workflow for pull requests: it runs the build job (the same publish and
+  # site checks) and skips the deployment dispatch.
+  workflow_call:
 
 permissions:
   contents: read
@@ -19,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/vnext' || github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/vnext' || github.ref == 'refs/heads/main'
     # Pinned rather than ubuntu-latest, which will later move to Ubuntu 26.04.
     runs-on: ubuntu-24.04
     timeout-minutes: 120
@@ -132,6 +135,7 @@ jobs:
   # the repository, so the build's tools and packages never run alongside the key.
   dispatch:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions: {}
