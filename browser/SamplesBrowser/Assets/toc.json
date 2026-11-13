@@ -830,6 +830,16 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Type Scatter Polygon Series",
+                                                                  "route":  "charts/data-chart/type-scatter-polygon-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Type Scatter Polyline Series",
+                                                                  "route":  "charts/data-chart/type-scatter-polyline-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "User Annotation Layer",
                                                                   "route":  "charts/data-chart/user-annotation-layer",
                                                                   "showLink":  true
