@@ -70,10 +70,10 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install pinned .NET SDK
+      - name: Install .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          global-json-file: global.json
+          dotnet-version: 10.0.x
 
       - name: Check direct sample links
         run: dotnet run --project tests/SampleLinks/SampleLinks.csproj --configuration Release
@@ -130,10 +130,10 @@ jobs:
           sudo xcode-select -s "/Applications/Xcode_${{ needs.plan.outputs.xcode }}.app"
           xcodebuild -version
 
-      - name: Install pinned .NET SDK
+      - name: Install .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          global-json-file: global.json
+          dotnet-version: 10.0.x
 
       - name: Install the ${{ matrix.workload }} workload
         if: matrix.workload

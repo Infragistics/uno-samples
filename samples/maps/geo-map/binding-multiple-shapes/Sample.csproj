@@ -1,8 +1,9 @@
 <Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <!-- net9.0-* to match the Infragistics.Uno.* control libraries. Desktop (Skia)
-         replaces the old windows head; iOS/maccatalyst require a Mac to build. -->
-    <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst;net9.0-browserwasm;net9.0-desktop</TargetFrameworks>
+    <!-- net10.0-* (.NET 10 LTS). The Infragistics.Uno.* control libraries are net9.0 builds,
+         which net10.0 apps use as is. Desktop (Skia) replaces the old windows head;
+         iOS/maccatalyst require a Mac to build. -->
+    <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst;net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
     <UnoSingleProject>true</UnoSingleProject>
