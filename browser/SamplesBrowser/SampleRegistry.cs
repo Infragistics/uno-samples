@@ -177,6 +177,8 @@ public static class SampleRegistry
         { "charts/data-chart/transition-event", () => new Pages.Charts.DataChart.TransitionEvent.Sample() },
         { "charts/data-chart/trendline-layer", () => new Pages.Charts.DataChart.TrendlineLayer.Sample() },
         { "charts/data-chart/type-scatter-contour-series", () => new Pages.Charts.DataChart.TypeScatterContourSeries.Sample() },
+        { "charts/data-chart/type-scatter-polygon-series", () => new Pages.Charts.DataChart.TypeScatterPolygonSeries.Sample() },
+        { "charts/data-chart/type-scatter-polyline-series", () => new Pages.Charts.DataChart.TypeScatterPolylineSeries.Sample() },
         { "charts/data-chart/user-annotation-layer", () => new Pages.Charts.DataChart.UserAnnotationLayer.Sample() },
         { "charts/data-chart/vertical-area-chart", () => new Pages.Charts.DataChart.VerticalAreaChart.Sample() },
         { "charts/data-chart/vertical-chart-combined", () => new Pages.Charts.DataChart.VerticalChartCombined.Sample() },
