@@ -1,6 +1,6 @@
 <Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net9.0-android;net9.0-browserwasm;net9.0-desktop</TargetFrameworks>
+    <TargetFrameworks>net10.0-android;net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
     <UnoSingleProject>true</UnoSingleProject>
@@ -233,7 +233,7 @@
       <Content Include="Assets\Source\**\*.html" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
   </Target>
-  <Target Name="PublishDocumentationSource" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net9.0-browserwasm'">
+  <Target Name="PublishDocumentationSource" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net10.0-browserwasm'">
     <ItemGroup>
       <_DocumentationSource Include="$(MSBuildProjectDirectory)\Assets\Source\code-viewer\**\*.json" />
     </ItemGroup>
@@ -241,5 +241,42 @@
     <Copy SourceFiles="@(_DocumentationSource)"
           DestinationFiles="@(_DocumentationSource->'$(PublishDir)wwwroot\code-viewer\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
+  </Target>
+  <!-- Uno keeps the splash screen until every face in the default font's manifest has loaded: 36 Open
+       Sans faces (4.8 MB), mostly condensed widths the app never uses. The default can't be redirected
+       to another manifest, because every Infragistics Uno assembly (built with Uno.Sdk) sets it back to
+       Uno.Fonts.OpenSans/Fonts/OpenSans.ttf from a module initializer when it loads. So replace the
+       published manifest with the 6 faces the app uses, and delete its compressed copies so the .br
+       rewrite rule can't serve the original. -->
+  <Target Name="PublishOpenSansSubset" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net10.0-browserwasm'">
+    <ItemGroup>
+      <_OpenSansManifest Include="$(PublishDir)wwwroot\package_*\Uno.Fonts.OpenSans\Fonts\OpenSans.ttf.manifest" />
+    </ItemGroup>
+    <Error Condition="'@(_OpenSansManifest)' == ''" Text="Uno.Fonts.OpenSans/Fonts/OpenSans.ttf.manifest is missing from the publish output; check the Uno.Fonts.OpenSans package." />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Platforms\WebAssembly\OpenSans.ttf.manifest" DestinationFiles="@(_OpenSansManifest)" />
+    <Delete Files="@(_OpenSansManifest->'%(FullPath).br');@(_OpenSansManifest->'%(FullPath).gz')" />
+  </Target>
+  <!-- The PWA is off (no Platforms/WebAssembly/manifest.webmanifest), but Uno.Wasm.Bootstrap (9.0.23, 10.0.98)
+       still writes service-worker.js, and browsers that ran an earlier build keep that registration
+       and re-check the URL on every visit. Publish a worker there that unregisters itself, and delete
+       the generated file's .br/.gz copies so web.config's rewrite rules can't serve the old worker. -->
+  <Target Name="PublishRetiringServiceWorker" AfterTargets="Publish"
+          Condition="'$(TargetFramework)' == 'net10.0-browserwasm' And '$(WasmPWAManifestFile)' == ''">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)/Platforms/WebAssembly/service-worker.retire.js"
+          DestinationFiles="$(PublishDir)wwwroot/service-worker.js" />
+    <Delete Files="$(PublishDir)wwwroot/service-worker.js.br;$(PublishDir)wwwroot/service-worker.js.gz" />
+  </Target>
+  <!-- Keep one gzip copy, of the ~108 MB dotnet.native.wasm, for clients that don't accept Brotli
+       (some TLS-inspecting corporate proxies remove it). web.config serves the .br copies to
+       everyone else; gzip-only clients get the other files as they are or compressed by nginx.
+       The other 520 .gz copies were 18.8 MB of the artifact that every deployment downloads.
+       The SDK writes .gz files in two passes (build and publish), so no single compression
+       property removes them; delete them after publish instead. -->
+  <Target Name="DropGzipCopies" AfterTargets="Publish" Condition="'$(TargetFramework)' == 'net10.0-browserwasm'">
+    <ItemGroup>
+      <_GzipCopy Include="$(PublishDir)wwwroot\**\*.gz"
+                 Exclude="$(PublishDir)wwwroot\_framework\dotnet.native.*.wasm.gz" />
+    </ItemGroup>
+    <Delete Files="@(_GzipCopy)" />
   </Target>
 </Project>

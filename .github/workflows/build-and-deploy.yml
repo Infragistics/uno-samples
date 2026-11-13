@@ -4,6 +4,10 @@ run-name: Uno WASM samples - ${{ github.ref_name }}
 on:
   push:
     branches: [vnext, main]
+    # Markdown never reaches the published site: the source viewer reads only .cs, .xaml, .xml,
+    # .json and .csv files. A push that changes nothing else skips the ~25 minute build and deploy.
+    paths-ignore:
+      - '**/*.md'
   workflow_dispatch:
 
 permissions:
@@ -16,20 +20,41 @@ concurrency:
 jobs:
   build:
     if: github.ref == 'refs/heads/vnext' || github.ref == 'refs/heads/main'
-    runs-on: windows-latest
+    # Pinned rather than ubuntu-latest, which will later move to Ubuntu 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Install pinned .NET SDK
+      # The newest .NET 10 SDK, as a local build uses the newest one installed. Nothing pins it.
+      - name: Install .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          global-json-file: global.json
+          dotnet-version: 10.0.x
 
+      # The SDK already carries the wasm workload manifests; skipping the manifest update avoids
+      # downloading the manifests of every other workload.
       - name: Install WebAssembly build tools
-        run: dotnet workload install wasm-tools
+        run: dotnet workload install wasm-tools --skip-manifest-update
+
+      # Uno points Emscripten at a private cache that starts empty, so every run rebuilt the same
+      # system libraries (about a minute). Emscripten clears the cache itself when its version or
+      # LLVM path changes; the key also changes with the SDK, the .NET root and global.json.
+      - name: Compute Emscripten cache key
+        id: emsdk
+        shell: bash
+        run: |
+          sdk=$(dotnet --version | tail -n 1)
+          root=$(printf '%s' "$DOTNET_ROOT" | sha256sum | cut -c1-12)
+          echo "key=emsdk-${RUNNER_OS}-${RUNNER_ARCH}-${sdk}-${root}" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Emscripten system libraries
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/emsdk-cache
+          key: ${{ steps.emsdk.outputs.key }}-${{ hashFiles('global.json') }}
 
       - name: Check direct sample links
         run: dotnet run --project tests/SampleLinks/SampleLinks.csproj --configuration Release
@@ -37,15 +62,20 @@ jobs:
       - name: Check source capture and documentation JSON
         run: dotnet run --project scripts/source-viewer/SourceViewerGenerator.csproj --configuration Release -- --self-test
 
+      # UnoDisableHotDesign/UnoDisableMCPSupport: Uno.Sdk 6.7 restores these dev-time packages even
+      # in Release (Uno.UI.HotDesign alone is a 207 MB package), although the app uses none of them.
       - name: Publish AOT browser
         shell: pwsh
         run: |
           dotnet publish browser/SamplesBrowser/SamplesBrowser.csproj `
-            --framework net9.0-browserwasm --configuration Release `
-            -p:TargetFrameworks=net9.0-browserwasm `
+            --framework net10.0-browserwasm --configuration Release `
+            -p:TargetFrameworks=net10.0-browserwasm `
             -p:RunAOTCompilation=true `
             -p:WasmShellMonoRuntimeExecutionMode=InterpreterAndAOT `
             -p:WasmShellWebAppBasePath=/uno-wasm-demos/ `
+            -p:UnoDisableHotDesign=true `
+            -p:UnoDisableMCPSupport=true `
+            "-p:WasmCachePath=$env:RUNNER_TEMP/emsdk-cache" `
             --output "${{ github.workspace }}/out/uno-wasm"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
@@ -57,12 +87,30 @@ jobs:
             if (-not (Test-Path (Join-Path $site $file))) { throw "Missing site file: $file" }
           }
           if (-not (Get-ChildItem $site -Recurse -Filter '*.wasm')) { throw 'Missing WASM binaries' }
+          # Only dotnet.native.wasm keeps a gzip copy (DropGzipCopies in SamplesBrowser.csproj).
+          $gzip = @(Get-ChildItem $site -Recurse -Filter '*.gz')
+          $unexpected = @($gzip | Where-Object { $_.Name -notlike 'dotnet.native.*.wasm.gz' -or $_.Directory.Name -ne '_framework' })
+          if ($unexpected) { throw "Unexpected gzip copies: $(($unexpected | Select-Object -First 5).Name -join ', ')" }
+          if ($gzip.Count -ne 1) { throw "Expected one gzip copy, of dotnet.native.wasm; found $($gzip.Count)" }
           # The bootstrapper emits no <base> element: it prefixes asset URLs with the base path and
           # passes it to the app, which resolves deep links against it.
           $index = Get-Content (Join-Path $site 'index.html') -Raw
           if ($index -notmatch 'src="/uno-wasm-demos/package_[0-9a-f]+/uno-bootstrap\.js"') { throw 'Incorrect deployment base path' }
           $config = Get-ChildItem $site -Recurse -Filter 'uno-config.js' | Get-Content -Raw
           if ($config -notmatch '"UNO_BOOTSTRAP_WEBAPP_BASE_PATH"\] = "/uno-wasm-demos/"') { throw 'Incorrect app base path' }
+          # Uno preloads every face in this manifest before it removes the splash screen.
+          $fontsDir = Get-ChildItem $site -Directory -Filter 'package_*' | ForEach-Object { Join-Path $_.FullName 'Uno.Fonts.OpenSans/Fonts' }
+          $faces = (Get-Content (Join-Path $fontsDir 'OpenSans.ttf.manifest') -Raw | ConvertFrom-Json).fonts
+          if ($faces.Count -ne 6) { throw "OpenSans.ttf.manifest lists $($faces.Count) faces instead of the 6-face subset" }
+          foreach ($face in $faces) {
+            $file = Join-Path $fontsDir ([IO.Path]::GetFileName($face.family_name))
+            if (-not (Test-Path $file)) { throw "Font face missing from the published site: $($face.family_name)" }
+          }
+          # The PWA stays off; service-worker.js only retires workers registered by earlier builds.
+          if ($config -notmatch 'config\.enable_pwa = false') { throw 'PWA is on again: Platforms/WebAssembly/manifest.webmanifest is back' }
+          $worker = Get-Content (Join-Path $site 'service-worker.js') -Raw
+          if ($worker -notmatch 'registration\.unregister') { throw 'service-worker.js is not the retiring worker' }
+          if (Test-Path (Join-Path $site 'service-worker.js.br')) { throw 'A compressed copy of the generated service worker was published' }
           $registry = Get-Content browser/SamplesBrowser/SampleRegistry.cs -Raw
           $routes = [regex]::Matches($registry, '\{\s*"([^"]+)"\s*,')
           if ($routes.Count -eq 0) { throw 'No registered sample routes' }
