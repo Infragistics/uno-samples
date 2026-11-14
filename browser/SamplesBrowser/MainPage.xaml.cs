@@ -50,11 +50,9 @@ public sealed partial class MainPage : Page
             {
                 await ComponentAssemblyPreloader.Ready;
                 OpenSample(_launchLink.Route, embed: true);
-                return;
+                return; // embedded samples never warm
             }
-            await System.Threading.Tasks.Task.WhenAll(
-                _tocService.LoadAsync(), ComponentAssemblyPreloader.Ready);
-            await ComponentControlWarmup.RunAsync(WarmupHost);
+            await _tocService.LoadAsync();
             BuildNavigation();
             ShowHome();
         }
@@ -64,6 +62,14 @@ public sealed partial class MainPage : Page
             StartupOverlay.Visibility = Visibility.Collapsed;
             NavView.IsEnabled = true;
         }
+
+        // Warm the expensive controls after the home page is on screen. The assemblies load first (the
+        // preloader started at launch and has normally finished by now). The warmup is skipped if a
+        // sample is already open, and stops before the next control once one opens.
+        await System.Threading.Tasks.Task.Delay(1000);
+        await ComponentAssemblyPreloader.Ready;
+        if (ContentFrame.Visibility != Visibility.Visible)
+            await ComponentControlWarmup.RunAsync(WarmupHost, () => ContentFrame.Visibility == Visibility.Visible);
     }
 
     private bool OpenSample(string route, bool embed = false)
