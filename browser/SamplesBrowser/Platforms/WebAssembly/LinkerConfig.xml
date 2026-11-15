@@ -2,28 +2,6 @@
   <assembly fullname="SamplesBrowser" />
 
   <!--
-  TEMPORARY: remove with the next Infragistics alpha. The Infragistics Uno controls (26.1.1000-alpha.25)
-  build some ControlTemplates at run time with XamlReader.Load, and Uno's XAML reader resolves
-  {TemplateBinding} through this marker type, which nothing else references. Trimmed, the load
-  fails and the property editor panel renders nothing. The controls now create those templates in
-  code instead.
-  -->
-  <assembly fullname="Uno.UI">
-    <type fullname="Microsoft.UI.Xaml.Data.TemplateBinding" />
-  </assembly>
-
-  <!--
-  TEMPORARY: remove with the next Infragistics alpha. A shape series bound to a ShapeDataSource through
-  ItemsSource and ShapeMemberPath="Points" reads Points by name; trimmed, the getter is gone and the
-  series draws no shapes. The data source now keeps it.
-  -->
-  <assembly fullname="Infragistics.Uno.DataVisualization">
-    <type fullname="Infragistics.Controls.ShapefileRecord">
-      <property name="Points" />
-    </type>
-  </assembly>
-
-  <!--
   Simple.OData.Client loads its protocol adapter by name (Assembly.Load), so nothing references the
   adapter assembly statically and trimming drops it, together with Microsoft.OData.Core/Edm. Without
   it, the remote-data grid sample (grids/data-grid/binding-remote-data) cannot load data on WASM.
