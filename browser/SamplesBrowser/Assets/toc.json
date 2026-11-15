@@ -1470,16 +1470,6 @@
                                                                   "showLink":  true
                                                               },
                                                               {
-                                                                  "name":  "Column Chooser Picker",
-                                                                  "route":  "grids/data-grid/column-chooser-picker",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
-                                                                  "name":  "Column Chooser Toolbar",
-                                                                  "route":  "grids/data-grid/column-chooser-toolbar",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
                                                                   "name":  "Column Filter Expressions",
                                                                   "route":  "grids/data-grid/column-filter-expressions",
                                                                   "showLink":  true
@@ -1507,11 +1497,6 @@
                                                               {
                                                                   "name":  "Column Pinning Picker",
                                                                   "route":  "grids/data-grid/column-pinning-picker",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
-                                                                  "name":  "Column Pinning Toolbar",
-                                                                  "route":  "grids/data-grid/column-pinning-toolbar",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -1555,11 +1540,6 @@
                                                                   "showLink":  true
                                                               },
                                                               {
-                                                                  "name":  "Pager",
-                                                                  "route":  "grids/data-grid/pager",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
                                                                   "name":  "Performance",
                                                                   "route":  "grids/data-grid/performance",
                                                                   "showLink":  true
@@ -1570,18 +1550,8 @@
                                                                   "showLink":  true
                                                               },
                                                               {
-                                                                  "name":  "Row Grouping",
-                                                                  "route":  "grids/data-grid/row-grouping",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
                                                                   "name":  "Row Highlighting",
                                                                   "route":  "grids/data-grid/row-highlighting",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
-                                                                  "name":  "Row Paging",
-                                                                  "route":  "grids/data-grid/row-paging",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -1621,11 +1591,6 @@
                                               "name":  "Geo Map",
                                               "folder":  "geo-map",
                                               "samples":  [
-                                                              {
-                                                                  "name":  "Binding Data Csv",
-                                                                  "route":  "maps/geo-map/binding-data-csv",
-                                                                  "showLink":  true
-                                                              },
                                                               {
                                                                   "name":  "Binding Data Json Points",
                                                                   "route":  "maps/geo-map/binding-data-json-points",
@@ -1674,11 +1639,6 @@
                                                               {
                                                                   "name":  "Display Esri Imagery",
                                                                   "route":  "maps/geo-map/display-esri-imagery",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
-                                                                  "name":  "Display Heat Imagery",
-                                                                  "route":  "maps/geo-map/display-heat-imagery",
                                                                   "showLink":  true
                                                               },
                                                               {
@@ -1754,11 +1714,6 @@
                                                               {
                                                                   "name":  "Type Scatter Contour Series",
                                                                   "route":  "maps/geo-map/type-scatter-contour-series",
-                                                                  "showLink":  true
-                                                              },
-                                                              {
-                                                                  "name":  "Type Scatter Density Series",
-                                                                  "route":  "maps/geo-map/type-scatter-density-series",
                                                                   "showLink":  true
                                                               },
                                                               {

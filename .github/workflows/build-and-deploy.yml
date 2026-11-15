@@ -28,16 +28,22 @@ jobs:
         with:
           persist-credentials: false
 
-      # The newest .NET 10 SDK, as a local build uses the newest one installed. Nothing pins it.
+      # A .NET 10 SDK. Nothing pins it: dotnet uses the newest SDK on the runner, as a local build does.
       - name: Install .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: 10.0.x
 
       # The SDK already carries the wasm workload manifests; skipping the manifest update avoids
-      # downloading the manifests of every other workload.
+      # downloading the manifests of every other workload. The runner images also carry newer SDKs
+      # (.NET 11), and a newer SDK builds net10.0 WebAssembly with wasm-tools-net10, not wasm-tools.
       - name: Install WebAssembly build tools
-        run: dotnet workload install wasm-tools --skip-manifest-update
+        shell: bash
+        run: |
+          sdk=$(dotnet --version); tfm=10
+          workload=wasm-tools; if [ "${sdk%%.*}" -gt "$tfm" ]; then workload="wasm-tools-net$tfm"; fi
+          echo "SDK $sdk: installing $workload"
+          dotnet workload install "$workload" --skip-manifest-update
 
       # Uno points Emscripten at a private cache that starts empty, so every run rebuilt the same
       # system libraries (about a minute). Emscripten clears the cache itself when its version or
