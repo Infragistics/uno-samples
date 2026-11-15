@@ -50,7 +50,7 @@ jobs:
           # Three samples from different packages, plus up to five that this pull request changes.
           samples="charts/category-chart/overview grids/data-grid/binding-local-data maps/geo-map/binding-data-model"
           changed=$(git diff --name-only HEAD^1 HEAD -- samples | cut -d/ -f2-4 | sort -u |
-            while read -r s; do [ -f "samples/$s/Sample.csproj" ] && echo "$s"; done)
+            while read -r s; do if [ -f "samples/$s/Sample.csproj" ]; then echo "$s"; fi; done)
           count=$(printf '%s\n' "$changed" | grep -c . || true)
           if [ "$count" -gt 5 ]; then
             echo "::notice::This pull request changes $count samples; the builds cover the first 5 of them. The samples browser compiles every sample."
