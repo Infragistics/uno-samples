@@ -48,7 +48,7 @@ jobs:
             *) echo "::error::No Xcode version is mapped for $net in pr-build.yml."; exit 1 ;;
           esac
           # Three samples from different packages, plus up to five that this pull request changes.
-          samples="charts/category-chart/overview grids/data-grid/binding-local-data maps/geo-map/binding-data-csv"
+          samples="charts/category-chart/overview grids/data-grid/binding-local-data maps/geo-map/binding-data-model"
           changed=$(git diff --name-only HEAD^1 HEAD -- samples | cut -d/ -f2-4 | sort -u |
             while read -r s; do [ -f "samples/$s/Sample.csproj" ] && echo "$s"; done)
           count=$(printf '%s\n' "$changed" | grep -c . || true)
@@ -135,9 +135,20 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      # Nothing pins the SDK, so dotnet uses the newest one on the runner, which can be newer than
+      # the target framework (the images now carry .NET 11). A newer SDK builds an older framework's
+      # WebAssembly with wasm-tools-netN; plain wasm-tools is for its own framework.
       - name: Install the ${{ matrix.workload }} workload
         if: matrix.workload
-        run: dotnet workload install ${{ matrix.workload }} --skip-manifest-update
+        shell: bash
+        env:
+          WORKLOAD: ${{ matrix.workload }}
+          NET: ${{ needs.plan.outputs.net }}
+        run: |
+          sdk=$(dotnet --version); tfm=${NET#net}
+          if [ "$WORKLOAD" = wasm-tools ] && [ "${sdk%%.*}" -gt "${tfm%%.*}" ]; then WORKLOAD="wasm-tools-net${tfm%%.*}"; fi
+          echo "SDK $sdk, $NET: installing $WORKLOAD"
+          dotnet workload install "$WORKLOAD" --skip-manifest-update
 
       - name: Build the samples browser
         if: matrix.browser
