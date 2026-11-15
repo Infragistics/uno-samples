@@ -10,6 +10,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- First children, so the navigation pane and content draw over the controls being warmed.
+             The cover hides them where the navigation view is transparent, such as the 1-px border
+             between pane and content. Covered controls still render, which is what warms them. -->
+        <Grid x:Name="WarmupHost" Grid.RowSpan="2" Width="640" Height="360" IsHitTestVisible="False"/>
+        <Border Grid.RowSpan="2" Width="640" Height="360" IsHitTestVisible="False"
+                Background="{StaticResource SamplePageBackground}"/>
+
         <!-- Custom title bar drag region -->
         <Grid x:Name="AppTitleBar"
               Grid.Row="0"
@@ -173,7 +180,6 @@
         <Frame x:Name="EmbeddedFrame" Grid.RowSpan="2" Visibility="Collapsed"/>
         <TextBlock x:Name="EmbedError" Grid.RowSpan="2" Visibility="Collapsed"
                    Margin="16" TextWrapping="Wrap"/>
-        <Grid x:Name="WarmupHost" Grid.RowSpan="2" Width="640" Height="360" IsHitTestVisible="False"/>
         <Grid x:Name="StartupOverlay" Grid.RowSpan="2" Background="{StaticResource SamplePageBackground}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
                 <ProgressRing x:Name="StartupProgress" IsActive="True" Width="32" Height="32"/>

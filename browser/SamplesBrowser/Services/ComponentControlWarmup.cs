@@ -18,9 +18,9 @@ public static class ComponentControlWarmup
     }
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties, typeof(WarmupPoint))]
-    public static async Task RunAsync(Panel host)
+    public static async Task RunAsync(Panel host, Func<bool> stop = null)
     {
-        // Keep this content in the visual tree behind the opaque startup overlay.
+        // Keep this content in the visual tree, hidden behind the opaque cover in MainPage.xaml.
         // Collapsed/transparent controls would skip the rendering work we want to warm.
         var data = new[]
         {
@@ -30,27 +30,18 @@ public static class ComponentControlWarmup
         };
         Func<FrameworkElement>[] factories =
         [
+            // Only the controls whose first creation is expensive (measured 0.2-1.6 s each).
             () => new XamCategoryChart { ItemsSource = data, ChartType = CategoryChartType.Line },
-            () => CreateDataChart(data),
-            () => new XamPieChart { ItemsSource = data, LabelMemberPath = "Label", ValueMemberPath = "Value" },
-            () => new XamDataPieChart { ItemsSource = data },
-            () => CreateDoughnutChart(data),
-            () => new XamSparkline { ItemsSource = data, ValueMemberPath = "Value" },
-            () => new XamTreemap { ItemsSource = data, IdMemberPath = "Label", LabelMemberPath = "Label", ValueMemberPath = "Value" },
-            () => new Infragistics.Controls.Gauges.XamRadialGauge { Value = 50 },
-            () => new Infragistics.Controls.Gauges.XamLinearGauge { Value = 50 },
-            () => new Infragistics.Controls.Gauges.XamBulletGraph { Value = 50 },
             () => new Infragistics.Controls.Grids.XamDataGrid { ItemsSource = data },
             () => new Infragistics.Controls.Inputs.XamColorEditor(),
-            () => new Infragistics.Controls.Layouts.XamPropertyEditorPanel(),
-            () => new Infragistics.Controls.Layouts.XamToolbar(),
-            // Avoid maps/dashboard instances: they can start network requests or background work.
+            () => new XamDataPieChart { ItemsSource = data },
         ];
         var total = Stopwatch.StartNew();
         try
         {
             foreach (var factory in factories)
             {
+                if (stop?.Invoke() == true) break;
                 var timer = Stopwatch.StartNew();
                 FrameworkElement control = null;
                 RoutedEventHandler loadedHandler = null;
@@ -65,7 +56,7 @@ public static class ComponentControlWarmup
                     host.UpdateLayout();
                     if (await Task.WhenAny(loaded.Task, Task.Delay(2000)) != loaded.Task)
                         throw new TimeoutException("Control did not enter the visual tree.");
-                    // Yield to the compositor while the control remains visible behind the overlay.
+                    // Let at least one frame render the control behind the cover.
                     await Task.Delay(50);
                     Log($"[ComponentWarmup] {control.GetType().Name}: {timer.ElapsedMilliseconds} ms");
                 }
@@ -87,30 +78,6 @@ public static class ComponentControlWarmup
             host.Visibility = Visibility.Collapsed;
             Log($"[ComponentWarmup] Total: {total.ElapsedMilliseconds} ms");
         }
-    }
-
-    private static XamDoughnutChart CreateDoughnutChart(WarmupPoint[] data)
-    {
-        var chart = new XamDoughnutChart();
-        chart.Series.Add(new RingSeries
-        {
-            ItemsSource = data, LabelMemberPath = "Label", ValueMemberPath = "Value",
-        });
-        return chart;
-    }
-
-    private static XamDataChart CreateDataChart(WarmupPoint[] data)
-    {
-        var chart = new XamDataChart();
-        var xAxis = new CategoryXAxis { ItemsSource = data, Label = "Label" };
-        var yAxis = new NumericYAxis();
-        chart.Axes.Add(xAxis);
-        chart.Axes.Add(yAxis);
-        chart.Series.Add(new LineSeries
-        {
-            ItemsSource = data, ValueMemberPath = "Value", XAxis = xAxis, YAxis = yAxis,
-        });
-        return chart;
     }
 
     private static void Log(string message)
