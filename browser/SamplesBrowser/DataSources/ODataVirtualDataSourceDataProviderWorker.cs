@@ -91,6 +91,13 @@ namespace Infragistics.Controls.DataSource
 
         protected override void Initialize()
         {
+            // DoWork calls Initialize on every call, and the browser pump calls DoWork once per pass.
+            if (_initialized)
+            {
+                return;
+            }
+            _initialized = true;
+
             base.Initialize();
 
             lock (SyncLock)
@@ -100,6 +107,47 @@ namespace Infragistics.Controls.DataSource
                     BaseUri = new Uri(_baseUri),
                     IgnoreUnmappedProperties = true
                 });
+            }
+
+            Trace("Initialize");
+            EnsureMetadataTask();
+        }
+
+        // TEMP diagnostics for the WASM remote-data issue.
+        private static void Trace(string msg) => Console.WriteLine("[ODataWorker] " + msg);
+
+        // The metadata document is fetched up front and every page request awaits it, so that by the
+        // time ProcessCompletedTask resolves the schema the metadata task has already completed and
+        // reading its Result never blocks. Blocking on an incomplete task (Task.Wait) throws on
+        // single-threaded WebAssembly, which left the grid with no schema and no data.
+        private Task<string> _metadataTask;
+
+        private Task<string> EnsureMetadataTask()
+        {
+            lock (SyncLock)
+            {
+                if (_metadataTask == null || _metadataTask.IsFaulted || _metadataTask.IsCanceled)
+                {
+                    _metadataTask = _client.GetMetadataDocumentAsync();
+                }
+                return _metadataTask;
+            }
+        }
+
+        private async Task<T> WithMetadata<T>(Task<T> request)
+        {
+            try
+            {
+                var result = await request.ConfigureAwait(false);
+                Trace("request completed");
+                await EnsureMetadataTask().ConfigureAwait(false);
+                Trace("metadata completed");
+                return result;
+            }
+            catch (Exception e)
+            {
+                Trace("request/metadata failed: " + e);
+                throw;
             }
         }
 
@@ -166,10 +214,96 @@ namespace Infragistics.Controls.DataSource
                 }
             }
             _isAggregationSupportedByServer = settings.IsAggregationSupportedByServer;
-            Task.Factory.StartNew(() => DoWork(), TaskCreationOptions.LongRunning);
-        }        
-      
+            if (IsSingleThreaded)
+            {
+                Trace("ctor: starting browser pump");
+                _ = PumpAsync();
+            }
+            else
+            {
+                Task.Factory.StartNew(() => DoWork(), TaskCreationOptions.LongRunning);
+            }
+        }
+
+        // --- Single-threaded WebAssembly support -------------------------------------------------
+        // The base class's DoWork is a while(true) loop that blocks in Task.WaitAny / Task.Wait until
+        // a request completes. WASM (without threads) has only the UI thread, so blocking it means the
+        // browser never gets to complete the HTTP request and the grid never receives data. In the
+        // browser, DoWork is instead run one pass at a time from an async loop that yields to the
+        // browser between passes (like the base class's JavaScript build, which polls via setTimeout).
+        // Each pass ends by clearing IsRunning, which is the loop's only exit; the pump sets it again
+        // before the next pass unless the worker has been shut down.
+        private static readonly bool IsSingleThreaded = OperatingSystem.IsBrowser();
+        private const int PumpIntervalMilliseconds = 16;
+        private bool _initialized;
+
+        private async Task PumpAsync()
+        {
+            while (!IsShutdown)
+            {
+                IsRunning = true;
+                try
+                {
+                    DoWork();
+                }
+                catch (Exception e)
+                {
+                    Trace("DoWork pass threw: " + e);
+                }
+                if (IsShutdown)
+                {
+                    break;
+                }
+                await Task.Delay(PumpIntervalMilliseconds);
+            }
+            Trace("browser pump stopped");
+        }
+
+        protected override int CheckAndPotentiallyWaitOnTasks(AsyncDataSourcePageRequest[] currentTasks)
+        {
+            if (!IsSingleThreaded)
+            {
+                return base.CheckAndPotentiallyWaitOnTasks(currentTasks);
+            }
+
+            for (int i = 0; i < currentTasks.Length; i++)
+            {
+                if (currentTasks[i].IsDone || currentTasks[i].TaskHolder.Task.IsCompleted)
+                {
+                    // Keep running so DoWork processes this task; ProcessCompletedTask ends the pass.
+                    return i;
+                }
+            }
+            IsRunning = false;
+            return -1;
+        }
+
+        protected override void AwaitChanges()
+        {
+            if (!IsSingleThreaded)
+            {
+                base.AwaitChanges();
+                return;
+            }
+            IsRunning = false;
+        }
+
         protected override void ProcessCompletedTask(AsyncDataSourcePageTaskHolder completedTask, int currentDelay, int pageIndex, AsyncVirtualDataSourceProviderTaskDataHolder taskDataHolder)
+        {
+            try
+            {
+                ProcessCompletedTaskCore(completedTask, currentDelay, pageIndex, taskDataHolder);
+            }
+            finally
+            {
+                if (IsSingleThreaded)
+                {
+                    IsRunning = false;
+                }
+            }
+        }
+
+        private void ProcessCompletedTaskCore(AsyncDataSourcePageTaskHolder completedTask, int currentDelay, int pageIndex, AsyncVirtualDataSourceProviderTaskDataHolder taskDataHolder)
         {
             ODataVirtualDataSourceProviderTaskDataHolder h = (ODataVirtualDataSourceProviderTaskDataHolder)taskDataHolder;
             IDataSourceSchema schema = null;
@@ -179,6 +313,7 @@ namespace Infragistics.Controls.DataSource
             int schemaFetchCount = -1;
             bool isAggregationSupportedByServer = false;
             bool isGrouping = false;
+            Trace("ProcessCompletedTask page " + pageIndex + " status " + completedTask.Task.Status);
 
             try
             {
@@ -250,7 +385,9 @@ namespace Infragistics.Controls.DataSource
 
             if (schema == null)
             {
+                Trace("resolving schema");
                 schema = ResolveSchema();
+                Trace("schema resolved: " + (schema?.PropertyNames?.Length ?? -1) + " properties");
 
                 lock (SyncLock)
                 {
@@ -297,6 +434,7 @@ namespace Infragistics.Controls.DataSource
                 page = new ODataDataSourcePage(null, schema, groupInformation, summaryInformation, pageIndex);
             }
 
+            Trace("page " + pageIndex + " ready, count " + ActualCount + ", PageLoaded " + (PageLoaded != null) + ", ExecutionContext " + (ExecutionContext != null));
             if (PageLoaded != null)
             {
                 if (ExecutionContext != null)
@@ -329,9 +467,8 @@ namespace Infragistics.Controls.DataSource
 
         private IDataSourceSchema ResolveSchema()
         {
-            var t = this._client.GetMetadataDocumentAsync();
-            t.Wait();
-            var metadataDocument = t.Result;
+            // Already completed: every page task awaits the metadata before it completes.
+            var metadataDocument = EnsureMetadataTask().GetAwaiter().GetResult();
             ODataSchemaProvider sp = new ODataSchemaProvider(metadataDocument);
             var schema = sp.GetODataDataSourceSchema(this._entitySet);
             if (this._schemaIncludedProperties != null)
@@ -750,19 +887,20 @@ namespace Infragistics.Controls.DataSource
                 }
             }
 
+            Trace("MakeTaskForRequest index " + request.Index + " pageSize " + actualPageSize);
             Task task;
             if (request.Index == SchemaRequestIndex)
             {
-                task = client
+                task = WithMetadata(client
                     .Count()
-                    .FindScalarAsync<int>();
+                    .FindScalarAsync<int>());
             }
             else
             {
-                task = client
+                task = WithMetadata(client
                     .Skip(request.Index * actualPageSize)
                     .Top(actualPageSize)
-                    .FindEntriesAsync(annotations);
+                    .FindEntriesAsync(annotations));
             }
 
             request.TaskHolder = new AsyncDataSourcePageTaskHolder();
