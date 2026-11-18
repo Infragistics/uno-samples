@@ -338,6 +338,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Tooltip Template",
+                                                                  "route":  "charts/category-chart/tooltip-template",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Value Lines",
                                                                   "route":  "charts/category-chart/value-lines",
                                                                   "showLink":  true
@@ -812,6 +817,11 @@
                                                               {
                                                                   "name":  "Stacked Spline Chart",
                                                                   "route":  "charts/data-chart/stacked-spline-chart",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Tooltip Template",
+                                                                  "route":  "charts/data-chart/tooltip-template",
                                                                   "showLink":  true
                                                               },
                                                               {
