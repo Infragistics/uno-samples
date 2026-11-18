@@ -1632,8 +1632,8 @@
                                                                   "showLink":  true
                                                               },
                                                               {
-                                                                  "name":  "Display Bing Imagery",
-                                                                  "route":  "maps/geo-map/display-bing-imagery",
+                                                                  "name":  "Display Azure Imagery",
+                                                                  "route":  "maps/geo-map/display-azure-imagery",
                                                                   "showLink":  true
                                                               },
                                                               {

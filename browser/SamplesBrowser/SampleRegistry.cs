@@ -319,7 +319,7 @@ public static class SampleRegistry
         { "maps/geo-map/binding-shp-polygons", () => new Pages.Maps.GeoMap.BindingShpPolygons.Sample() },
         { "maps/geo-map/binding-shp-polylines", () => new Pages.Maps.GeoMap.BindingShpPolylines.Sample() },
         { "maps/geo-map/display-all-imagery", () => new Pages.Maps.GeoMap.DisplayAllImagery.Sample() },
-        { "maps/geo-map/display-bing-imagery", () => new Pages.Maps.GeoMap.DisplayBingImagery.Sample() },
+        { "maps/geo-map/display-azure-imagery", () => new Pages.Maps.GeoMap.DisplayAzureImagery.Sample() },
         { "maps/geo-map/display-esri-imagery", () => new Pages.Maps.GeoMap.DisplayEsriImagery.Sample() },
         { "maps/geo-map/display-osm-imagery", () => new Pages.Maps.GeoMap.DisplayOsmImagery.Sample() },
         { "maps/geo-map/geo-symbol-map-with-callouts", () => new Pages.Maps.GeoMap.GeoSymbolMapWithCallouts.Sample() },
