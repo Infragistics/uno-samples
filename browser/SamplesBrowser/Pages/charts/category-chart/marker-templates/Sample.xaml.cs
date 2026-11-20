@@ -6,7 +6,8 @@ using System.ComponentModel;
 using Infragistics.Controls.Charts;
 using Infragistics.Controls;
 using System;
-using Microsoft.UI.Xaml.Data;
+using Infragistics.Portable.Components.Data;
+using PortableDataTemplate = Infragistics.Portable.Components.Data.DataTemplate;
 
 
 public sealed partial class Sample : UserControl, INotifyPropertyChanged
@@ -39,16 +40,128 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
 
     public void CategoryChartMarkerTemplateSeriesAdded(object sender, ChartSeriesEventArgs args)
     {
-        // Nothing to hand the series yet on WinUI.
-        //
-        // WPF looks a keyed DataTemplate up from the chart and hangs it on each series the category
-        // chart makes. WinUI draws its markers immediate mode, so there is no template to hang: a
-        // custom marker here is going to be a render callback or path data in the SVG sense, not a
-        // XAML template, and MarkerTemplate is typed for the portable shape rather than the XAML one
-        // to leave room for it.
-        //
-        // The handler stays wired so the sample keeps the same shape it has everywhere else, and
-        // does nothing until there is something for it to do.
+        // On Uno the chart draws its markers immediate mode, so MarkerTemplate is the portable
+        // render-callback template (Infragistics.Portable.Components.Data.DataTemplate), not a XAML
+        // DataTemplate. It is the same Measure/Render model the web side uses: Measure says how big
+        // the marker is, Render draws it at (XPosition, YPosition).
+        if (args.Series is MarkerSeries markerSeries)
+        {
+            markerSeries.MarkerTemplate = CreateValueMarkerTemplate(markerSeries);
+        }
+    }
+
+    // The value this marker stands for above the point, and a white dot with a dark outline on it.
+    // One template per series, so the series' own ValueMemberPath says which column to read.
+    private static PortableDataTemplate CreateValueMarkerTemplate(MarkerSeries series)
+    {
+        const double DotSize = 12;
+        const double LabelGap = 2;
+        const double LabelGapBelow = 5;
+        const double FontSize = 11;
+
+        var font = new RendererFont("Verdana", FontSize, "normal", "normal");
+        var black = RendererBrush.FromArgb(255, 0, 0, 0);
+        var white = RendererBrush.FromArgb(255, 255, 255, 255);
+
+        return new PortableDataTemplate
+        {
+            Measure = info =>
+            {
+                info.Width = DotSize;
+                info.Height = DotSize;
+            },
+            Render = info =>
+            {
+                var renderer = info.Renderer;
+                if (renderer == null)
+                {
+                    return;
+                }
+
+                double cx = info.XPosition;
+                double cy = info.YPosition;
+                var data = info.RendererData;
+
+                // During the hit-test pass the chart identifies markers by colour, so the shape
+                // has to be filled with the item brush it hands us, and nothing else is drawn.
+                var fill = white;
+                if (info.IsHitTestRender)
+                {
+                    if (data?.ItemBrush == null)
+                    {
+                        return;
+                    }
+                    fill = data.ItemBrush;
+                }
+
+                renderer.RenderPath(new RendererPath
+                {
+                    Data = new RendererEllipseGeometry
+                    {
+                        Center = new RendererPoint(cx, cy),
+                        RadiusX = DotSize / 2,
+                        RadiusY = DotSize / 2,
+                    },
+                    Fill = fill,
+                    Stroke = info.IsHitTestRender ? fill : black,
+                    StrokeThickness = 1,
+                });
+
+                if (info.IsHitTestRender)
+                {
+                    return;
+                }
+
+                var value = ReadValue(data?.Item, (series as AnchoredCategorySeries)?.ValueMemberPath);
+                if (value == null)
+                {
+                    return;
+                }
+                var text = value + "%";
+
+                // Negative columns grow downward, so their label goes below the dot, pointing the
+                // same way as the column; zero and positive values keep it above.
+                bool below = IsNegative(value);
+                double textHeight = FontSize * 1.25;
+
+                renderer.SetFont(font);
+                double width = renderer.MeasureTextWidth(text);
+                renderer.RenderTextBlock(new RendererTextBlock
+                {
+                    Text = text,
+                    Fill = black,
+                    CanvasLeft = cx - width / 2,
+                    CanvasTop = below
+                        ? cy + DotSize / 2 + LabelGapBelow
+                        : cy - DotSize / 2 - LabelGap - textHeight,
+                });
+            },
+        };
+    }
+
+    private static object ReadValue(object item, string column)
+    {
+        if (item == null || string.IsNullOrEmpty(column))
+        {
+            return null;
+        }
+        return item.GetType().GetProperty(column)?.GetValue(item, null);
+    }
+
+    private static bool IsNegative(object value)
+    {
+        try
+        {
+            return value is IConvertible && System.Convert.ToDouble(value) < 0;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
+        catch (InvalidCastException)
+        {
+            return false;
+        }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -59,52 +172,5 @@ public sealed partial class Sample : UserControl, INotifyPropertyChanged
         {
             handler(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-}
-
-// Reads the value a marker stands for, whichever series it belongs to.
-//
-// A marker template is one template shared by every series, and its data context carries the record
-// and the series but not the number: the number is whichever column that series draws. So this reads
-// one from the other, which is what the drawn marker on the web does when it looks up
-// series.valueColumn.propertyName.
-//
-// WinUI has no MultiBinding, so the whole data context is passed and both halves are read off it here.
-public class SeriesValueConverter : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter, string language)
-    {
-        var context = value as DataContext;
-        if (context == null)
-        {
-            return null;
-        }
-        var item = context.Item;
-        var series = context.Series as Series;
-        if (item == null || series == null)
-        {
-            return null;
-        }
-        var path = series.GetType().GetProperty("ValueMemberPath");
-        if (path == null)
-        {
-            return null;
-        }
-        var column = path.GetValue(series, null) as string;
-        if (string.IsNullOrEmpty(column))
-        {
-            return null;
-        }
-        var property = item.GetType().GetProperty(column);
-        if (property == null)
-        {
-            return null;
-        }
-        return property.GetValue(item, null);
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
-    {
-        throw new NotSupportedException();
     }
 }
