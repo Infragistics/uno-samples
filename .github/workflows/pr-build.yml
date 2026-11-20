@@ -26,7 +26,6 @@ jobs:
     timeout-minutes: 5
     outputs:
       net: ${{ steps.plan.outputs.net }}
-      xcode: ${{ steps.plan.outputs.xcode }}
       samples: ${{ steps.plan.outputs.samples }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -40,13 +39,6 @@ jobs:
         run: |
           net=$(grep -o -m 1 -E 'net[0-9]+\.[0-9]+-browserwasm' browser/SamplesBrowser/SamplesBrowser.csproj | sed 's/-browserwasm$//')
           if [ -z "$net" ]; then echo "::error::SamplesBrowser.csproj has no browserwasm target framework."; exit 1; fi
-          # The Xcode that the iOS workload of this .NET version builds with
-          # (net9.0: iOS SDK 18.0; net10.0: iOS SDK 26.0). Both are installed on macos-15.
-          case "$net" in
-            net9.0)  xcode=16.4 ;;
-            net10.0) xcode=26.0.1 ;;
-            *) echo "::error::No Xcode version is mapped for $net in pr-build.yml."; exit 1 ;;
-          esac
           # Three samples from different packages, plus up to five that this pull request changes.
           samples="charts/category-chart/overview grids/data-grid/binding-local-data maps/geo-map/binding-data-model"
           changed=$(git diff --name-only HEAD^1 HEAD -- samples | cut -d/ -f2-4 | sort -u |
@@ -58,8 +50,8 @@ jobs:
           for s in $(printf '%s\n' "$changed" | head -n 5); do
             case " $samples " in *" $s "*) ;; *) samples="$samples $s" ;; esac
           done
-          echo "Target framework: $net; Xcode: $xcode; samples: $samples"
-          { echo "net=$net"; echo "xcode=$xcode"; echo "samples=$samples"; } >> "$GITHUB_OUTPUT"
+          echo "Target framework: $net; samples: $samples"
+          { echo "net=$net"; echo "samples=$samples"; } >> "$GITHUB_OUTPUT"
 
   # The two checks of the repository's own tools that build-and-deploy.yml also runs.
   checks:
@@ -105,7 +97,9 @@ jobs:
             os: ubuntu-24.04
             browser: true
           - platform: ios
-            os: macos-15
+            # The newest Xcodes are only on the newest image; the iOS workload of a newer .NET
+            # SDK can require one (see "Select the Xcode the iOS workload requires").
+            os: macos-26
             workload: ios
             # A simulator build needs no signing.
             extra: -p:RuntimeIdentifier=iossimulator-arm64
@@ -123,12 +117,6 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-
-      - name: Select Xcode ${{ needs.plan.outputs.xcode }}
-        if: runner.os == 'macOS'
-        run: |
-          sudo xcode-select -s "/Applications/Xcode_${{ needs.plan.outputs.xcode }}.app"
-          xcodebuild -version
 
       - name: Install .NET SDK
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -149,6 +137,28 @@ jobs:
           if [ "$WORKLOAD" = wasm-tools ] && [ "${sdk%%.*}" -gt "${tfm%%.*}" ]; then WORKLOAD="wasm-tools-net${tfm%%.*}"; fi
           echo "SDK $sdk, $NET: installing $WORKLOAD"
           dotnet workload install "$WORKLOAD" --skip-manifest-update
+
+      # Which iOS SDK pack builds the target framework depends on the SDK and workload the runner
+      # ends up with, and each pack requires its own Xcode (a mismatch fails the build: "This
+      # version of .NET for iOS ... requires Xcode N"). So read the version from the installed pack
+      # rather than mapping it here.
+      - name: Select the Xcode the iOS workload requires
+        if: runner.os == 'macOS'
+        shell: bash
+        env:
+          NET: ${{ needs.plan.outputs.net }}
+        run: |
+          packs="$(dirname "$(readlink -f "$(command -v dotnet)")")/packs"
+          props=$(ls -d "$packs/Microsoft.iOS.Sdk.${NET}_"*/*/targets/Microsoft.iOS.Sdk.Versions.props 2>/dev/null | sort -V | tail -n 1)
+          if [ -z "$props" ]; then echo "::error::No Microsoft.iOS.Sdk pack for $NET under $packs."; exit 1; fi
+          xcode=$(sed -n -E 's#.*<_RecommendedXcodeVersion>([^<]+)</_RecommendedXcodeVersion>.*#\1#p' "$props")
+          echo "$props requires Xcode $xcode"
+          if [ ! -d "/Applications/Xcode_$xcode.app" ]; then
+            echo "::error::Xcode $xcode is not on this runner image. Installed: $(ls -d /Applications/Xcode_*.app | xargs -n 1 basename | tr '\n' ' ')"
+            exit 1
+          fi
+          sudo xcode-select -s "/Applications/Xcode_$xcode.app"
+          xcodebuild -version
 
       - name: Build the samples browser
         if: matrix.browser
