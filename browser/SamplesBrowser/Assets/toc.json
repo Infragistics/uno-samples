@@ -338,6 +338,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Tooltip Template",
+                                                                  "route":  "charts/category-chart/tooltip-template",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Value Lines",
                                                                   "route":  "charts/category-chart/value-lines",
                                                                   "showLink":  true
@@ -815,6 +820,11 @@
                                                                   "showLink":  true
                                                               },
                                                               {
+                                                                  "name":  "Tooltip Template",
+                                                                  "route":  "charts/data-chart/tooltip-template",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
                                                                   "name":  "Transition Event",
                                                                   "route":  "charts/data-chart/transition-event",
                                                                   "showLink":  true
@@ -827,6 +837,16 @@
                                                               {
                                                                   "name":  "Type Scatter Contour Series",
                                                                   "route":  "charts/data-chart/type-scatter-contour-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Type Scatter Polygon Series",
+                                                                  "route":  "charts/data-chart/type-scatter-polygon-series",
+                                                                  "showLink":  true
+                                                              },
+                                                              {
+                                                                  "name":  "Type Scatter Polyline Series",
+                                                                  "route":  "charts/data-chart/type-scatter-polyline-series",
                                                                   "showLink":  true
                                                               },
                                                               {

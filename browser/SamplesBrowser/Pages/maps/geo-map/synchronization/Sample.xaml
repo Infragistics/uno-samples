@@ -24,10 +24,24 @@
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1" x:Name="ContentRoot">
-          <igMaps:XamGeographicMap
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+         </Grid.RowDefinitions>
+         <igMaps:XamGeographicMap
           x:Name="map"
-          Zoomable="true">
+          Zoomable="true"             
+          SyncChannel="ChannelA"
+          SynchronizeHorizontally="true"
+          SynchronizeVertically="true">
           </igMaps:XamGeographicMap>
+          <igMaps:XamGeographicMap Grid.Row="1"
+            x:Name="map2"
+            Zoomable="true"
+            SyncChannel="ChannelA"
+            SynchronizeHorizontally="true"
+            SynchronizeVertically="true">
+           </igMaps:XamGeographicMap>
         </Grid>
       </Grid>
     </Grid>

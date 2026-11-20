@@ -1,0 +1,90 @@
+<UserControl
+    x:Class="Sample.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
+    xmlns:ig="using:Infragistics.Controls"
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+      <local:StringFormatConverter x:Key="StringFormatConverter" />
+      <DataTemplate x:Key="DataChartAirplaneSeatTooltipTemplate">
+          <!-- A seat is identified by where it is and what it costs. The two things the plan is coloured
+               by, its cabin class and whether it is sold, are named here as well, so the colour under the
+               pointer can be read rather than guessed at from the legend.
+
+               The shared Xaml.xaml labels each value with Binding.StringFormat, which WinUI's Binding does
+               not have. The same format strings travel as ConverterParameter here. -->
+          <StackPanel Orientation="Vertical" Margin="5">
+              <TextBlock Text="{Binding Item.Class, Converter={StaticResource StringFormatConverter}, ConverterParameter='Class: {0}'}" />
+              <TextBlock Text="{Binding Item.Seat, Converter={StaticResource StringFormatConverter}, ConverterParameter='Seat: {0}'}" />
+              <TextBlock Text="{Binding Item.Price, Converter={StaticResource StringFormatConverter}, ConverterParameter='Price: ${0}'}" />
+              <TextBlock Text="{Binding Item.Status, Converter={StaticResource StringFormatConverter}, ConverterParameter='Status: {0}'}" />
+          </StackPanel>
+      </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" x:Name="ContentRoot">
+          <igCharts:XamDataChart
+          x:Name="chart"
+          IsHorizontalZoomEnabled="true"
+          IsVerticalZoomEnabled="true">
+              <igCharts:XamDataChart.Axes>
+                  <igCharts:NumericXAxis
+                  x:Name="xAxis"
+                  MinimumValue="-1000"
+                  MaximumValue="1000"
+                  Interval="200">
+                  </igCharts:NumericXAxis>
+                  <igCharts:NumericYAxis
+                  x:Name="yAxis"
+                  MinimumValue="-600"
+                  MaximumValue="600"
+                  Interval="200">
+                  </igCharts:NumericYAxis>
+              </igCharts:XamDataChart.Axes>
+              <igCharts:XamDataChart.Series>
+                  <igCharts:ScatterPolylineSeries
+                  x:Name="airplaneShapeSeries"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding AirplaneShape}"
+                  ShapeMemberPath="Points"
+                  Title="Airplane Shape"
+                  Thickness="1"
+                  Brush="black"
+                  Outline="black">
+                  </igCharts:ScatterPolylineSeries>
+                  <igCharts:ScatterPolylineSeries
+                  x:Name="airplaneSeatSeries"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding AirplaneSeats}"
+                  ShapeMemberPath="Points"
+                  Title="Airplane Seats"
+                  ShowDefaultTooltip="false"
+                  ToolTipTemplate="{StaticResource DataChartAirplaneSeatTooltipTemplate}"
+                  IsCustomShapeStyleAllowed="True"
+                  AssigningShapeStyle="AirplaneSeatStrokeStyling">
+                  </igCharts:ScatterPolylineSeries>
+              </igCharts:XamDataChart.Series>
+          </igCharts:XamDataChart>
+        </Grid>
+      </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,52 @@
+<UserControl
+    x:Class="Sample.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
+    xmlns:ig="using:Infragistics.Controls"
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+      <local:StringFormatConverter x:Key="StringFormatConverter" />
+      <DataTemplate x:Key="CategoryChartTooltipTemplate">
+          <!-- The shared Xaml.xaml labels each value with Binding.StringFormat, which WinUI's Binding does
+               not have. The same format strings travel as ConverterParameter here. -->
+          <StackPanel Orientation="Vertical" Margin="5">
+              <TextBlock Text="{Binding Item.Franchise, Converter={StaticResource StringFormatConverter}, ConverterParameter='Franchise: {0}'}" FontWeight="Bold" />
+              <TextBlock Text="{Binding Item.TotalRevenue, Converter={StaticResource StringFormatConverter}, ConverterParameter='Revenue of All Movies: {0}'}" />
+              <TextBlock Text="{Binding Item.HighestGrossing, Converter={StaticResource StringFormatConverter}, ConverterParameter='Highest Grossing Movie: ${0}'}" />
+          </StackPanel>
+      </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" x:Name="ContentRoot">    
+
+                <igCharts:XamCategoryChart
+                    x:Name="chart"
+                    ItemsSource="{Binding MovieFranchiseRevenue}"
+                    IsTransitionInEnabled="true"
+                    ChartType="Column"
+                    ToolTipType="None"
+                    XAxisInterval="1"
+                    SeriesAdded="chart_SeriesAdded">
+                </igCharts:XamCategoryChart>
+           
+            </Grid>
+      </Grid>
+    </Grid>
+</UserControl>

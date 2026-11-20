@@ -1,0 +1,137 @@
+<UserControl
+    x:Class="Sample.Sample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="using:Sample"
+    xmlns:ig="using:Infragistics.Controls"
+    xmlns:igCharts="using:Infragistics.Controls.Charts"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+      <local:StringFormatConverter x:Key="StringFormatConverter" />
+      <DataTemplate x:Key="DataChartProductionTooltipTemplate">
+          <!-- Every fuel is listed whichever column is hovered, so the reader sees the country's whole
+               mix. Which series is hovered is carried by the title, drawn in that series' own brush;
+               tinting the matching row instead would take a converter to compare the row against the
+               series' value member path, and the title says the same thing without one.
+
+               The shared Xaml.xaml titles the country with Binding.StringFormat, which WinUI's Binding
+               does not have. The same format string travels as ConverterParameter here, leading-brace
+               escape included, because it still begins with one. -->
+          <StackPanel Orientation="Vertical" Margin="5">
+              <TextBlock Text="{Binding Item.Country, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0} Production'}"
+                         Foreground="{Binding Series.ActualBrush}"
+                         FontWeight="Bold" Margin="0,0,0,4" />
+              <Grid>
+                  <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="70" />
+                      <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                      <RowDefinition />
+                      <RowDefinition />
+                      <RowDefinition />
+                      <RowDefinition />
+                      <RowDefinition />
+                  </Grid.RowDefinitions>
+                  <TextBlock Grid.Row="0" Grid.Column="0" Text="Coal:" />
+                  <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Item.Coal}" />
+                  <TextBlock Grid.Row="1" Grid.Column="0" Text="Hydro:" />
+                  <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Item.Hydro}" />
+                  <TextBlock Grid.Row="2" Grid.Column="0" Text="Nuclear:" />
+                  <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Item.Nuclear}" />
+                  <TextBlock Grid.Row="3" Grid.Column="0" Text="Gas:" />
+                  <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Item.Gas}" />
+                  <TextBlock Grid.Row="4" Grid.Column="0" Text="Oil:" />
+                  <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Item.Oil}" />
+              </Grid>
+          </StackPanel>
+      </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <StackPanel>
+      </StackPanel>
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" x:Name="ContentRoot">
+          <igCharts:XamDataChart
+          x:Name="chart"
+          IsHorizontalZoomEnabled="false"
+          IsVerticalZoomEnabled="false">
+              <igCharts:XamDataChart.Axes>
+                  <igCharts:CategoryXAxis
+                  x:Name="xAxis"
+                  ItemsSource="{Binding EnergyProductionByCountry}"
+                  Label="Country">
+                  </igCharts:CategoryXAxis>
+                  <igCharts:NumericYAxis
+                  x:Name="yAxis">
+                  </igCharts:NumericYAxis>
+              </igCharts:XamDataChart.Axes>
+              <igCharts:XamDataChart.Series>
+                  <igCharts:ColumnSeries
+                  x:Name="series1"
+                  Title="Coal"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding EnergyProductionByCountry}"
+                  ValueMemberPath="Coal"
+                  ShowDefaultTooltip="false"
+                  ToolTipTemplate="{StaticResource DataChartProductionTooltipTemplate}">
+                  </igCharts:ColumnSeries>
+                  <igCharts:ColumnSeries
+                  x:Name="series2"
+                  Title="Hydro"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding EnergyProductionByCountry}"
+                  ValueMemberPath="Hydro"
+                  ShowDefaultTooltip="false"
+                  ToolTipTemplate="{StaticResource DataChartProductionTooltipTemplate}">
+                  </igCharts:ColumnSeries>
+                  <igCharts:ColumnSeries
+                  x:Name="series3"
+                  Title="Nuclear"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding EnergyProductionByCountry}"
+                  ValueMemberPath="Nuclear"
+                  ShowDefaultTooltip="false"
+                  ToolTipTemplate="{StaticResource DataChartProductionTooltipTemplate}">
+                  </igCharts:ColumnSeries>
+                  <igCharts:ColumnSeries
+                  x:Name="series4"
+                  Title="Gas"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding EnergyProductionByCountry}"
+                  ValueMemberPath="Gas"
+                  ShowDefaultTooltip="false"
+                  ToolTipTemplate="{StaticResource DataChartProductionTooltipTemplate}">
+                  </igCharts:ColumnSeries>
+                  <igCharts:ColumnSeries
+                  x:Name="series5"
+                  Title="Oil"
+                  XAxis="{Binding ElementName=xAxis}"
+                  YAxis="{Binding ElementName=yAxis}"
+                  ItemsSource="{Binding EnergyProductionByCountry}"
+                  ValueMemberPath="Oil"
+                  ShowDefaultTooltip="false"
+                  ToolTipTemplate="{StaticResource DataChartProductionTooltipTemplate}">
+                  </igCharts:ColumnSeries>
+              </igCharts:XamDataChart.Series>
+          </igCharts:XamDataChart>
+        </Grid>
+      </Grid>
+    </Grid>
+</UserControl>
